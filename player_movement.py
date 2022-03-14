@@ -30,15 +30,11 @@ def step_direction(player):
 
     if input_char.upper() == 'W':
         player["pos_x"] = player["pos_x"] + 1
-        player["pos_y"] = player["pos_y"]
     elif input_char.upper() == 'S':
         player["pos_x"] = player["pos_x"] - 1
-        player["pos_y"] = player["pos_y"]
-    elif input_char.upper() == 'A':
-        player["pos_x"] = player["pos_x"] 
+    elif input_char.upper() == 'A': 
         player["pos_y"] = player["pos_y"] -1
     elif input_char.upper() == 'D':
-        player["pos_x"] = player["pos_x"]
         player["pos_y"] = player["pos_y"] + 1
     else:
         print("not correct move")
