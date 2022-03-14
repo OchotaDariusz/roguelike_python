@@ -18,7 +18,16 @@ def create_player():
     Returns:
     dictionary
     '''
-    pass
+    player = {
+        "name": "Player",
+        "health": 1000,
+        "armor": 50,
+        "damage": 10,
+        "pos_x": PLAYER_START_X,
+        "pos_y": PLAYER_START_Y,
+        "icon": PLAYER_ICON
+    }
+    return player
 
 
 def main():
