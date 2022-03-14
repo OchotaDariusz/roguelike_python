@@ -52,7 +52,9 @@ def add_item_to_player(player,item,items):
     
 
 def change_item(player,item,items):
-    decide = input("You already have that kind of item, do You want to change it? Y/N  ").upper()
+    
+    compare_items(player,item,items)
+    decide = input("\n\nDo You want to change current item? Y/N  ").upper()
     if decide == "Y" :
         remove_old_item_statistics(player,item,items)
         add_item(player,item)
@@ -66,15 +68,21 @@ def add_item(player,item):
 
 def remove_old_item_statistics(player,item,items):
     
-    for item_name in items :
-        if item_name[ITEM_NAME] == player["inventory"][item[ITEM_TYPE]]:
-            player["damage"] -= int(item_name[ITEM_DAMAGE])
-            player["armor"] -= int(item_name[ITEM_DEFENSIVE]) 
-            player["health"] -= int(item_name[ITEM_HEALTH])
+    for old_item in items :
+        if old_item[ITEM_NAME] == player["inventory"][item[ITEM_TYPE]]:
+            player["damage"] -= int(old_item[ITEM_DAMAGE])
+            player["armor"] -= int(old_item[ITEM_DEFENSIVE]) 
+            player["health"] -= int(old_item[ITEM_HEALTH])
 
-"""def change_item(player,item):
-    item_type_list = list(player["inventory"].keys())
-    if item[ITEM_TYPE] in item_type_list :
-        decide = input("You already have that kind of item, do You want to change it? Y/N  ").upper()
-        if decide == "Y" :
-            player["inventory"][item[ITEM_TYPE]] = item[ITEM_NAME]"""
+def compare_items(player,item,items):
+    print("You already have that kind of item\n")
+    details_label = ["name:","type:","damage:","defense:","health:"]
+    for old_item in items :
+         if old_item[ITEM_NAME] == player["inventory"][item[ITEM_TYPE]]:
+             print("old item details: ")
+             for i in range(len(old_item)):
+                 print(details_label[i],old_item[i],end="  ")
+    print("\n\nnew item details:")
+    for i in range(len(item)):
+        print(details_label[i],item[i],end="  ")
+
