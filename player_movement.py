@@ -23,23 +23,19 @@ item = {
 }
 
 
-def step_direction(PLAYER_START_X, PLAYER_START_Y):
+def step_direction(player):
 
     print('step direction')
     input_char = msvcrt.getwch()
 
     if input_char.upper() == 'W':
-        player["pos_x"] = PLAYER_START_X + 1
-        player["pos_y"] = PLAYER_START_Y
+        player["pos_x"] = player["pos_x"] + 1
     elif input_char.upper() == 'S':
-        player["pos_x"] = PLAYER_START_X - 1
-        player["pos_y"] = PLAYER_START_Y
-    elif input_char.upper() == 'A':
-        player["pos_x"] = PLAYER_START_X - 1
-        player["pos_y"] = PLAYER_START_Y
+        player["pos_x"] = player["pos_x"] - 1
+    elif input_char.upper() == 'A': 
+        player["pos_y"] = player["pos_y"] -1
     elif input_char.upper() == 'D':
-        player["pos_x"] = PLAYER_START_X
-        player["pos_y"] = PLAYER_START_Y + 1
+        player["pos_y"] = player["pos_y"] + 1
     else:
         print("not correct move")
         print('step direction')
@@ -57,10 +53,3 @@ def step_on_monster(player, monster):
     if player["pos_x"] == monster["pos_x"] and player["pos_y"] == monster["pos_y"]:
         # tryb walki
         print("monster")
-print(player["pos_x"])
-print(player["pos_y"])
-step_direction(PLAYER_START_X, PLAYER_START_Y)
-
-
-print(player["pos_x"])
-print(player["pos_y"])
