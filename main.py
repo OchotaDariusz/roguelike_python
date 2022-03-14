@@ -1,6 +1,7 @@
 import util
 import engine
 import ui
+import player_movement
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
@@ -18,14 +19,23 @@ def create_player():
     Returns:
     dictionary
     '''
-    pass
+    player = {
+        "name": "Player",
+        "health": 1000,
+        "armor": 50,
+        "damage": 10,
+        "pos_x": PLAYER_START_X,
+        "pos_y": PLAYER_START_Y,
+        "icon": PLAYER_ICON
+    }
+    return player
 
 
 def main():
     player = create_player()
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
 
-    util.clear_screen()
+    #util.clear_screen()
     is_running = True
     while is_running:
         engine.put_player_on_board(board, player)
@@ -36,8 +46,8 @@ def main():
             is_running = False
         else:
             pass
-        util.clear_screen()
-
+        #util.clear_screen()
+        print()
 
 if __name__ == '__main__':
     main()

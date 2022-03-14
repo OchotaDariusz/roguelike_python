@@ -1,0 +1,66 @@
+import msvcrt
+PLAYER_START_X = 3
+PLAYER_START_Y = 3
+PLAYER_ICON = 0
+player = {
+    "name": "Player",
+    "health": 1000,
+    "armor": 50,
+    "damage": 10,
+    "pos_x": PLAYER_START_X,
+    "pos_y": PLAYER_START_Y,
+    "icon": PLAYER_ICON
+}
+
+item = {
+    "name": "Player",
+    "health": 1000,
+    "armor": 50,
+    "damage": 10,
+    "pos_x": PLAYER_START_X,
+    "pos_y": PLAYER_START_Y,
+    "icon": PLAYER_ICON
+}
+
+
+def step_direction(PLAYER_START_X, PLAYER_START_Y):
+
+    print('step direction')
+    input_char = msvcrt.getwch()
+
+    if input_char.upper() == 'W':
+        player["pos_x"] = PLAYER_START_X + 1
+        player["pos_y"] = PLAYER_START_Y
+    elif input_char.upper() == 'S':
+        player["pos_x"] = PLAYER_START_X - 1
+        player["pos_y"] = PLAYER_START_Y
+    elif input_char.upper() == 'A':
+        player["pos_x"] = PLAYER_START_X - 1
+        player["pos_y"] = PLAYER_START_Y
+    elif input_char.upper() == 'D':
+        player["pos_x"] = PLAYER_START_X
+        player["pos_y"] = PLAYER_START_Y + 1
+    else:
+        print("not correct move")
+        print('step direction')
+        input_char = msvcrt.getwch()
+
+
+def step_on_item(player, item):
+
+    if player["pos_x"] == item["pos_x"] and player["pos_y"] == item["pos_y"]:
+        # funkcja pobierająca item
+        print("dupa")
+
+def step_on_monster(player, monster):
+
+    if player["pos_x"] == monster["pos_x"] and player["pos_y"] == monster["pos_y"]:
+        # tryb walki
+        print("monster")
+print(player["pos_x"])
+print(player["pos_y"])
+step_direction(PLAYER_START_X, PLAYER_START_Y)
+
+
+print(player["pos_x"])
+print(player["pos_y"])
