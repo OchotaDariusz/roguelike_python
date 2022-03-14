@@ -1,3 +1,4 @@
+
 import util
 import engine
 import ui
@@ -30,16 +31,19 @@ player = {
     "pos_x": PLAYER_START_X,
     "pos_y": PLAYER_START_Y,
     "icon": PLAYER_ICON,
-    "inventory":[]
+    "inventory":{}
 }
 
 def main():
     #player = create_player()
     items = engine.read_file("items.txt")
     print(player)
-    engine.add_item_to_player(player,items[0])
+    engine.add_item_to_player(player,items[2],items)
+    print(player)
+    engine.add_item_to_player(player,items[7],items)
     print(player)
     input()
+    
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
 
     util.clear_screen()
