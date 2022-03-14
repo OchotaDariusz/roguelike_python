@@ -29,11 +29,11 @@ def step_direction(player):
     input_char = msvcrt.getwch()
 
     if input_char.upper() == 'W':
-        player["pos_x"] = player["pos_x"] + 1
-    elif input_char.upper() == 'S':
         player["pos_x"] = player["pos_x"] - 1
-    elif input_char.upper() == 'A': 
-        player["pos_y"] = player["pos_y"] -1
+    elif input_char.upper() == 'S':
+        player["pos_x"] = player["pos_x"] + 1
+    elif input_char.upper() == 'A':
+        player["pos_y"] = player["pos_y"] - 1
     elif input_char.upper() == 'D':
         player["pos_y"] = player["pos_y"] + 1
     else:

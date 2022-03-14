@@ -41,11 +41,15 @@ def main():
         engine.put_player_on_board(board, player)
         ui.display_board(board)
 
+        backup_pos_x = player["pos_x"]
+        backup_pos_y = player["pos_y"]
+
         key = util.key_pressed()
         if key == 'q':
             is_running = False
         else:
             player_movement.step_direction(player)
+        board[backup_pos_x][backup_pos_y] = "."
         util.clear_screen()
         print()
 
