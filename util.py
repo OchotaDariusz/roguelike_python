@@ -4,7 +4,8 @@ import os
 
 def key_pressed():
     try:
-        import tty, termios
+        import tty
+        import termios
     except ImportError:
         try:
             # probably Windows
