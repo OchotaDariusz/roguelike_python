@@ -1,4 +1,3 @@
-import board
 import msvcrt
 PLAYER_START_X = 3
 PLAYER_START_Y = 3
