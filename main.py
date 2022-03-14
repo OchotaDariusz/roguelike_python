@@ -9,11 +9,7 @@ PLAYER_START_Y = 3
 BOARD_WIDTH = 30
 BOARD_HEIGHT = 20
 
-ITEM_NAME = 0
-ITEM_TYPE = 1
-ITEM_DAMAGE = 2
-ITEM_DEFENSIVE = 3
-ITEM_HEALTH = 4
+
 
 
 def create_player():
@@ -33,12 +29,17 @@ player = {
     "damage": 10,
     "pos_x": PLAYER_START_X,
     "pos_y": PLAYER_START_Y,
-    "icon": PLAYER_ICON
+    "icon": PLAYER_ICON,
+    "inventory":[]
 }
 
 def main():
     #player = create_player()
     items = engine.read_file("items.txt")
+    print(player)
+    engine.add_item_to_player(player,items[0])
+    print(player)
+    input()
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
 
     util.clear_screen()

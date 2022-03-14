@@ -25,6 +25,12 @@ def put_player_on_board(board, player):
     '''
     pass
 
+ITEM_NAME = 0
+ITEM_TYPE = 1
+ITEM_DAMAGE = 2
+ITEM_DEFENSIVE = 3
+ITEM_HEALTH = 4
+
 def read_file(file_name):
     items_table = []
     #item_table structure by index
@@ -35,4 +41,11 @@ def read_file(file_name):
     text_file.close()
     return items_table
 
-
+def add_item_to_player(player,item):
+    if item[ITEM_DAMAGE] != 0 :
+        player["damage"] += int(item[ITEM_DAMAGE])
+    if item[ITEM_DEFENSIVE] != 0 :
+        player["armor"] += int(item[ITEM_DEFENSIVE])    
+    if item[ITEM_HEALTH] != 0 :
+        player["health"] += int(item[ITEM_HEALTH])
+    player["inventory"].append(item[ITEM_NAME])
