@@ -24,3 +24,15 @@ def put_player_on_board(board, player):
     Nothing
     '''
     pass
+
+def read_file(file_name):
+    items_table = []
+    #item_table structure by index
+    #[0] = item name  [1] = type  [2] = damage  [3] = defensive  [4] = health
+    text_file = open(file_name , "r")
+    for line in text_file:
+        items_table.append(line.strip().split("\t"))
+    text_file.close()
+    return items_table
+
+
