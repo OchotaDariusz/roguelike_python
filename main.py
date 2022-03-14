@@ -48,7 +48,7 @@ def main():
         if key == 'q':
             is_running = False
         else:
-            player_movement.step_direction(player)
+            player_movement.step_direction(player, key)
         board[backup_pos_x][backup_pos_y] = "."
         util.clear_screen()
         print()

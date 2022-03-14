@@ -23,23 +23,27 @@ item = {
 }
 
 
-def step_direction(player):
+def step_direction(player, input_char):
 
     print('step direction')
-    input_char = msvcrt.getwch()
-
-    if input_char.upper() == 'W':
-        player["pos_x"] = player["pos_x"] - 1
-    elif input_char.upper() == 'S':
-        player["pos_x"] = player["pos_x"] + 1
-    elif input_char.upper() == 'A':
-        player["pos_y"] = player["pos_y"] - 1
-    elif input_char.upper() == 'D':
-        player["pos_y"] = player["pos_y"] + 1
-    else:
-        print("not correct move")
-        print('step direction')
-        input_char = msvcrt.getwch()
+    
+    while True:
+        if input_char.upper() == 'W':
+            player["pos_x"] = player["pos_x"] - 1
+            break
+        elif input_char.upper() == 'S':
+            player["pos_x"] = player["pos_x"] + 1
+            break
+        elif input_char.upper() == 'A':
+            player["pos_y"] = player["pos_y"] - 1
+            break
+        elif input_char.upper() == 'D':
+            player["pos_y"] = player["pos_y"] + 1
+            break
+        else:
+            print("not correct move")
+            print('step direction')
+            input_char = msvcrt.getwch()
 
 
 def step_on_item(player, item):
