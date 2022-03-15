@@ -1,22 +1,24 @@
 import random
 
 GATE_SYMBOLS = {
-"up": "\u25B2",
-"down": "\u25BC",
-"left": "\u25C4",
-"right": "\u25BA"
+    "up": "\u25B2",
+    "down": "\u25BC",
+    "left": "\u25C4",
+    "right": "\u25BA"
 }
+
 
 def create_board(width, height):
     board = []
-    gates_coordinates_x, gates_coordinates_y = get_gates_coordinates(width, height)
+    gates_coordinates_x, gates_coordinates_y = get_gates_coordinates(
+        width, height)
     for row_number in range(height):
         row_line = []
         for col_number in range(width):
             if row_number == 0 or row_number == (height-1):
                 row_line.append("#")
-            else: 
-                if col_number == 0 or col_number == width-1: 
+            else:
+                if col_number == 0 or col_number == width-1:
                     row_line.append("#")
                 else:
                     row_line.append(".")
@@ -32,7 +34,7 @@ def create_board(width, height):
     return board
 
 
-def get_gates_coordinates(col_number,row_number):
+def get_gates_coordinates(col_number, row_number):
 
     gates_x = random.randint(0, row_number-1)
 
@@ -41,7 +43,7 @@ def get_gates_coordinates(col_number,row_number):
     else:
         gates_y = random.choice([0, col_number-1])
 
-    return (gates_x,gates_y)
+    return (gates_x, gates_y)
 
 
 def put_player_on_board(board, player):
@@ -56,3 +58,4 @@ def put_player_on_board(board, player):
     Nothing
     '''
     board[player["pos_x"]][player["pos_y"]] = player["icon"]
+   
