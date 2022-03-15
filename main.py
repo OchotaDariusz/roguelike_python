@@ -1,3 +1,4 @@
+
 import util
 import engine
 import ui
@@ -9,6 +10,8 @@ PLAYER_START_Y = 3
 
 BOARD_WIDTH = 30
 BOARD_HEIGHT = 20
+
+
 
 
 def create_player():
@@ -26,14 +29,24 @@ def create_player():
         "damage": 10,
         "pos_x": PLAYER_START_X,
         "pos_y": PLAYER_START_Y,
-        "icon": PLAYER_ICON
+        "icon": PLAYER_ICON,
+        "inventory": {}
     }
     return player
 
 
 def main():
     player = create_player()
-    
+    #SYLWEK# items = engine.read_file("items.txt")
+    #SYLWEK# print(player)
+    #SYLWEK# engine.add_item_to_player(player,items[2],items)
+    #SYLWEK# engine.add_item_to_player(player,items[3],items)
+    #SYLWEK# print(player)
+    #SYLWEK# engine.add_item_to_player(player,items[7],items)
+    #SYLWEK# print(player)
+    #SYLWEK# print(engine.show_inventory(player))
+    #SYLWEK# input()
+
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
 
     util.clear_screen()
@@ -49,7 +62,7 @@ def main():
         if key == 'q':
             is_running = False
         else:
-            player_movement.step_direction(player, key)
+            player_movement.step_direction(player, key, board)
         board[backup_pos_x][backup_pos_y] = "."
         util.clear_screen()
         print()
