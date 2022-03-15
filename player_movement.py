@@ -54,7 +54,6 @@ def step_direction(player, input_char):
             print("not correct move")
             print('step direction')
             input_char = msvcrt.getwch()
-    
 
 
 def step_on_item(player, item):
