@@ -39,9 +39,11 @@ def main():
     items = engine.read_file("items.txt")
     print(player)
     engine.add_item_to_player(player,items[2],items)
+    engine.add_item_to_player(player,items[3],items)
     print(player)
     engine.add_item_to_player(player,items[7],items)
     print(player)
+    #print(engine.show_inventory(player))
     input()
     
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)

@@ -55,9 +55,13 @@ def change_item(player,item,items):
     
     compare_items(player,item,items)
     decide = input("\n\nDo You want to change current item? Y/N  ").upper()
+    while decide not in ["Y","N"]:
+        decide = input("please type 'Y' or 'N'  ").upper()
     if decide == "Y" :
         remove_old_item_statistics(player,item,items)
         add_item(player,item)
+    elif decide == "N" :
+        pass
 
 def add_item(player,item):
 
@@ -86,3 +90,10 @@ def compare_items(player,item,items):
     for i in range(len(item)):
         print(details_label[i],item[i],end="  ")
 
+def show_inventory(player,items):
+    details_label = ["name:","type:","damage:","defense:","health:"]
+    player_items_name_list = list(player["inventory"].values())
+    for item_name in player_items_name_list :    
+        for i in range(len(items[0])) :
+            #if item_name == 
+            pass
