@@ -6,10 +6,14 @@ COLORS = {
     "player": (100, 255, 150),
     "item": (200, 200, 100),
     "empty space": (150, 150, 150),
-    "gate": (255, 255, 100)
+    "gate": (255, 255, 100),
+    "M": (255, 255, 100),
+    "I": (255, 155, 100)
     }
 
 SYMBOLS_DICTIONARY = {
+    "I": "I",
+    "M": "M",
     "#": "border",
     GATE_SYMBOLS["down"]: "gate",
     GATE_SYMBOLS["up"]: "gate",

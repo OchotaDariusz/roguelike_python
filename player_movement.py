@@ -1,4 +1,5 @@
 import msvcrt
+import sys
 
 
 def step_direction(player, input_char, board):
@@ -29,9 +30,9 @@ def step_direction(player, input_char, board):
                 player["pos_y"] = player["pos_y"] + 1
                 break
         else:
-            print("not correct move")
-            print('step direction')
             input_char = msvcrt.getwch()
+            if input_char == 'q':
+                sys.exit()
 
 
 def step_on_item(player, item):
