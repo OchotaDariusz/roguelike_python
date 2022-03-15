@@ -16,17 +16,14 @@ def level_up(character):
     character["health"] += add_hp
 
 
-def deal_damage(attacker, defender, player):
+def deal_damage(attacker, defender):
     print(attacker["damage"])
     print(defender["health"])
     defender["health"] = defender["health"] - attacker["damage"]
     if defender["health"] <= 0:
         print("{} has been slain".format(defender["name"]))
         attacker["xp"] += defender["reward"]
-        if attacker == player:
-            level_up(attacker)
-        else:
-            print("Level of {}: {}".format(attacker["name"], attacker["level"]))
+        level_up(attacker)
         input("Press any key to leave the battle! ")
         return False
     else:
@@ -42,13 +39,13 @@ def combat(your_champ, foe):
         decision = input("Do you want to attack or pass your turn? Y = Attack! N = Pass! ").lower()
         if "y" in decision:
             print("------------------------------------------------------------------------")
-            is_combat = deal_damage(your_champ, foe, your_champ)
+            is_combat = deal_damage(your_champ, foe)
             print("-----------------------------------------------------")
-            is_combat = deal_damage(foe, your_champ, your_champ)
+            is_combat = deal_damage(foe, your_champ)
             
         elif "n" in decision:
             print("{} attacks! ".format(foe["name"]))
             print("------------------------------------------------------------------------")
-            is_combat = deal_damage(foe, your_champ, your_champ)
+            is_combat = deal_damage(foe, your_champ)
         else:
             pass
