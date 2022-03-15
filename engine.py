@@ -1,4 +1,5 @@
 import random
+import winsound
 import battlePhase
 import HeroAndMonsters
 mercenary = HeroAndMonsters.mercenary
@@ -147,6 +148,7 @@ def show_inventory(player, items):
 def event_handler(player: dict, board: list):
     if board[player["pos_x"]][player["pos_y"]] == "M":
         battlePhase.combat(player, mercenary)
+        winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
         board[player["pos_x"]][player["pos_y"]] = "."
         #pass
         #print("Wbiles na M")
