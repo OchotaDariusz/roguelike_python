@@ -1,14 +1,4 @@
 
-
-import HeroAndMonsters
-
-player = HeroAndMonsters.player
-mercenary = HeroAndMonsters.mercenary
-infantry_of_Troy = HeroAndMonsters.infantry_of_Troy
-cavalry_of_Troy = HeroAndMonsters.cavalry_of_Troy
-enemy_hero = HeroAndMonsters.enemy_hero
-
-
 def level_up(character):
     add_str = 0
     add_hp = 0
@@ -26,9 +16,10 @@ def level_up(character):
     character["health"] += add_hp
 
 
-def deal_damage(attacker, defender):
-    damage = attacker["damage"]
-    defender["health"] = defender["health"] - damage
+def deal_damage(attacker, defender, player):
+    print(attacker["damage"])
+    print(defender["health"])
+    defender["health"] = defender["health"] - attacker["damage"]
     if defender["health"] <= 0:
         print("{} has been slain".format(defender["name"]))
         attacker["xp"] += defender["reward"]
@@ -37,28 +28,27 @@ def deal_damage(attacker, defender):
         else:
             print("Level of {}: {}".format(attacker["name"], attacker["level"]))
         input("Press any key to leave the battle! ")
-        exit(0)
+        return False
     else:
-        print("{} has taken {} damage and has {} hp left".format(defender["name"], damage, defender["health"]))
-
+        print("{} has taken {} damage and has {} hp left".format(defender["name"], attacker["damage"], defender["health"]))
+        return True
 
 def combat(your_champ, foe):
     print("You have approached {}, if you try to leave now he will stab you in the back to death!".format(foe["name"]))
-    while True:
+    is_combat = True
+    while is_combat:
         
         print("------------------------------------------------------------------------")
         decision = input("Do you want to attack or pass your turn? Y = Attack! N = Pass! ").lower()
         if "y" in decision:
             print("------------------------------------------------------------------------")
-            deal_damage(your_champ, foe)
+            is_combat = deal_damage(your_champ, foe, your_champ)
             print("-----------------------------------------------------")
-            deal_damage(foe, your_champ)
+            is_combat = deal_damage(foe, your_champ, your_champ)
             
         elif "n" in decision:
             print("{} attacks! ".format(foe["name"]))
             print("------------------------------------------------------------------------")
-            deal_damage(foe, your_champ)
+            is_combat = deal_damage(foe, your_champ, your_champ)
         else:
             pass
-
-combat(player, mercenary)

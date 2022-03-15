@@ -28,7 +28,7 @@ def create_player():
         "strength": 10,
         "health": 1000,
         "armor": 50,
-        "damage": [25, 55],
+        "damage": 30,
         "reward": 0,
         "pos_x": PLAYER_START_X,
         "pos_y": PLAYER_START_Y,
@@ -51,7 +51,7 @@ def main():
     #SYLWEK# input()
 
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
-    # board[5][5] = "M"
+    board[5][5] = "M"
     # board[7][7] = "I"
     # board[10][10] = "#"
     util.clear_screen()

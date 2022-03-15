@@ -1,4 +1,10 @@
 import random
+import battlePhase
+import HeroAndMonsters
+mercenary = HeroAndMonsters.mercenary
+infantry_of_Troy = HeroAndMonsters.infantry_of_Troy
+cavalry_of_Troy = HeroAndMonsters.cavalry_of_Troy
+enemy_hero = HeroAndMonsters.enemy_hero
 
 GATE_SYMBOLS = {
     "up": "\u25B2",
@@ -140,8 +146,9 @@ def show_inventory(player, items):
 
 def event_handler(player: dict, board: list):
     if board[player["pos_x"]][player["pos_y"]] == "M":
-        #battle.combat(player)
+        battlePhase.combat(player, mercenary)
+        board[player["pos_x"]][player["pos_y"]] = "."
         #pass
-        print("Wbiles na M")
+        #print("Wbiles na M")
     if board[player["pos_x"]][player["pos_y"]] == "I":
         print("Wbiles na I")
