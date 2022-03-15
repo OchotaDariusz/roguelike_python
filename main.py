@@ -24,9 +24,14 @@ def create_player():
     '''
     player = {
         "name": "Player",
+        "level": 1,
+        "xp": 0,
+        "next_level": 25,
+        "strength": 10,
         "health": 1000,
         "armor": 50,
-        "damage": 10,
+        "damage": [25, 55],
+        "reward": 0,
         "pos_x": PLAYER_START_X,
         "pos_y": PLAYER_START_Y,
         "icon": PLAYER_ICON,
