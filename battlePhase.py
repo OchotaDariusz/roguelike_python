@@ -40,12 +40,17 @@ def combat(your_champ, foe):
         if "y" in decision:
             print("------------------------------------------------------------------------")
             is_combat = deal_damage(your_champ, foe)
+            if not is_combat:
+                break
             print("-----------------------------------------------------")
             is_combat = deal_damage(foe, your_champ)
-            
+            if not is_combat:
+                break
         elif "n" in decision:
             print("{} attacks! ".format(foe["name"]))
             print("------------------------------------------------------------------------")
             is_combat = deal_damage(foe, your_champ)
+            if not is_combat:
+                break
         else:
             pass
