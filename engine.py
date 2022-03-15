@@ -136,3 +136,12 @@ def show_inventory(player, items):
         for i in range(len(items[0])):
             #if item_name == 
             pass
+
+
+def event_handler(player: dict, board: list):
+    if board[player["pos_x"]][player["pos_y"]] == "M":
+        #battle.combat(player)
+        #pass
+        print("Wbiles na M")
+    if board[player["pos_x"]][player["pos_y"]] == "I":
+        print("Wbiles na I")
