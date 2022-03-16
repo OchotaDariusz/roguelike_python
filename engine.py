@@ -111,15 +111,6 @@ def change_item(player, item, items):
     if decide == "Y":
         remove_old_item_statistics(player, item, items)
         add_item(player, item)
-    elif decide == "N":
-        pass
-
-
-def activate_cheat(player):
-    player["health"] += 2000
-    player["strength"] += 2000
-    player["armor"] += 2000
-    player["damage"] += 2000
 
 
 def add_item(player, item):
@@ -155,10 +146,13 @@ def compare_items(player, item, items):
 def show_inventory(player, items):
     details_label = ["name:", "type:", "damage:", "defense:", "health:"]
     player_items_name_list = list(player["inventory"].values())
+    print("Your inventory:\n")
     for item_name in player_items_name_list:
         for i in range(len(items[0])):
-            #if item_name == 
-            pass
+            if item_name == items[i][ITEM_NAME]:
+                for j in range(len(items[i])):
+                    print(details_label[j], items[i][j])
+                print()
 
 
 def event_handler(player: dict, board: list):

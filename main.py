@@ -1,3 +1,4 @@
+
 import util
 import engine
 import ui
@@ -85,18 +86,39 @@ def create_player(race: str):
     return player
 
 
+player = {
+    "name": "Player",
+    "health": 1000,
+    "armor": 50,
+    "damage": 10,
+    "pos_x": PLAYER_START_X,
+    "pos_y": PLAYER_START_Y,
+    "icon": PLAYER_ICON,
+    "inventory": {}
+}
+
+
 def main():
     race = input("Choose your race(Human, Elf, Dwarf): ")
     player = create_player(race)
-    #SYLWEK# items = engine.read_file("items.txt")
-    #SYLWEK# print(player)
-    #SYLWEK# engine.add_item_to_player(player,items[2],items)
-    #SYLWEK# engine.add_item_to_player(player,items[3],items)
-    #SYLWEK# print(player)
-    #SYLWEK# engine.add_item_to_player(player,items[7],items)
-    #SYLWEK# print(player)
-    #SYLWEK# print(engine.show_inventory(player))
-    #SYLWEK# input()
+    # SYLWEK# items = engine.read_file("items.txt")
+    # SYLWEK# print(player)
+    # SYLWEK# engine.add_item_to_player(player,items[2],items)
+    # SYLWEK# engine.add_item_to_player(player,items[3],items)
+    # SYLWEK# print(player)
+    # SYLWEK# engine.add_item_to_player(player,items[7],items)
+    # SYLWEK# print(player)
+    # SYLWEK# print(engine.show_inventory(player))
+    # SYLWEK# input()
+    items = engine.read_file("items.txt")
+    # print(player)
+    # engine.add_item_to_player(player,items[1],items)
+    # engine.add_item_to_player(player,items[2],items)
+    # engine.add_item_to_player(player,items[3],items)
+    # engine.add_item_to_player(player,items[4],items)
+    # print(player)
+    # engine.show_inventory(player,items)
+    # input()
 
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     board[7][7] = "I"
@@ -113,7 +135,6 @@ def main():
     board[9][11] = "#"
     board[9][14] = "#"
     board[9][15] = "#"
-    
 
     util.clear_screen()
     is_running = True
@@ -126,12 +147,15 @@ def main():
 
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
-        
+
         key = util.key_pressed()
         if key == 'q':
             is_running = False
         elif key == 'x':
             engine.activate_cheat(player)
+        elif key == 'i':
+            engine.show_inventory(player, items)
+            input()
         else:
             player_movement.step_direction(player, key, board)
             if enemy_hero["is_alive"]:
@@ -147,6 +171,7 @@ def main():
         if player["lives"] <= 0:
             input("Game Over!")
             sys.exit()
+
 
 if __name__ == '__main__':
     main()
