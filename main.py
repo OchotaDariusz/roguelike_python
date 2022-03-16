@@ -2,6 +2,7 @@ import util
 import engine
 import ui
 import player_movement
+import sys
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
@@ -24,7 +25,8 @@ def create_player():
         "level": 1,
         "xp": 0,
         "next_level": 25,
-        "strength": 10,
+        "lives": 3,
+        "strength": 100,
         "health": 200,
         "maxHP": 200,
         "armor": 60,
@@ -72,7 +74,9 @@ def main():
         board[backup_pos_x][backup_pos_y] = '.'
         util.clear_screen()
         engine.event_handler(player, board)
-
+        if player["lives"] <= 0:
+            input("Game Over!")
+            sys.exit()
 
 if __name__ == '__main__':
     main()

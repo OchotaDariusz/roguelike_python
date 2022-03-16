@@ -2,6 +2,8 @@ import random
 import battlePhase
 import HeroAndMonsters
 import winsound
+import util
+
 mercenary = HeroAndMonsters.mercenary
 infantry_of_Troy = HeroAndMonsters.infantry_of_Troy
 cavalry_of_Troy = HeroAndMonsters.cavalry_of_Troy
@@ -147,12 +149,19 @@ def show_inventory(player, items):
 
 def event_handler(player: dict, board: list):
     if board[player["pos_x"]][player["pos_y"]] == "M":
-        battlePhase.combat(player, mercenary)
-        winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
-        board[player["pos_x"]][player["pos_y"]] = "."
-        items = read_file("items.txt")
-        random_item = random.randint(0, 9)
-        add_item_to_player(player, items[random_item], items)
+        has_won = battlePhase.combat(player, mercenary)
+        util.clear_screen()
+        # winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
+        if has_won:
+            board[player["pos_x"]][player["pos_y"]] = "."
+            items = read_file("items.txt")
+            random_item = random.randint(0, 9)
+            print(items[random_item])
+            add_item_to_player(player, items[random_item], items)
+        else:
+            player["pos_y"] = player["pos_y"] - 1
+            player["health"] = int(player["maxHP"] / 2)
+            player["lives"] -= 1
     if board[player["pos_x"]][player["pos_y"]] == "I":
         print("Wbiles na I")
         items = read_file("items.txt")

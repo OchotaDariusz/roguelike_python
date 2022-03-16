@@ -22,8 +22,8 @@ def level_up(character):
 
 def deal_damage(attacker, defender):
 
-    multiplier = random.randint(60, 101) /100
-    dealdamage = int((attacker["damage"] - defender["armor"]) * multiplier)
+    multiplier = random.randint(60, 100) / 100
+    dealdamage = int(((attacker["damage"] + int((attacker["strength"] * 0.2))) - defender["armor"]) * multiplier)
     if dealdamage <= 0:
         dealdamage = 0
     print("multiplier", multiplier)
@@ -35,9 +35,11 @@ def deal_damage(attacker, defender):
         level_up(attacker)
         print(asciiArt.winner)
         input("Press any key to leave the battle! ")
+        if defender["name"] == "Player":
+            return None
         return False
     else:
-        print("{} has taken {} damage and has {} hp left".format(defender["name"], attacker["damage"], defender["health"]))
+        print("{} has taken {} damage and has {} hp left".format(defender["name"], dealdamage, defender["health"]))
         return True
 
 
@@ -70,23 +72,31 @@ def combat(your_champ, foe):
             print("------------------------------------------------------------------------")
             is_combat = deal_damage(your_champ, foe)
             if not is_combat:
-                break
+                return True
+            if is_combat is None:
+                return None
             print("-----------------------------------------------------")
             is_combat = deal_damage(foe, your_champ)
             if not is_combat:
-                break
+                return True
+            if is_combat is None:
+                return None
         elif "n" in decision:
             print("{} attacks! ".format(foe["name"]))
             print("------------------------------------------------------------------------")
             is_combat = deal_damage(foe, your_champ)
-            if not is_combat:
-                break
+            if is_combat == False:
+                return True
+            if is_combat is None:
+                return None
         elif "h" in decision:
             use_potions(your_champ)
             print("You have restored 150 hp but you have been hit while drinking potion ")
             print("Hp of {} = {}".format(your_champ["name"], your_champ["health"]))
             is_combat = deal_damage(foe, your_champ)
             if not is_combat:
-                break
+                return True
+            if is_combat is None:
+                return None
         else:
             pass
