@@ -2,10 +2,9 @@ from engine import GATE_SYMBOLS
 
 COLORS = {
     "border": (200, 100, 10), 
-    "delimiter": (100, 150, 150), 
-    "player": (100, 255, 150),
+    "player": (255, 255, 255),
     "item": (200, 200, 100),
-    "empty space": (150, 150, 150),
+    "empty space": (102, 255, 102),
     "gate": (255, 255, 100),
     "M": (255, 255, 100),
     "I": (255, 155, 100)
@@ -20,9 +19,6 @@ SYMBOLS_DICTIONARY = {
     GATE_SYMBOLS["left"]: "gate",
     GATE_SYMBOLS["right"]: "gate",
     "@": "player",
-    " | ": "delimiter",
-    " + ": "delimiter",
-    "_": "delimiter",
     ".": "empty space"
     }
 
@@ -49,15 +45,7 @@ def display_board(board:list):
         row = ""
         for j in range(len(board[i])):
             if j != len(board[i]) - 1:
-                row += get_colored(board[i][j]) + get_colored(" | ")
+                row += get_colored(board[i][j])
             else:
                 row += get_colored(board[i][j])
         print(row)
-        dilimeter_row = ""
-        for j in range(len(board[i])):
-            if j != len(board[i]) - 1:
-                dilimeter_row += get_colored("_") + get_colored(" + ")
-            else:
-                dilimeter_row += get_colored("_")
-        if i != len(board) - 1:
-            print(dilimeter_row)
