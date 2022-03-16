@@ -101,14 +101,20 @@ def main():
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     board[7][7] = "I"
 
-    #board[9][9] = "#"
-    #board[10][9] = "#"
-    #board[11][9] = "#"
-    #board[12][9] = "#"
-    #board[13][19] = "#"
-    #board[14][9] = "#"
-    #board[9][13] = "#"
-    #board[9][12] = "#"
+    board[9][9] = "#"
+    board[10][9] = "#"
+    board[11][9] = "#"
+    board[12][9] = "#"
+    board[13][19] = "#"
+    board[14][9] = "#"
+    board[9][13] = "#"
+    board[9][12] = "#"
+    board[9][10] = "#"
+    board[9][11] = "#"
+    board[9][14] = "#"
+    board[9][15] = "#"
+    
+
     util.clear_screen()
     is_running = True
     while is_running:
@@ -127,7 +133,7 @@ def main():
             engine.activate_cheat(player)
         else:
             player_movement.step_direction(player, key, board)
-            rand_key = random.choice(["W", "A", "S", "D"])
+            rand_key = random.choice(["W", "S", "D", "A"])
             player_movement.step_direction(enemy_hero, rand_key, board)
         board[backup_pos_x][backup_pos_y] = '.'
         util.clear_screen()

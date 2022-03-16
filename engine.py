@@ -1,4 +1,5 @@
 import random
+import winsound
 import battlePhase
 import HeroAndMonsters
 import winsound
