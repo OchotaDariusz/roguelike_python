@@ -3,6 +3,8 @@ import engine
 import ui
 import player_movement
 import sys
+from HeroAndMonsters import enemy_hero
+import random
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
@@ -22,6 +24,7 @@ def create_player():
     '''
     player = {
         "name": "Player",
+        "type": "player",
         "level": 1,
         "xp": 0,
         "next_level": 25,
@@ -53,27 +56,41 @@ def main():
     #SYLWEK# input()
 
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
-    board[5][5] = "M"
     board[7][7] = "I"
-    # board[10][10] = "#"
+
+    board[9][9] = "#"
+    board[10][9] = "#"
+    board[11][9] = "#"
+    board[12][9] = "#"
+    board[13][19] = "#"
+    board[14][9] = "#"
+    board[9][13] = "#"
+    board[9][12] = "#"
     util.clear_screen()
     is_running = True
     while is_running:
         engine.put_player_on_board(board, player)
+        engine.put_player_on_board(board, enemy_hero)
         ui.display_board(board)
         print(player)
 
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
-
+        
         key = util.key_pressed()
         if key == 'q':
             is_running = False
         else:
             player_movement.step_direction(player, key, board)
+            rand_key = random.choice(["W"])
+            player_movement.step_direction(enemy_hero, rand_key, board)
         board[backup_pos_x][backup_pos_y] = '.'
         util.clear_screen()
         engine.event_handler(player, board)
+        for row in range(len(board)):
+            for column in range(len(board[row])):
+                if board[row][column] == 'B':
+                    board[row][column] = '.'
         if player["lives"] <= 0:
             input("Game Over!")
             sys.exit()

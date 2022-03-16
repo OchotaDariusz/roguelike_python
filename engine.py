@@ -72,7 +72,13 @@ def put_player_on_board(board, player):
     Returns:
     Nothing
     '''
-    board[player["pos_x"]][player["pos_y"]] = player["icon"]
+    if player["type"] == 'boss':
+        for i in range(5):
+            board[player["pos_x"] + i][player["pos_y"]] = player["icon"]
+            for j in range(5):
+                board[player["pos_x"] + i][player["pos_y"] + j] = player["icon"]
+    else:
+        board[player["pos_x"]][player["pos_y"]] = player["icon"]
 
 
 def read_file(file_name):
@@ -148,6 +154,20 @@ def show_inventory(player, items):
 
 
 def event_handler(player: dict, board: list):
+    if board[player["pos_x"]][player["pos_y"]] == "B":
+        has_won = battlePhase.combat(player, enemy_hero)
+        util.clear_screen()
+        # winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
+        if has_won:
+            board[player["pos_x"]][player["pos_y"]] = "."
+            items = read_file("items.txt")
+            random_item = random.randint(0, 9)
+            print(items[random_item])
+            add_item_to_player(player, items[random_item], items)
+        else:
+            player["pos_y"] = player["pos_y"] - 5
+            player["health"] = int(player["maxHP"] / 2)
+            player["lives"] -= 1
     if board[player["pos_x"]][player["pos_y"]] == "M":
         has_won = battlePhase.combat(player, mercenary)
         util.clear_screen()
