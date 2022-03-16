@@ -66,6 +66,12 @@ def main():
     board[14][9] = "#"
     board[9][13] = "#"
     board[9][12] = "#"
+    board[9][10] = "#"
+    board[9][11] = "#"
+    board[9][14] = "#"
+    board[9][15] = "#"
+    
+
     util.clear_screen()
     is_running = True
     while is_running:
@@ -82,7 +88,7 @@ def main():
             is_running = False
         else:
             player_movement.step_direction(player, key, board)
-            rand_key = random.choice(["W"])
+            rand_key = random.choice(["W", "S", "D", "A"])
             player_movement.step_direction(enemy_hero, rand_key, board)
         board[backup_pos_x][backup_pos_y] = '.'
         util.clear_screen()
