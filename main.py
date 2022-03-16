@@ -1,4 +1,3 @@
-
 import util
 import engine
 import ui
@@ -26,14 +25,15 @@ def create_player():
         "xp": 0,
         "next_level": 25,
         "strength": 10,
-        "health": 1000,
-        "armor": 50,
-        "damage": 30,
+        "health": 200,
+        "maxHP": 200,
+        "armor": 60,
+        "damage": 50,
         "reward": 0,
         "pos_x": PLAYER_START_X,
         "pos_y": PLAYER_START_Y,
         "icon": PLAYER_ICON,
-        "inventory": {}
+        "inventory": {"potion": 5}
     }
     return player
 
