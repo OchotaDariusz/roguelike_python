@@ -41,10 +41,9 @@ def main():
     engine.add_item_to_player(player,items[1],items)
     engine.add_item_to_player(player,items[2],items)
     engine.add_item_to_player(player,items[3],items)
-    #print(player)
     engine.add_item_to_player(player,items[4],items)
     print(player)
-    print(engine.show_inventory(player,items))
+    engine.show_inventory(player,items)
     input()
     
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
