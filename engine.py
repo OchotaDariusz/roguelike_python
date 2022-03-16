@@ -11,10 +11,10 @@ cavalry_of_Troy = HeroAndMonsters.cavalry_of_Troy
 enemy_hero = HeroAndMonsters.enemy_hero
 
 GATE_SYMBOLS = {
-    "up": "\u25B2",
-    "down": "\u25BC",
-    "left": "\u25C4",
-    "right": "\u25BA"
+    "up": "^",
+    "down": "V",
+    "left": "<",
+    "right": ">"
 }
 
 ITEM_NAME = 0
@@ -22,7 +22,6 @@ ITEM_TYPE = 1
 ITEM_DAMAGE = 2
 ITEM_DEFENSIVE = 3
 ITEM_HEALTH = 4
-
 
 def create_board(width, height):
     board = []
@@ -60,6 +59,24 @@ def get_gates_coordinates(col_number, row_number):
         gates_y = random.choice([0, col_number - 1])
 
     return (gates_x, gates_y)
+
+def export_board(board, filename = "level_1.txt"):
+    with open(filename,"w") as f:
+        for row in board:
+            f.write("\t".join(row))
+            f.write("\n")
+
+
+def import_bord(filename = "level_1.txt"):
+    board = []
+
+    with open(filename,"r") as f:
+        lines = f.readlines()
+    for line in lines:
+        row = line.strip("\n").split("\t")
+        board.append(row)
+
+    return board
 
 
 def put_player_on_board(board, player):
@@ -162,7 +179,7 @@ def show_inventory(player, items):
                 print()
 
 
-def event_handler(player: dict, board: list):
+def event_handler(player: dict, board: list, level_number: list):
     if board[player["pos_x"]][player["pos_y"]] == "B":
         has_won = battlePhase.combat(player, enemy_hero)
         util.clear_screen()
@@ -197,3 +214,7 @@ def event_handler(player: dict, board: list):
         items = read_file("items.txt")
         random_item = random.randint(0, 9)
         add_item_to_player(player, items[random_item], items)
+    if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS.values():
+        level_number[0] += 1
+        player["pos_x"]=3
+        player["pos_y"]=3
