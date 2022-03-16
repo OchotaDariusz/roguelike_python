@@ -99,6 +99,7 @@ player = {
 
 
 def main():
+    cheats_active = 0
     race = input("Choose your race(Human, Elf, Dwarf): ")
     player = create_player(race)
     # SYLWEK# items = engine.read_file("items.txt")
@@ -138,34 +139,40 @@ def main():
     level_number = [1]
 
     #board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
-    board[5][5] = "M"
-    board[7][7] = "I"
+    board[5][5] = "M"  # to delete
+    board[7][7] = "I"  # to delete
 
-    board[9][9] = "#"
-    board[10][9] = "#"
-    board[11][9] = "#"
-    board[12][9] = "#"
-    board[13][19] = "#"
-    board[14][9] = "#"
-    board[9][13] = "#"
-    board[9][12] = "#"
-    board[9][10] = "#"
-    board[9][11] = "#"
-    board[9][14] = "#"
-    board[9][15] = "#"
+    board[9][9] = "#"  # to delete
+    board[10][9] = "#"  # to delete
+    board[11][9] = "#"  # to delete
+    board[12][9] = "#"  # to delete
+    board[13][19] = "#"  # to delete
+    board[14][9] = "#"  # to delete
+    board[9][13] = "#"  # to delete
+    board[9][12] = "#"  # to delete
+    board[9][10] = "#"  # to delete
+    board[9][11] = "#"  # to delete
+    board[9][14] = "#"  # to delete
+    board[9][15] = "#"  # to delete
 
     util.clear_screen()
+
     is_running = True
     while is_running:
         level_file = "level_"+str(level_number[0])+".txt"
         board = engine.import_bord(level_file)
+
         engine.put_player_on_board(board, player)
+
         if enemy_hero["is_alive"]:
             engine.put_player_on_board(board, enemy_hero)
+
         if mercenary["is_alive"]:
             engine.put_player_on_board(board, mercenary)
+
         if infantry_of_Troy["is_alive"]:
             engine.put_player_on_board(board, infantry_of_Troy)
+
         if cavalry_of_Troy["is_alive"]:
             engine.put_player_on_board(board, cavalry_of_Troy)
         ui.display_board(board)
@@ -177,32 +184,45 @@ def main():
         key = util.key_pressed()
         if key == 'q':
             is_running = False
+
         elif key == 'x':
-            engine.activate_cheat(player)
+            cheats_active = engine.activate_cheat(player, cheats_active)
+
         elif key == 'i':
             engine.show_inventory(player, items)
             input()
+
         else:
             player_movement.step_direction(player, key, board)
+
             if enemy_hero["is_alive"]:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(enemy_hero, rand_key, board)
+
             if mercenary["is_alive"]:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(mercenary, rand_key, board)
+
             if infantry_of_Troy["is_alive"]:
                 rand_key = random.choice(["W", "S", "D", "A"])
-                player_movement.step_direction(infantry_of_Troy, rand_key, board)
+                player_movement.step_direction(
+                    infantry_of_Troy, rand_key, board)
+
             if cavalry_of_Troy["is_alive"]:
                 rand_key = random.choice(["W", "S", "D", "A"])
-                player_movement.step_direction(cavalry_of_Troy, rand_key, board)
-        board[backup_pos_x][backup_pos_y] = '.'
+                player_movement.step_direction(
+                    cavalry_of_Troy, rand_key, board)
+
         util.clear_screen()
+
         engine.event_handler(player, board, level_number)
+
+        board[backup_pos_x][backup_pos_y] = '.'
         for row in range(len(board)):
             for column in range(len(board[row])):
                 if board[row][column] == 'B':
                     board[row][column] = '.'
+
         if player["lives"] <= 0:
             input("Game Over!")
             sys.exit()

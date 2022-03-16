@@ -2,6 +2,7 @@ import util
 import asciiArt
 import random
 
+
 def level_up(character):
     add_str = 0
     add_hp = 0
@@ -23,7 +24,8 @@ def level_up(character):
 def deal_damage(attacker, defender):
 
     multiplier = random.randint(60, 100) / 100
-    dealdamage = int(((attacker["damage"] + int((attacker["strength"] * 0.2))) - defender["armor"]) * multiplier)
+    dealdamage = int(
+        ((attacker["damage"] + int((attacker["strength"] * 0.2))) - defender["armor"]) * multiplier)
     if dealdamage <= 0:
         dealdamage = 0
     print("multiplier", multiplier)
@@ -39,12 +41,13 @@ def deal_damage(attacker, defender):
             return None
         return False
     else:
-        print("{} has taken {} damage and has {} hp left".format(defender["name"], dealdamage, defender["health"]))
+        print("{} has taken {} damage and has {} hp left".format(
+            defender["name"], dealdamage, defender["health"]))
         return True
 
 
 def max_health(your_champ):
-    if your_champ["health"] >=  your_champ["maxHP"]:
+    if your_champ["health"] >= your_champ["maxHP"]:
         your_champ["health"] = your_champ["maxHP"]
 
 
@@ -59,17 +62,20 @@ def use_potions(your_champ):
 
 def combat(your_champ, foe):
 
-    print("You have approached {}, if you try to leave now he will stab you in the back to death!".format(foe["name"]))
+    print("You have approached {}, if you try to leave now he will stab you in the back to death!".format(
+        foe["name"]))
     print(asciiArt.duel)
 
     is_combat = True
     while is_combat:
 
         print("------------------------------------------------------------------------")
-        decision = input("Do you want to attack or pass your turn? Y = Attack! N = Pass! H = Heal ").lower()
+        decision = input(
+            "Do you want to attack or pass your turn? Y = Attack! N = Pass! H = Heal ").lower()
         util.clear_screen()
         if "y" in decision:
-            print("------------------------------------------------------------------------")
+            print(
+                "------------------------------------------------------------------------")
             is_combat = deal_damage(your_champ, foe)
             if not is_combat:
                 return True
@@ -83,7 +89,8 @@ def combat(your_champ, foe):
                 return None
         elif "n" in decision:
             print("{} attacks! ".format(foe["name"]))
-            print("------------------------------------------------------------------------")
+            print(
+                "------------------------------------------------------------------------")
             is_combat = deal_damage(foe, your_champ)
             if is_combat == False:
                 return True
@@ -92,7 +99,8 @@ def combat(your_champ, foe):
         elif "h" in decision:
             use_potions(your_champ)
             print("You have restored 150 hp but you have been hit while drinking potion ")
-            print("Hp of {} = {}".format(your_champ["name"], your_champ["health"]))
+            print("Hp of {} = {}".format(
+                your_champ["name"], your_champ["health"]))
             is_combat = deal_damage(foe, your_champ)
             if not is_combat:
                 return True
