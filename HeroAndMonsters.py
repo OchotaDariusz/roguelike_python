@@ -57,4 +57,5 @@ enemy_hero = {  "name": "Hector",
                 "pos_x": 10,
                 "pos_y": 10,
                 "icon": 'B',
+                "is_alive": True,
                 "inventory": {}}

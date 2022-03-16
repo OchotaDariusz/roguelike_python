@@ -119,7 +119,8 @@ def main():
     is_running = True
     while is_running:
         engine.put_player_on_board(board, player)
-        engine.put_player_on_board(board, enemy_hero)
+        if enemy_hero["is_alive"]:
+            engine.put_player_on_board(board, enemy_hero)
         ui.display_board(board)
         print(player)
 
@@ -133,8 +134,9 @@ def main():
             engine.activate_cheat(player)
         else:
             player_movement.step_direction(player, key, board)
-            rand_key = random.choice(["W", "S", "D", "A"])
-            player_movement.step_direction(enemy_hero, rand_key, board)
+            if enemy_hero["is_alive"]:
+                rand_key = random.choice(["W", "S", "D", "A"])
+                player_movement.step_direction(enemy_hero, rand_key, board)
         board[backup_pos_x][backup_pos_y] = '.'
         util.clear_screen()
         engine.event_handler(player, board)

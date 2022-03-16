@@ -172,6 +172,7 @@ def event_handler(player: dict, board: list):
             random_item = random.randint(0, 9)
             print(items[random_item])
             add_item_to_player(player, items[random_item], items)
+            enemy_hero["is_alive"] = False
         else:
             player["pos_y"] = player["pos_y"] - 5
             player["health"] = int(player["maxHP"] / 2)
