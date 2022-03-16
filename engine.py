@@ -93,7 +93,11 @@ def compare_items(player,item,items):
 def show_inventory(player,items):
     details_label = ["name:","type:","damage:","defense:","health:"]
     player_items_name_list = list(player["inventory"].values())
-    for item_name in player_items_name_list :    
+    print("Your inventory\n")
+    for item_name in player_items_name_list :  
+          
         for i in range(len(items[0])) :
-            #if item_name == 
-            pass
+            if item_name == items[i][ITEM_NAME] :
+                for j in range(len(items[i])):
+                    print(details_label[j],items[i][j])
+                print("\n")    
