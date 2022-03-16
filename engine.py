@@ -23,6 +23,7 @@ ITEM_DAMAGE = 2
 ITEM_DEFENSIVE = 3
 ITEM_HEALTH = 4
 
+
 def create_board(width, height):
     board = []
     gates_coordinates_x, gates_coordinates_y = get_gates_coordinates(
@@ -60,17 +61,18 @@ def get_gates_coordinates(col_number, row_number):
 
     return (gates_x, gates_y)
 
-def export_board(board, filename = "level_1.txt"):
-    with open(filename,"w") as f:
+
+def export_board(board, filename="level_1.txt"):
+    with open(filename, "w") as f:
         for row in board:
             f.write("\t".join(row))
             f.write("\n")
 
 
-def import_bord(filename = "level_1.txt"):
+def import_bord(filename="level_1.txt"):
     board = []
 
-    with open(filename,"r") as f:
+    with open(filename, "r") as f:
         lines = f.readlines()
     for line in lines:
         row = line.strip("\n").split("\t")
@@ -131,6 +133,7 @@ def change_item(player, item, items):
 
 
 def activate_cheat(player):
+    player["maxHP"] += 2000
     player["health"] += 2000
     player["strength"] += 2000
     player["armor"] += 2000
@@ -195,12 +198,14 @@ def event_handler(player: dict, board: list, level_number: list):
             player["pos_y"] = player["pos_y"] - 5
             player["health"] = int(player["maxHP"] / 2)
             player["lives"] -= 1
+
     if board[player["pos_x"]][player["pos_y"]] == "M":
         has_won = battlePhase.combat(player, mercenary)
         util.clear_screen()
         # winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
         if has_won:
             board[player["pos_x"]][player["pos_y"]] = "."
+            mercenary["is_alive"] = False
             items = read_file("items.txt")
             random_item = random.randint(0, 9)
             print(items[random_item])
@@ -209,12 +214,46 @@ def event_handler(player: dict, board: list, level_number: list):
             player["pos_y"] = player["pos_y"] - 1
             player["health"] = int(player["maxHP"] / 2)
             player["lives"] -= 1
+
+    if board[player["pos_x"]][player["pos_y"]] == "T":
+        has_won = battlePhase.combat(player, infantry_of_Troy)
+        util.clear_screen()
+        # winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
+        if has_won:
+            board[player["pos_x"]][player["pos_y"]] = "."
+            infantry_of_Troy["is_alive"] = False
+            items = read_file("items.txt")
+            random_item = random.randint(0, 9)
+            print(items[random_item])
+            add_item_to_player(player, items[random_item], items)
+        else:
+            player["pos_y"] = player["pos_y"] - 1
+            player["health"] = int(player["maxHP"] / 2)
+            player["lives"] -= 1
+
+    if board[player["pos_x"]][player["pos_y"]] == "C":
+        has_won = battlePhase.combat(player, cavalry_of_Troy)
+        util.clear_screen()
+        # winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
+        if has_won:
+            board[player["pos_x"]][player["pos_y"]] = "."
+            cavalry_of_Troy["is_alive"] = False
+            items = read_file("items.txt")
+            random_item = random.randint(0, 9)
+            print(items[random_item])
+            add_item_to_player(player, items[random_item], items)
+        else:
+            player["pos_y"] = player["pos_y"] - 1
+            player["health"] = int(player["maxHP"] / 2)
+            player["lives"] -= 1
+
     if board[player["pos_x"]][player["pos_y"]] == "I":
         print("Wbiles na I")
         items = read_file("items.txt")
         random_item = random.randint(0, 9)
         add_item_to_player(player, items[random_item], items)
+
     if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS.values():
         level_number[0] += 1
-        player["pos_x"]=3
-        player["pos_y"]=3
+        player["pos_x"] = 3
+        player["pos_y"] = 3

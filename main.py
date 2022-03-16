@@ -4,7 +4,7 @@ import engine
 import ui
 import player_movement
 import sys
-from HeroAndMonsters import enemy_hero
+from HeroAndMonsters import cavalry_of_Troy, enemy_hero, infantry_of_Troy, mercenary
 import random
 
 PLAYER_ICON = '@'
@@ -122,19 +122,19 @@ def main():
 
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     # player = create_player()
-    #SYLWEK# items = engine.read_file("items.txt")
-    #SYLWEK# print(player)
-    #SYLWEK# engine.add_item_to_player(player,items[2],items)
-    #SYLWEK# engine.add_item_to_player(player,items[3],items)
-    #SYLWEK# print(player)
-    #SYLWEK# engine.add_item_to_player(player,items[7],items)
-    #SYLWEK# print(player)
-    #SYLWEK# print(engine.show_inventory(player))
-    #SYLWEK# input()
-    for level_number in range(1,4):
+    # SYLWEK# items = engine.read_file("items.txt")
+    # SYLWEK# print(player)
+    # SYLWEK# engine.add_item_to_player(player,items[2],items)
+    # SYLWEK# engine.add_item_to_player(player,items[3],items)
+    # SYLWEK# print(player)
+    # SYLWEK# engine.add_item_to_player(player,items[7],items)
+    # SYLWEK# print(player)
+    # SYLWEK# print(engine.show_inventory(player))
+    # SYLWEK# input()
+    for level_number in range(1, 4):
         level_file = "level_"+str(level_number)+".txt"
         board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
-        engine.export_board(board,level_file)
+        engine.export_board(board, level_file)
     level_number = [1]
 
     #board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
@@ -162,6 +162,12 @@ def main():
         engine.put_player_on_board(board, player)
         if enemy_hero["is_alive"]:
             engine.put_player_on_board(board, enemy_hero)
+        if mercenary["is_alive"]:
+            engine.put_player_on_board(board, mercenary)
+        if infantry_of_Troy["is_alive"]:
+            engine.put_player_on_board(board, infantry_of_Troy)
+        if cavalry_of_Troy["is_alive"]:
+            engine.put_player_on_board(board, cavalry_of_Troy)
         ui.display_board(board)
         print(player)
 
@@ -181,6 +187,15 @@ def main():
             if enemy_hero["is_alive"]:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(enemy_hero, rand_key, board)
+            if mercenary["is_alive"]:
+                rand_key = random.choice(["W", "S", "D", "A"])
+                player_movement.step_direction(mercenary, rand_key, board)
+            if infantry_of_Troy["is_alive"]:
+                rand_key = random.choice(["W", "S", "D", "A"])
+                player_movement.step_direction(infantry_of_Troy, rand_key, board)
+            if cavalry_of_Troy["is_alive"]:
+                rand_key = random.choice(["W", "S", "D", "A"])
+                player_movement.step_direction(cavalry_of_Troy, rand_key, board)
         board[backup_pos_x][backup_pos_y] = '.'
         util.clear_screen()
         engine.event_handler(player, board, level_number)
