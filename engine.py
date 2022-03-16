@@ -114,6 +114,13 @@ def change_item(player, item, items):
         pass
 
 
+def activate_cheat(player):
+    player["health"] += 2000
+    player["strength"] += 2000
+    player["armor"] += 2000
+    player["damage"] += 2000
+
+
 def add_item(player, item):
 
     player["damage"] += int(item[ITEM_DAMAGE])

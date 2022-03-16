@@ -14,7 +14,7 @@ BOARD_WIDTH = 30
 BOARD_HEIGHT = 20
 
 
-def create_player():
+def create_player(race: str):
     '''
     Creates a 'player' dictionary for storing all player related informations - i.e. player icon, player position.
     Fell free to extend this dictionary!
@@ -22,29 +22,72 @@ def create_player():
     Returns:
     dictionary
     '''
-    player = {
-        "name": "Player",
-        "type": "player",
-        "level": 1,
-        "xp": 0,
-        "next_level": 25,
-        "lives": 3,
-        "strength": 100,
-        "health": 200,
-        "maxHP": 200,
-        "armor": 60,
-        "damage": 50,
-        "reward": 0,
-        "pos_x": PLAYER_START_X,
-        "pos_y": PLAYER_START_Y,
-        "icon": PLAYER_ICON,
-        "inventory": {"potion": 5}
-    }
+    if race.startswith("H"):
+        player = {
+            "name": "Player",
+            "type": "player",
+            "race": "human",
+            "level": 1,
+            "xp": 0,
+            "next_level": 25,
+            "lives": 3,
+            "strength": 100,
+            "health": 200,
+            "maxHP": 200,
+            "armor": 60,
+            "damage": 50,
+            "reward": 0,
+            "pos_x": PLAYER_START_X,
+            "pos_y": PLAYER_START_Y,
+            "icon": PLAYER_ICON,
+            "inventory": {"potion": 5}
+        }
+    elif race.startswith("E"):
+        player = {
+            "name": "Player",
+            "type": "player",
+            "race": "elf",
+            "level": 1,
+            "xp": 0,
+            "next_level": 25,
+            "lives": 3,
+            "strength": 100,
+            "health": 160,
+            "maxHP": 160,
+            "armor": 20,
+            "damage": 80,
+            "reward": 0,
+            "pos_x": PLAYER_START_X,
+            "pos_y": PLAYER_START_Y,
+            "icon": PLAYER_ICON,
+            "inventory": {"potion": 5}
+        }
+    elif race.startswith("D"):
+        player = {
+            "name": "Player",
+            "type": "player",
+            "race": "dwarf",
+            "level": 1,
+            "xp": 0,
+            "next_level": 25,
+            "lives": 3,
+            "strength": 100,
+            "health": 250,
+            "maxHP": 250,
+            "armor": 80,
+            "damage": 30,
+            "reward": 0,
+            "pos_x": PLAYER_START_X,
+            "pos_y": PLAYER_START_Y,
+            "icon": PLAYER_ICON,
+            "inventory": {"potion": 5}
+        }
     return player
 
 
 def main():
-    player = create_player()
+    race = input("Choose your race(Human, Elf, Dwarf): ")
+    player = create_player(race)
     #SYLWEK# items = engine.read_file("items.txt")
     #SYLWEK# print(player)
     #SYLWEK# engine.add_item_to_player(player,items[2],items)
@@ -80,6 +123,8 @@ def main():
         key = util.key_pressed()
         if key == 'q':
             is_running = False
+        elif key == 'x':
+            engine.activate_cheat(player)
         else:
             player_movement.step_direction(player, key, board)
             rand_key = random.choice(["W", "A", "S", "D"])
