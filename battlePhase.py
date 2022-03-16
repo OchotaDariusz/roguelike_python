@@ -21,14 +21,14 @@ def level_up(character):
 
 
 def deal_damage(attacker, defender):
-    
+
     multiplier = random.randint(60, 101) /100
     dealdamage = int((attacker["damage"] - defender["armor"]) * multiplier)
     if dealdamage <= 0:
         dealdamage = 0
     print("multiplier", multiplier)
     defender["health"] = defender["health"] - dealdamage
-    
+
     if defender["health"] <= 0:
         print("{} has been slain".format(defender["name"]))
         attacker["xp"] += defender["reward"]

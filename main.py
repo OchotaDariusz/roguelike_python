@@ -52,13 +52,14 @@ def main():
 
     board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     board[5][5] = "M"
-    # board[7][7] = "I"
+    board[7][7] = "I"
     # board[10][10] = "#"
     util.clear_screen()
     is_running = True
     while is_running:
         engine.put_player_on_board(board, player)
         ui.display_board(board)
+        print(player)
 
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
