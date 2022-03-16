@@ -7,10 +7,10 @@ def step_direction(player, input_char, board):
     while True:
         if input_char.upper() == 'W':
             if player["type"] == 'boss':
-                if board[player["pos_x"] - 1][player["pos_y"]] == "#" and \
-                   board[player["pos_x"] - 1][player["pos_y"] + 1] == "#" and \
-                   board[player["pos_x"] - 1][player["pos_y"] + 2] == "#" and \
-                   board[player["pos_x"] - 1][player["pos_y"] + 3] == "#" and \
+                if board[player["pos_x"] - 1][player["pos_y"]] == "#" or \
+                   board[player["pos_x"] - 1][player["pos_y"] + 1] == "#" or \
+                   board[player["pos_x"] - 1][player["pos_y"] + 2] == "#" or \
+                   board[player["pos_x"] - 1][player["pos_y"] + 3] == "#" or \
                    board[player["pos_x"] - 1][player["pos_y"] + 4] == "#":
                     break
             if board[player["pos_x"] - 1][player["pos_y"]] == "#":
@@ -20,10 +20,10 @@ def step_direction(player, input_char, board):
                 break
         elif input_char.upper() == 'S':
             if player["type"] == 'boss':
-                if board[player["pos_x"] + 5][player["pos_y"]] == "#" and \
-                   board[player["pos_x"] + 5][player["pos_y"] + 1] == "#" and \
-                   board[player["pos_x"] + 5][player["pos_y"] + 2] == "#" and \
-                   board[player["pos_x"] + 5][player["pos_y"] + 3] == "#" and \
+                if board[player["pos_x"] + 5][player["pos_y"]] == "#" or \
+                   board[player["pos_x"] + 5][player["pos_y"] + 1] == "#" or \
+                   board[player["pos_x"] + 5][player["pos_y"] + 2] == "#" or \
+                   board[player["pos_x"] + 5][player["pos_y"] + 3] == "#" or \
                    board[player["pos_x"] + 5][player["pos_y"] + 4] == "#":
                     break
             if board[player["pos_x"] + 1][player["pos_y"]] == "#":
@@ -33,10 +33,10 @@ def step_direction(player, input_char, board):
                 break
         elif input_char.upper() == 'A':
             if player["type"] == 'boss':
-                if board[player["pos_x"]][player["pos_y"] - 1] == "#" and \
-                   board[player["pos_x"] + 1][player["pos_y"] - 1] == "#" and \
-                   board[player["pos_x"] + 2][player["pos_y"] - 1] == "#" and \
-                   board[player["pos_x"] + 3][player["pos_y"] - 1] == "#" and \
+                if board[player["pos_x"]][player["pos_y"] - 1] == "#" or \
+                   board[player["pos_x"] + 1][player["pos_y"] - 1] == "#" or \
+                   board[player["pos_x"] + 2][player["pos_y"] - 1] == "#" or \
+                   board[player["pos_x"] + 3][player["pos_y"] - 1] == "#" or \
                    board[player["pos_x"] + 4][player["pos_y"] - 1] == "#":
                     break
             if board[player["pos_x"]][player["pos_y"] - 1] == "#":
@@ -46,10 +46,10 @@ def step_direction(player, input_char, board):
                 break
         elif input_char.upper() == 'D':
             if player["type"] == 'boss':
-                if board[player["pos_x"]][player["pos_y"] + 5] == "#" and \
-                   board[player["pos_x"] + 1][player["pos_y"] + 5] == "#" and \
-                   board[player["pos_x"] + 2][player["pos_y"] + 5] == "#" and \
-                   board[player["pos_x"] + 3][player["pos_y"] + 5] == "#" and \
+                if board[player["pos_x"]][player["pos_y"] + 5] == "#" or \
+                   board[player["pos_x"] + 1][player["pos_y"] + 5] == "#" or \
+                   board[player["pos_x"] + 2][player["pos_y"] + 5] == "#" or \
+                   board[player["pos_x"] + 3][player["pos_y"] + 5] == "#" or \
                    board[player["pos_x"] + 4][player["pos_y"] + 5] == "#":
                     break
             if board[player["pos_x"]][player["pos_y"] + 1] == "#":
