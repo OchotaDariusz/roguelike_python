@@ -2,9 +2,5 @@ __pycache__/
 .idea/
 .vscode/
 *.py[cod]
-level_1.txt
-level_2.txt
-level_3.txt
-level_4.txt
 items_save.txt
 player_save.txt
