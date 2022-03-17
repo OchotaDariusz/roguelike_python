@@ -180,7 +180,7 @@ def main():
         if level_number[0] == 3 and cavalry_of_Troy["is_alive"]:
             engine.put_player_on_board(board, cavalry_of_Troy)
         ui.display_board(board)
-        engine.display_stats(player)
+        ui.display_stats(player)
 
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
@@ -193,6 +193,7 @@ def main():
             cheats_active = engine.activate_cheat(player, cheats_active)
 
         elif key == 'i':
+            util.clear_screen()
             engine.show_inventory(player, items)
             util.key_pressed()
 

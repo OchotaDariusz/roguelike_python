@@ -66,4 +66,3 @@ def display_stats(player):
     print("\n{:<23}Armor: {}".format(" ", player["armor"]))
     print("\n{:<23}HP: {}/{}".format(" ", player["health"], player["maxHP"]))
     print("\n{:<23}HP potions: {}".format(" ", player["inventory"]["potion"]))
-    
