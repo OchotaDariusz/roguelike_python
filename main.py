@@ -133,7 +133,7 @@ def main():
     # SYLWEK# input()
     for level_number in range(1, 5):
         level_file = "level_"+str(level_number)+".txt"
-        board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
+        board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT, level_number)
         engine.export_board(board, level_file)
     level_number = [1]
 
