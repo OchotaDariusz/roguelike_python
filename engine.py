@@ -155,7 +155,7 @@ def show_inventory(player, items):
     player_items_name_list = list(player["inventory"].values())
     print("Your inventory:\n")
     for item_name in player_items_name_list:
-        for i in range(len(items[0])):
+        for i in range(len(items)):
             if item_name == items[i][ITEM_NAME]:
                 for j in range(len(items[i])):
                     print(details_label[j], items[i][j])
