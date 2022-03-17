@@ -3,6 +3,7 @@ import sys
 
 
 def step_direction(player, input_char, board):
+    illegal_objects = ["#", "M", "I", "C", "T", "B", ">", "<"]
     while True:
         can_move = True
 
@@ -10,21 +11,12 @@ def step_direction(player, input_char, board):
 
             if player["type"] == 'boss':
                 for i in range(5):
-                    if board[player["pos_x"] - 1][player["pos_y"] + i] == "#" or \
-                       board[player["pos_x"] - 1][player["pos_y"] + i] == "M" or \
-                       board[player["pos_x"] - 1][player["pos_y"] + i] == "I":
+                    if board[player["pos_x"] - 1][player["pos_y"] + i] in illegal_objects:
                         can_move = False
                         break
 
             if player["type"] == 'monster':
-                if board[player["pos_x"] - 1][player["pos_y"]] == "#" or \
-                   board[player["pos_x"] - 1][player["pos_y"]] == "M" or \
-                   board[player["pos_x"] - 1][player["pos_y"]] == "I" or \
-                   board[player["pos_x"] - 1][player["pos_y"]] == "B" or \
-                   board[player["pos_x"] - 1][player["pos_y"]] == "^" or \
-                   board[player["pos_x"] - 1][player["pos_y"]] == "V" or \
-                   board[player["pos_x"] - 1][player["pos_y"]] == "<" or \
-                   board[player["pos_x"] - 1][player["pos_y"]] == ">":
+                if board[player["pos_x"] - 1][player["pos_y"]] in illegal_objects:
                     can_move = False
 
             elif player["type"] == 'player' and \
@@ -40,21 +32,12 @@ def step_direction(player, input_char, board):
 
             if player["type"] == 'boss':
                 for i in range(5):
-                    if board[player["pos_x"] + 5][player["pos_y"] + i] == "#" or \
-                       board[player["pos_x"] + 5][player["pos_y"] + i] == "M" or \
-                       board[player["pos_x"] + 5][player["pos_y"] + i] == "I":
+                    if board[player["pos_x"] + 5][player["pos_y"] + i] in illegal_objects:
                         can_move = False
                         break
 
             if player["type"] == 'monster':
-                if board[player["pos_x"] + 1][player["pos_y"]] == "#" or \
-                   board[player["pos_x"] + 1][player["pos_y"]] == "M" or \
-                   board[player["pos_x"] + 1][player["pos_y"]] == "I" or \
-                   board[player["pos_x"] + 1][player["pos_y"]] == "B" or \
-                   board[player["pos_x"] + 1][player["pos_y"]] == "^" or \
-                   board[player["pos_x"] + 1][player["pos_y"]] == "V" or \
-                   board[player["pos_x"] + 1][player["pos_y"]] == "<" or \
-                   board[player["pos_x"] + 1][player["pos_y"]] == ">":
+                if board[player["pos_x"] + 1][player["pos_y"]] in illegal_objects:
                     can_move = False
 
             elif player["type"] == 'player' and \
@@ -70,21 +53,12 @@ def step_direction(player, input_char, board):
 
             if player["type"] == 'boss':
                 for i in range(5):
-                    if board[player["pos_x"] + i][player["pos_y"] - 1] == "#" or \
-                       board[player["pos_x"] + i][player["pos_y"] - 1] == "M" or \
-                       board[player["pos_x"] + i][player["pos_y"] - 1] == "I":
+                    if board[player["pos_x"] + i][player["pos_y"] - 1] in illegal_objects:
                         can_move = False
                         break
 
             if player["type"] == 'monster':
-                if board[player["pos_x"]][player["pos_y"] - 1] == "#" or \
-                   board[player["pos_x"]][player["pos_y"] - 1] == "M" or \
-                   board[player["pos_x"]][player["pos_y"] - 1] == "I" or \
-                   board[player["pos_x"]][player["pos_y"] - 1] == "B" or \
-                   board[player["pos_x"]][player["pos_y"] - 1] == "^" or \
-                   board[player["pos_x"]][player["pos_y"] - 1] == "V" or \
-                   board[player["pos_x"]][player["pos_y"] - 1] == "<" or \
-                   board[player["pos_x"]][player["pos_y"] - 1] == ">":
+                if board[player["pos_x"]][player["pos_y"] - 1] in illegal_objects:
                     can_move = False
 
             elif player["type"] == 'player' and \
@@ -100,21 +74,12 @@ def step_direction(player, input_char, board):
 
             if player["type"] == 'boss':
                 for i in range(5):
-                    if board[player["pos_x"] + i][player["pos_y"] + 5] == "#" or \
-                       board[player["pos_x"] + i][player["pos_y"] + 5] == "M" or \
-                       board[player["pos_x"] + i][player["pos_y"] + 5] == "I":
+                    if board[player["pos_x"] + i][player["pos_y"] + 5] in illegal_objects:
                         can_move = False
                         break
 
             if player["type"] == 'monster':
-                if board[player["pos_x"]][player["pos_y"] + 1] == "#" or \
-                   board[player["pos_x"]][player["pos_y"] + 1] == "M" or \
-                   board[player["pos_x"]][player["pos_y"] + 1] == "I" or \
-                   board[player["pos_x"]][player["pos_y"] + 1] == "B" or \
-                   board[player["pos_x"]][player["pos_y"] + 1] == "^" or \
-                   board[player["pos_x"]][player["pos_y"] + 1] == "V" or \
-                   board[player["pos_x"]][player["pos_y"] + 1] == "<" or \
-                   board[player["pos_x"]][player["pos_y"] + 1] == ">":
+                if board[player["pos_x"]][player["pos_y"] + 1] in illegal_objects:
                     can_move = False
 
             elif player["type"] == 'player' and \

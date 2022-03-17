@@ -1,14 +1,14 @@
 import random
-import winsound
 import battlePhase
 import HeroAndMonsters
-import winsound
 import util
 
-mercenary = HeroAndMonsters.mercenary
-infantry_of_Troy = HeroAndMonsters.infantry_of_Troy
-cavalry_of_Troy = HeroAndMonsters.cavalry_of_Troy
-enemy_hero = HeroAndMonsters.enemy_hero
+enemies_symbols = {
+    "mercenary": HeroAndMonsters.mercenary,
+    "infantry_of_Troy": HeroAndMonsters.infantry_of_Troy,
+    "cavalry_of_Troy": HeroAndMonsters.cavalry_of_Troy,
+    "enemy_hero": HeroAndMonsters.enemy_hero
+}
 
 GATE_SYMBOLS = {
     "next": ">",
@@ -191,7 +191,8 @@ def show_inventory(player, items):
                 print()
 
 
-def event_handler_monsters(has_won, player, board, enemy):
+def event_handler_monsters(player, board, enemy):
+    has_won = battlePhase.combat(player, enemy)
     util.clear_screen()
     if has_won:
         board[player["pos_x"]][player["pos_y"]] = "."
@@ -201,37 +202,28 @@ def event_handler_monsters(has_won, player, board, enemy):
         print(items[random_item])
         add_item_to_player(player, items[random_item], items)
     else:
-        player["pos_y"] = player["pos_y"] - 1
+        zmienna = 1 if enemy["type"] == "monster" else 5
+        player["pos_y"] = player["pos_y"] - zmienna
         player["health"] = int(player["maxHP"] / 2)
         player["lives"] -= 1
 
 
 def event_handler(player: dict, board: list, level_number: list):
     if board[player["pos_x"]][player["pos_y"]] == "B":
-        has_won = battlePhase.combat(player, enemy_hero)
-        if has_won:
-            board[player["pos_x"]][player["pos_y"]] = "."
-            items = read_file("items.txt")
-            random_item = random.randint(0, 9)
-            print(items[random_item])
-            add_item_to_player(player, items[random_item], items)
-            enemy_hero["is_alive"] = False
-        else:
-            player["pos_y"] = player["pos_y"] - 5
-            player["health"] = int(player["maxHP"] / 2)
-            player["lives"] -= 1
+        event_handler_monsters(player, board,
+                               enemies_symbols["enemy_hero"])
 
     if board[player["pos_x"]][player["pos_y"]] == "M":
-        has_won = battlePhase.combat(player, mercenary)
-        event_handler_monsters(has_won, player, board, mercenary)
+        event_handler_monsters(player, board,
+                               enemies_symbols["mercenary"])
 
     if board[player["pos_x"]][player["pos_y"]] == "T":
-        has_won = battlePhase.combat(player, infantry_of_Troy)
-        event_handler_monsters(has_won, player, board, infantry_of_Troy)
+        event_handler_monsters(player, board,
+                               enemies_symbols["infantry_of_Troy"])
 
     if board[player["pos_x"]][player["pos_y"]] == "C":
-        has_won = battlePhase.combat(player, cavalry_of_Troy)
-        event_handler_monsters(has_won, player, board, cavalry_of_Troy)
+        event_handler_monsters(player, board,
+                               enemies_symbols["cavalry_of_Troy"])
 
     if board[player["pos_x"]][player["pos_y"]] == "I":
         print("Wbiles na I")

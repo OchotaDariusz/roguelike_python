@@ -28,7 +28,6 @@ def deal_damage(attacker, defender):
         ((attacker["damage"] + int((attacker["strength"] * 0.2))) - defender["armor"]) * multiplier)
     if dealdamage <= 0:
         dealdamage = 0
-    print("multiplier", multiplier)
     defender["health"] = defender["health"] - dealdamage
 
     if defender["health"] <= 0:
@@ -71,7 +70,7 @@ def combat(your_champ, foe):
 
         print("------------------------------------------------------------------------")
         decision = input(
-            "Do you want to attack or pass your turn? Y = Attack! N = Pass! H = Heal ").lower()
+            "Do you want to attack or pass your turn? Y = Attack! N = Pass! H = Heal! ").lower()
         util.clear_screen()
         if "y" in decision:
             print(
