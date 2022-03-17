@@ -194,7 +194,7 @@ def main():
 
         elif key == 'i':
             engine.show_inventory(player, items)
-            input()
+            util.key_pressed()
 
         else:
             player_movement.step_direction(player, key, board)
