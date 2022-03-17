@@ -11,10 +11,10 @@ cavalry_of_Troy = HeroAndMonsters.cavalry_of_Troy
 enemy_hero = HeroAndMonsters.enemy_hero
 
 GATE_SYMBOLS = {
-    "up": "\u25B2",
-    "down": "\u25BC",
-    "left": "\u25C4",
-    "right": "\u25BA"
+    "up": "^",
+    "down": "V",
+    "left": "<",
+    "right": ">"
 }
 
 ITEM_NAME = 0
@@ -60,6 +60,25 @@ def get_gates_coordinates(col_number, row_number):
         gates_y = random.choice([0, col_number - 1])
 
     return (gates_x, gates_y)
+
+
+def export_board(board, filename="level_1.txt"):
+    with open(filename, "w") as f:
+        for row in board:
+            f.write("\t".join(row))
+            f.write("\n")
+
+
+def import_bord(filename="level_1.txt"):
+    board = []
+
+    with open(filename, "r") as f:
+        lines = f.readlines()
+    for line in lines:
+        row = line.strip("\n").split("\t")
+        board.append(row)
+
+    return board
 
 
 def put_player_on_board(board, player):
@@ -113,11 +132,21 @@ def change_item(player, item, items):
         add_item(player, item)
 
 
-def activate_cheat(player):
-    player["health"] += 2000
-    player["strength"] += 2000
-    player["armor"] += 2000
-    player["damage"] += 2000
+def activate_cheat(player, activated):
+    if not activated:
+        player["maxHP"] += 2000
+        player["health"] += 2000
+        player["strength"] += 2000
+        player["armor"] += 2000
+        player["damage"] += 2000
+        return 1
+    else:
+        player["maxHP"] -= 2000
+        player["health"] -= 2000
+        player["strength"] -= 2000
+        player["armor"] -= 2000
+        player["damage"] -= 2000
+        return 0
 
 
 def add_item(player, item):
@@ -162,7 +191,7 @@ def show_inventory(player, items):
                 print()
 
 
-def event_handler(player: dict, board: list):
+def event_handler(player: dict, board: list, level_number: list):
     if board[player["pos_x"]][player["pos_y"]] == "B":
         has_won = battlePhase.combat(player, enemy_hero)
         util.clear_screen()
@@ -178,12 +207,14 @@ def event_handler(player: dict, board: list):
             player["pos_y"] = player["pos_y"] - 5
             player["health"] = int(player["maxHP"] / 2)
             player["lives"] -= 1
+
     if board[player["pos_x"]][player["pos_y"]] == "M":
         has_won = battlePhase.combat(player, mercenary)
         util.clear_screen()
         # winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
         if has_won:
             board[player["pos_x"]][player["pos_y"]] = "."
+            mercenary["is_alive"] = False
             items = read_file("items.txt")
             random_item = random.randint(0, 9)
             print(items[random_item])
@@ -192,8 +223,46 @@ def event_handler(player: dict, board: list):
             player["pos_y"] = player["pos_y"] - 1
             player["health"] = int(player["maxHP"] / 2)
             player["lives"] -= 1
+
+    if board[player["pos_x"]][player["pos_y"]] == "T":
+        has_won = battlePhase.combat(player, infantry_of_Troy)
+        util.clear_screen()
+        # winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
+        if has_won:
+            board[player["pos_x"]][player["pos_y"]] = "."
+            infantry_of_Troy["is_alive"] = False
+            items = read_file("items.txt")
+            random_item = random.randint(0, 9)
+            print(items[random_item])
+            add_item_to_player(player, items[random_item], items)
+        else:
+            player["pos_y"] = player["pos_y"] - 1
+            player["health"] = int(player["maxHP"] / 2)
+            player["lives"] -= 1
+
+    if board[player["pos_x"]][player["pos_y"]] == "C":
+        has_won = battlePhase.combat(player, cavalry_of_Troy)
+        util.clear_screen()
+        # winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
+        if has_won:
+            board[player["pos_x"]][player["pos_y"]] = "."
+            cavalry_of_Troy["is_alive"] = False
+            items = read_file("items.txt")
+            random_item = random.randint(0, 9)
+            print(items[random_item])
+            add_item_to_player(player, items[random_item], items)
+        else:
+            player["pos_y"] = player["pos_y"] - 1
+            player["health"] = int(player["maxHP"] / 2)
+            player["lives"] -= 1
+
     if board[player["pos_x"]][player["pos_y"]] == "I":
         print("Wbiles na I")
         items = read_file("items.txt")
         random_item = random.randint(0, 9)
         add_item_to_player(player, items[random_item], items)
+
+    if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS.values():
+        level_number[0] += 1
+        player["pos_x"] = 3
+        player["pos_y"] = 3
