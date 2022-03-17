@@ -86,22 +86,21 @@ def create_player(race: str):
     return player
 
 
-player = {
-    "name": "Player",
-    "health": 1000,
-    "armor": 50,
-    "damage": 10,
-    "pos_x": PLAYER_START_X,
-    "pos_y": PLAYER_START_Y,
-    "icon": PLAYER_ICON,
-    "inventory": {}
-}
-
-
 def main():
     cheats_active = 0
-    race = input("Choose your race(Human, Elf, Dwarf): ")
-    player = create_player(race)
+
+    start_game = input("1) Start New Game\n2) Load Last Game: ")
+
+    if start_game == '1':
+        race = input("Choose your race(Human, Elf, Dwarf): ")
+        player = create_player(race)
+
+    else:
+        player = util.load_game()
+        player["pos_x"] = PLAYER_START_X
+        player["pos_y"] = PLAYER_START_Y
+        player["icon"] = PLAYER_ICON
+
     # SYLWEK# items = engine.read_file("items.txt")
     # SYLWEK# print(player)
     # SYLWEK# engine.add_item_to_player(player,items[2],items)
@@ -195,6 +194,12 @@ def main():
         elif key == 'i':
             util.clear_screen()
             engine.show_inventory(player, items)
+            util.key_pressed()
+
+        elif key == '\\':
+            util.clear_screen()
+            util.save_game(player)
+            print("Game Saved")
             util.key_pressed()
 
         else:
