@@ -20,10 +20,8 @@ SYMBOLS_DICTIONARY = {
     "T": "T",
     "C": "C",
     "#": "border",
-    GATE_SYMBOLS["down"]: "gate",
-    GATE_SYMBOLS["up"]: "gate",
-    GATE_SYMBOLS["left"]: "gate",
-    GATE_SYMBOLS["right"]: "gate",
+    GATE_SYMBOLS["next"]: "gate",
+    GATE_SYMBOLS["previous"]: "gate",
     "@": "player",
     ".": "empty space"
 }

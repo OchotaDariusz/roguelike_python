@@ -11,10 +11,8 @@ cavalry_of_Troy = HeroAndMonsters.cavalry_of_Troy
 enemy_hero = HeroAndMonsters.enemy_hero
 
 GATE_SYMBOLS = {
-    "up": "^",
-    "down": "V",
-    "left": "<",
-    "right": ">"
+    "next": ">",
+    "previous": "<",
 }
 
 ITEM_NAME = 0
@@ -24,10 +22,8 @@ ITEM_DEFENSIVE = 3
 ITEM_HEALTH = 4
 
 
-def create_board(width, height):
+def create_board(width, height, level_number):
     board = []
-    gates_coordinates_x, gates_coordinates_y = get_gates_coordinates(
-        width, height)
     for row_number in range(height):
         row_line = []
         for col_number in range(width):
@@ -39,18 +35,21 @@ def create_board(width, height):
                 else:
                     row_line.append(".")
         board.append(row_line)
-    if gates_coordinates_x == 0:
-        board[gates_coordinates_x][gates_coordinates_y] = GATE_SYMBOLS["up"]
-    elif gates_coordinates_x == (height - 1):
-        board[gates_coordinates_x][gates_coordinates_y] = GATE_SYMBOLS["down"]
-    elif gates_coordinates_y == 0:
-        board[gates_coordinates_x][gates_coordinates_y] = GATE_SYMBOLS["left"]
+    if level_number == 1:
+        gate_coordinates_x, gate_coordinates_y = int(height/2), width -1
+        board[gate_coordinates_x][gate_coordinates_y] = GATE_SYMBOLS["next"]
+    elif level_number == 4:
+        back_gate_coordinates_x, back_gate_coordinates_y = int(height/2), 0
+        board[back_gate_coordinates_x][back_gate_coordinates_y] = GATE_SYMBOLS["previous"]
     else:
-        board[gates_coordinates_x][gates_coordinates_y] = GATE_SYMBOLS["right"]
+        gate_coordinates_x, gate_coordinates_y = int(height/2), width -1
+        back_gate_coordinates_x, back_gate_coordinates_y = int(height/2), 0
+        board[gate_coordinates_x][gate_coordinates_y] = GATE_SYMBOLS["next"]
+        board[back_gate_coordinates_x][back_gate_coordinates_y] = GATE_SYMBOLS["previous"]
     return board
 
 
-def get_gates_coordinates(col_number, row_number):
+"""def get_gates_coordinates(col_number, row_number):
 
     gates_x = random.randint(0, row_number - 1)
 
@@ -60,7 +59,7 @@ def get_gates_coordinates(col_number, row_number):
         gates_y = random.choice([0, col_number - 1])
 
     return (gates_x, gates_y)
-
+"""
 
 def export_board(board, filename="level_1.txt"):
     with open(filename, "w") as f:
@@ -264,7 +263,11 @@ def event_handler(player: dict, board: list, level_number: list):
         random_item = random.randint(0, 9)
         add_item_to_player(player, items[random_item], items)
 
-    if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS.values():
+    if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["next"]:
         level_number[0] += 1
-        player["pos_x"] = 3
-        player["pos_y"] = 3
+        player["pos_x"] = 10
+        player["pos_y"] = 1
+    elif board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["previous"]:
+        level_number[0] -= 1
+        player["pos_x"] = 10
+        player["pos_y"] = 28
