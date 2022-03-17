@@ -115,8 +115,8 @@ def main():
     # print(player)
     #engine.add_item_to_player(player,items[1],items)
     #engine.add_item_to_player(player,items[2],items)
-    engine.add_item_to_player(player,items[8],items)
-    engine.add_item_to_player(player,items[9],items)
+    #engine.add_item_to_player(player,items[8],items)
+    #engine.add_item_to_player(player,items[9],items)
     # print(player)
     # engine.show_inventory(player,items)
     # input()
@@ -157,11 +157,11 @@ def main():
 
     util.clear_screen()
 
-    loop = 0
+    turn = 0
 
     is_running = True
     while is_running:
-        loop += 1
+        turn += 1
 
         level_file = "level_"+str(level_number[0])+".txt"
         board = engine.import_bord(level_file)
@@ -199,20 +199,20 @@ def main():
         else:
             player_movement.step_direction(player, key, board)
 
-            if enemy_hero["is_alive"] and loop % 2 == 0:
+            if enemy_hero["is_alive"] and turn % 2 == 0:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(enemy_hero, rand_key, board)
 
-            if mercenary["is_alive"] and loop % 2 == 0:
+            if mercenary["is_alive"] and turn % 2 == 0:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(mercenary, rand_key, board)
 
-            if infantry_of_Troy["is_alive"] and loop % 2 == 0:
+            if infantry_of_Troy["is_alive"] and turn % 2 == 0:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(
                     infantry_of_Troy, rand_key, board)
 
-            if cavalry_of_Troy["is_alive"] and loop % 2 == 0:
+            if cavalry_of_Troy["is_alive"] and turn % 2 == 0:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(
                     cavalry_of_Troy, rand_key, board)

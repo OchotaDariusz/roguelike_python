@@ -197,7 +197,7 @@ def event_handler(player: dict, board: list, level_number: list):
     if board[player["pos_x"]][player["pos_y"]] == "B":
         has_won = battlePhase.combat(player, enemy_hero)
         util.clear_screen()
-        winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
+        # winsound.PlaySound('soun2.wav', winsound.SND_ASYNC)
         if has_won:
             board[player["pos_x"]][player["pos_y"]] = "."
             items = read_file("items.txt")
