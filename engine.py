@@ -189,12 +189,13 @@ def show_inventory(player, items):
                 for j in range(len(items[i])):
                     print(details_label[j], items[i][j])
                 print()
+    print("Health Potions:", player["inventory"]["potion"])
 
 
 def event_handler_monsters(player, board, enemy):
     has_won = battlePhase.combat(player, enemy)
     util.clear_screen()
-    if has_won:
+    if has_won is True:
         board[player["pos_x"]][player["pos_y"]] = "."
         enemy["is_alive"] = False
         items = read_file("items.txt")

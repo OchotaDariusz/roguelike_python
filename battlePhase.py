@@ -34,11 +34,14 @@ def deal_damage(attacker, defender):
         print("{} has been slain".format(defender["name"]))
         attacker["xp"] += defender["reward"]
         level_up(attacker)
+        max_health(attacker)
         print(asciiArt.winner)
         input("Press any key to leave the battle! ")
         if defender["name"] == "Player":
             return None
         return False
+    if attacker["health"] <= 0:
+        return None
     else:
         print("{} has taken {} damage and has {} hp left".format(
             defender["name"], dealdamage, defender["health"]))
@@ -52,7 +55,7 @@ def max_health(your_champ):
 
 def use_potions(your_champ):
     if your_champ["inventory"]["potion"] > 0:
-        your_champ["health"] += 150
+        your_champ["health"] += int(your_champ["maxHP"] * 0.3)
         max_health(your_champ)
         your_champ["inventory"]["potion"] -= 1
     else:
@@ -76,13 +79,13 @@ def combat(your_champ, foe):
             print(
                 "------------------------------------------------------------------------")
             is_combat = deal_damage(your_champ, foe)
-            if not is_combat:
+            if is_combat is False:
                 return True
             if is_combat is None:
                 return None
             print("-----------------------------------------------------")
             is_combat = deal_damage(foe, your_champ)
-            if not is_combat:
+            if is_combat is False:
                 return True
             if is_combat is None:
                 return None
@@ -91,17 +94,17 @@ def combat(your_champ, foe):
             print(
                 "------------------------------------------------------------------------")
             is_combat = deal_damage(foe, your_champ)
-            if not is_combat:
+            if is_combat is False:
                 return True
             if is_combat is None:
                 return None
         elif "h" in decision:
             use_potions(your_champ)
-            print("You have restored 150 hp but you have been hit while drinking potion ")
+            print("You have restored {} hp but you have been hit while drinking potion ".format(int(your_champ["maxHP"] * 0.3)))
             print("Hp of {} = {}".format(
                 your_champ["name"], your_champ["health"]))
             is_combat = deal_damage(foe, your_champ)
-            if not is_combat:
+            if is_combat is False:
                 return True
             if is_combat is None:
                 return None
