@@ -121,7 +121,7 @@ def main():
     # engine.show_inventory(player,items)
     # input()
 
-    board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
+    # board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
     # player = create_player()
     # SYLWEK# items = engine.read_file("items.txt")
     # SYLWEK# print(player)
@@ -132,7 +132,7 @@ def main():
     # SYLWEK# print(player)
     # SYLWEK# print(engine.show_inventory(player))
     # SYLWEK# input()
-    for level_number in range(1, 4):
+    for level_number in range(1, 5):
         level_file = "level_"+str(level_number)+".txt"
         board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
         engine.export_board(board, level_file)
@@ -157,23 +157,27 @@ def main():
 
     util.clear_screen()
 
+    loop = 0
+
     is_running = True
     while is_running:
+        loop += 1
+
         level_file = "level_"+str(level_number[0])+".txt"
         board = engine.import_bord(level_file)
 
         engine.put_player_on_board(board, player)
 
-        if enemy_hero["is_alive"]:
+        if level_number[0] == 4 and enemy_hero["is_alive"]:
             engine.put_player_on_board(board, enemy_hero)
 
-        if mercenary["is_alive"]:
+        if level_number[0] == 1 and mercenary["is_alive"]:
             engine.put_player_on_board(board, mercenary)
 
-        if infantry_of_Troy["is_alive"]:
+        if level_number[0] == 2 and infantry_of_Troy["is_alive"]:
             engine.put_player_on_board(board, infantry_of_Troy)
 
-        if cavalry_of_Troy["is_alive"]:
+        if level_number[0] == 3 and cavalry_of_Troy["is_alive"]:
             engine.put_player_on_board(board, cavalry_of_Troy)
         ui.display_board(board)
         print(player)
@@ -195,20 +199,20 @@ def main():
         else:
             player_movement.step_direction(player, key, board)
 
-            if enemy_hero["is_alive"]:
+            if enemy_hero["is_alive"] and loop % 2 == 0:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(enemy_hero, rand_key, board)
 
-            if mercenary["is_alive"]:
+            if mercenary["is_alive"] and loop % 2 == 0:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(mercenary, rand_key, board)
 
-            if infantry_of_Troy["is_alive"]:
+            if infantry_of_Troy["is_alive"] and loop % 2 == 0:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(
                     infantry_of_Troy, rand_key, board)
 
-            if cavalry_of_Troy["is_alive"]:
+            if cavalry_of_Troy["is_alive"] and loop % 2 == 0:
                 rand_key = random.choice(["W", "S", "D", "A"])
                 player_movement.step_direction(
                     cavalry_of_Troy, rand_key, board)
