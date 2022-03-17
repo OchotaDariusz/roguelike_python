@@ -101,6 +101,8 @@ def put_player_on_board(board, player):
         board[player["pos_x"]][player["pos_y"]] = player["icon"]
 
 
+
+
 def read_file(file_name):
     items_table = []
     # item_table structure by index

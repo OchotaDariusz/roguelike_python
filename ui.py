@@ -56,3 +56,13 @@ def display_board(board: list):
             else:
                 row += get_colored(board[i][j])
         print(row)
+
+
+def display_stats(player):
+
+    print("XP: {}/{:<8} {:>9} {:>9}{} {:>18}{}".format(player["xp"], player["next_level"], player["race"],"Level: ", player["level"], "Lives: ",player["lives"], ))
+    print("\n{:<23}Strength: {}".format(" ", player["strength"]))
+    print("\n{:<23}Damage: {}".format(" ", player["damage"]))
+    print("\n{:<23}Armor: {}".format(" ", player["armor"]))
+    print("\n{:<23}HP: {}/{}".format(" ", player["health"], player["maxHP"]))
+    print("\n{:<23}HP potions: {}".format(" ", player["inventory"]["potion"]))

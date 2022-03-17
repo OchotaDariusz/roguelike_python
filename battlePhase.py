@@ -92,7 +92,7 @@ def combat(your_champ, foe):
             print(
                 "------------------------------------------------------------------------")
             is_combat = deal_damage(foe, your_champ)
-            if is_combat == False:
+            if not is_combat:
                 return True
             if is_combat is None:
                 return None
