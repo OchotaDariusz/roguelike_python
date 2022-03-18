@@ -60,33 +60,33 @@ def save_game(player):
     save_items.close()
 
 
-def load_game():
-    open_player_items = open("items_save.txt", "r")
-    read_player_items = open_player_items.readlines()
-    key_value = [element.strip("\n").split(';') for element in read_player_items]
-    open_player_items.close()
+def read_file(file_name):
+    save_file = open(file_name, "r")
+    read_save = save_file.readlines()
+    key_value = [element.strip("\n").split(';')
+                 for element in read_save]
+    save_file.close()
+    return key_value
 
-    item_dict = dict()
+
+def build_dict(key_value, item_dict=None):
+    new_dict = dict()
     for i in range(len(key_value)):
         if key_value[i][1].isdigit():
-            item_dict[key_value[i][0]] = int(key_value[i][1])
-        elif key_value[i][1] == "":
-            player_dict[key_value[i][0]] = key_value[i][1]
-        else:
+            new_dict[key_value[i][0]] = int(key_value[i][1])
+        elif key_value[i][1] == "" and item_dict is not None:
+            new_dict[key_value[i][0]] = item_dict
+        elif key_value[i][1] == "" and item_dict is None:
             item_dict[key_value[i][0]] = key_value[i][1]
-
-    open_player_save = open("player_save.txt", "r")
-    read_player_save = open_player_save.readlines()
-    key_value = [element.strip("\n").split(';') for element in read_player_save]
-    open_player_save.close()
-
-    player_dict = dict()
-    for i in range(len(key_value)):
-        if key_value[i][1].isdigit():
-            player_dict[key_value[i][0]] = int(key_value[i][1])
-        elif key_value[i][1] == "":
-            player_dict[key_value[i][0]] = item_dict
         else:
-            player_dict[key_value[i][0]] = key_value[i][1]
+            new_dict[key_value[i][0]] = key_value[i][1]
+    return new_dict
 
+
+def load_game():
+    key_value = read_file("items_save.txt")
+    item_dict = build_dict(key_value)
+
+    key_value = read_file("player_save.txt")
+    player_dict = build_dict(key_value, item_dict)
     return player_dict

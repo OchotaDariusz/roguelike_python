@@ -103,8 +103,6 @@ def put_player_on_board(board, player):
 
 def read_file(file_name):
     items_table = []
-    # item_table structure by index
-    # [0] = item name  [1] = type  [2] = damage  [3] = defensive  [4] = health
     text_file = open(file_name, "r")
     for line in text_file:
         items_table.append(line.strip().split("\t"))
@@ -203,8 +201,8 @@ def event_handler_monsters(player, board, enemy):
         print(items[random_item])
         add_item_to_player(player, items[random_item], items)
     else:
-        zmienna = 1 if enemy["type"] == "monster" else 5
-        player["pos_y"] = player["pos_y"] - zmienna
+        enemy_size = 1 if enemy["type"] == "monster" else 5
+        player["pos_y"] = player["pos_y"] - enemy_size
         player["health"] = int(player["maxHP"] / 2)
         player["lives"] -= 1
 
