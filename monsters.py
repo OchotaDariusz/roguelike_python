@@ -17,7 +17,7 @@ mercenary = {
     "inventory": {}
 }
 
-infantry_of_Troy = {
+infantry_of_troy = {
     "name": "Soldier of Troy",
     "type": 'monster',
     "level": 1,
@@ -36,7 +36,7 @@ infantry_of_Troy = {
     "inventory": {}
 }
 
-cavalry_of_Troy = {
+cavalry_of_troy = {
     "name": "Raider of Troy",
     "type": 'monster',
     "level": 1,
