@@ -7,7 +7,7 @@ enemies_symbols = {
     "mercenary": HeroAndMonsters.mercenary,
     "infantry_of_Troy": HeroAndMonsters.infantry_of_Troy,
     "cavalry_of_Troy": HeroAndMonsters.cavalry_of_Troy,
-    "enemy_hero": HeroAndMonsters.enemy_hero
+    "enemy_hero": HeroAndMonsters.enemy
 }
 
 GATE_SYMBOLS = {

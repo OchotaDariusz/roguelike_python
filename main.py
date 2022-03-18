@@ -86,6 +86,23 @@ def create_player(race: str):
     return player
 
 
+def monster_step(board, turn, enemy):
+    if enemy["is_alive"] and turn % 2 == 0:
+        rand_key = random.choice(["W", "S", "D", "A"])
+        player_movement.step_direction(enemy, rand_key, board)
+
+
+def place_monster(level_number, level, board, enemy):
+    if level_number[0] == level and enemy["is_alive"]:
+        engine.put_player_on_board(board, enemy)
+
+
+def place_key(board, level_number, level, enemy, key):
+    if level_number[0] == level and not enemy["is_alive"]:
+        if key == 0:
+            board[1][1] = "K"
+
+
 def main():
     cheats_active = 0
 
@@ -123,29 +140,14 @@ def main():
 
         engine.put_player_on_board(board, player)
 
-        if level_number[0] == 4 and enemy_hero["is_alive"]:
-            engine.put_player_on_board(board, enemy_hero)
+        place_monster(level_number, 1, board, mercenary)
+        place_monster(level_number, 2, board, infantry_of_Troy)
+        place_monster(level_number, 3, board, cavalry_of_Troy)
+        place_monster(level_number, 4, board, enemy_hero)
 
-        if level_number[0] == 1 and mercenary["is_alive"]:
-            engine.put_player_on_board(board, mercenary)
-
-        if level_number[0] == 1 and not mercenary["is_alive"]:
-            if bronze_key == 0:
-                board[1][1] = "K"
-
-        if level_number[0] == 2 and infantry_of_Troy["is_alive"]:
-            engine.put_player_on_board(board, infantry_of_Troy)
-
-        if level_number[0] == 2 and not infantry_of_Troy["is_alive"]:
-            if silver_key == 0:
-                board[1][1] = "K"
-
-        if level_number[0] == 3 and cavalry_of_Troy["is_alive"]:
-            engine.put_player_on_board(board, cavalry_of_Troy)
-
-        if level_number[0] == 3 and not cavalry_of_Troy["is_alive"]:
-            if golden_key == 0:
-                board[1][1] = "K"
+        place_key(board, level_number, 1, mercenary, bronze_key)
+        place_key(board, level_number, 2, infantry_of_Troy, silver_key)
+        place_key(board, level_number, 3, cavalry_of_Troy, golden_key)
 
         ui.display_board(board)
         ui.display_stats(player)
@@ -177,25 +179,10 @@ def main():
 
         else:
             player_movement.step_direction(player, key, board)
-
-            if enemy_hero["is_alive"] and turn % 2 == 0:
-                rand_key = random.choice(["W", "S", "D", "A"])
-                player_movement.step_direction(enemy_hero, rand_key, board)
-
-            if mercenary["is_alive"] and turn % 2 == 0:
-                rand_key = random.choice(["W", "S", "D", "A"])
-                player_movement.step_direction(mercenary, rand_key, board)
-
-            if infantry_of_Troy["is_alive"] and turn % 2 == 0:
-                rand_key = random.choice(["W", "S", "D", "A"])
-                player_movement.step_direction(
-                    infantry_of_Troy, rand_key, board)
-
-            if cavalry_of_Troy["is_alive"] and turn % 2 == 0:
-                rand_key = random.choice(["W", "S", "D", "A"])
-                player_movement.step_direction(
-                    cavalry_of_Troy, rand_key, board)
-
+            monster_step(board, turn, enemy_hero)
+            monster_step(board, turn, mercenary)
+            monster_step(board, turn, infantry_of_Troy)
+            monster_step(board, turn, cavalry_of_Troy)
 
         util.clear_screen()
         keys = engine.event_handler(player, board, level_number, keys)
