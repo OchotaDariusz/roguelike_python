@@ -112,17 +112,12 @@ def main():
     util.clear_screen()
 
     turn = 0
-
-    bronze_key = 0
-    silver_key = 0
-    golden_key = 0
+    bronze_key, silver_key, golden_key = 0, 0, 0
 
     is_running = True
     while is_running:
         turn += 1
-
         keys = bronze_key, silver_key, golden_key
-
         level_file = "level_"+str(level_number[0])+".txt"
         board = engine.import_bord(level_file)
 
@@ -172,7 +167,6 @@ def main():
             print("Bronze Key:", bronze_key)
             print("Silver Key:", silver_key)
             print("Golden Key:", golden_key)
-            keys = bronze_key, silver_key, golden_key
             util.key_pressed()
 
         elif key == '\\':
@@ -202,12 +196,10 @@ def main():
                 player_movement.step_direction(
                     cavalry_of_Troy, rand_key, board)
 
+
         util.clear_screen()
-
         keys = engine.event_handler(player, board, level_number, keys)
-
         bronze_key, silver_key, golden_key = keys
-
         board[backup_pos_x][backup_pos_y] = '.'
         for row in range(len(board)):
             for column in range(len(board[row])):
