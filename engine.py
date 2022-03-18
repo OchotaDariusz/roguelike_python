@@ -1,14 +1,7 @@
 import random
 import battlePhase
-import HeroAndMonsters
+from HeroAndMonsters import cavalry_of_Troy, enemy_hero, infantry_of_Troy, mercenary
 import util
-
-enemies_symbols = {
-    "mercenary": HeroAndMonsters.mercenary,
-    "infantry_of_Troy": HeroAndMonsters.infantry_of_Troy,
-    "cavalry_of_Troy": HeroAndMonsters.cavalry_of_Troy,
-    "enemy_hero": HeroAndMonsters.enemy_hero
-}
 
 GATE_SYMBOLS = {
     "next": ">",
@@ -207,74 +200,82 @@ def event_handler_monsters(player, board, enemy):
         player["lives"] -= 1
 
 
-def event_handler(player: dict, board: list, level_number: list, keys):
-    if board[player["pos_x"]][player["pos_y"]] == "B":
-        event_handler_monsters(player, board,
-                               enemies_symbols["enemy_hero"])
+def pick_up_key(player, board, level_number, level, key):
+    if board[player["pos_x"]][player["pos_y"]] == "K" and \
+       level_number[0] == level:
+        print("You have found a key!")
+        key += 1
+        board[player["pos_x"]][player["pos_y"]] == "."
+    return key
 
-    if board[player["pos_x"]][player["pos_y"]] == "M":
-        event_handler_monsters(player, board,
-                               enemies_symbols["mercenary"])
 
-    if board[player["pos_x"]][player["pos_y"]] == "T":
-        event_handler_monsters(player, board,
-                               enemies_symbols["infantry_of_Troy"])
+def check_if_monster(player, board, enemy):
+    if board[player["pos_x"]][player["pos_y"]] == enemy["icon"]:
+        event_handler_monsters(player, board, enemy)
 
-    if board[player["pos_x"]][player["pos_y"]] == "C":
-        event_handler_monsters(player, board,
-                               enemies_symbols["cavalry_of_Troy"])
 
+def check_for_keys(player, board, level_number, keys):
     bronze_key, silver_key, golden_key = keys
+    bronze_key = pick_up_key(player, board, level_number, 1, bronze_key)
+    silver_key = pick_up_key(player, board, level_number, 2, silver_key)
+    golden_key = pick_up_key(player, board, level_number, 3, golden_key)
+    return bronze_key, silver_key, golden_key
 
-    if board[player["pos_x"]][player["pos_y"]] == "K" and \
-       level_number[0] == 1:
-        print("You have found a bronze key!")
-        bronze_key += 1
-        board[player["pos_x"]][player["pos_y"]] == "."
 
-    if board[player["pos_x"]][player["pos_y"]] == "K" and \
-       level_number[0] == 2:
-        print("You have found a silver key!")
-        silver_key += 1
-        board[player["pos_x"]][player["pos_y"]] == "."
+def check_for_monsters(player, board):
+    check_if_monster(player, board, mercenary)
+    check_if_monster(player, board, infantry_of_Troy)
+    check_if_monster(player, board, cavalry_of_Troy)
+    check_if_monster(player, board, enemy_hero)
 
-    if board[player["pos_x"]][player["pos_y"]] == "K" and \
-       level_number[0] == 3:
-        print("You have found a golden key!")
-        golden_key += 1
-        board[player["pos_x"]][player["pos_y"]] == "."
 
+def check_for_items(player, board):
     if board[player["pos_x"]][player["pos_y"]] == "I":
         print("Wbiles na I")
         items = read_file("items.txt")
         random_item = random.randint(0, 9)
         add_item_to_player(player, items[random_item], items)
 
+
+def check_floor(player, board, level_number, keys):
+    check_for_monsters(player, board)
+    check_for_items(player, board)
+    return check_for_keys(player, board, level_number, keys)
+
+
+def previous_level(player, level_number):
+    level_number[0] -= 1
+    player["pos_x"] = 10
+    player["pos_y"] = 28
+
+
+def next_level(player, level_number):
+    level_number[0] += 1
+    player["pos_x"] = 10
+    player["pos_y"] = 1
+
+
+def check_for_gate(player, board, level_number, keys):
+    bronze_key, silver_key, golden_key = keys
     if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["next"]:
         if level_number[0] == 1 and bronze_key == 1:
-            level_number[0] += 1
-            player["pos_x"] = 10
-            player["pos_y"] = 1
-
+            next_level(player, level_number)
         elif level_number[0] == 2 and silver_key == 1:
-            level_number[0] += 1
-            player["pos_x"] = 10
-            player["pos_y"] = 1
-
+            next_level(player, level_number)
         elif level_number[0] == 3 and golden_key == 1:
-            level_number[0] += 1
-            player["pos_x"] = 10
-            player["pos_y"] = 1
-
+            next_level(player, level_number)
         else:
             print("You need a key!")
             player["pos_x"] = 10
             player["pos_y"] = 28
 
     elif board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["previous"]:
-        level_number[0] -= 1
-        player["pos_x"] = 10
-        player["pos_y"] = 28
+        previous_level(player, level_number)
 
+
+def event_handler(player: dict, board: list, level_number: list, keys):
+    bronze_key, silver_key, golden_key = check_floor(
+        player, board, level_number, keys)
     keys = bronze_key, silver_key, golden_key
+    check_for_gate(player, board, level_number, keys)
     return keys
