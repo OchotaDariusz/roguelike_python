@@ -158,9 +158,15 @@ def main():
 
     turn = 0
 
+    bronze_key = 0
+    silver_key = 0
+    golden_key = 0
+
     is_running = True
     while is_running:
         turn += 1
+
+        keys = bronze_key, silver_key, golden_key
 
         level_file = "level_"+str(level_number[0])+".txt"
         board = engine.import_bord(level_file)
@@ -173,11 +179,24 @@ def main():
         if level_number[0] == 1 and mercenary["is_alive"]:
             engine.put_player_on_board(board, mercenary)
 
+        if level_number[0] == 1 and not mercenary["is_alive"]:
+            if bronze_key == 0:
+                board[1][1] = "K"
+
         if level_number[0] == 2 and infantry_of_Troy["is_alive"]:
             engine.put_player_on_board(board, infantry_of_Troy)
 
+        if level_number[0] == 2 and not infantry_of_Troy["is_alive"]:
+            if silver_key == 0:
+                board[1][1] = "K"
+
         if level_number[0] == 3 and cavalry_of_Troy["is_alive"]:
             engine.put_player_on_board(board, cavalry_of_Troy)
+
+        if level_number[0] == 3 and not cavalry_of_Troy["is_alive"]:
+            if golden_key == 0:
+                board[1][1] = "K"
+
         ui.display_board(board)
         ui.display_stats(player)
 
@@ -194,6 +213,11 @@ def main():
         elif key == 'i':
             util.clear_screen()
             engine.show_inventory(player, items)
+            bronze_key, silver_key, golden_key = keys
+            print("Bronze Key:", bronze_key)
+            print("Silver Key:", silver_key)
+            print("Golden Key:", golden_key)
+            keys = bronze_key, silver_key, golden_key
             util.key_pressed()
 
         elif key == '\\':
@@ -225,7 +249,9 @@ def main():
 
         util.clear_screen()
 
-        engine.event_handler(player, board, level_number)
+        keys = engine.event_handler(player, board, level_number, keys)
+
+        bronze_key, silver_key, golden_key = keys
 
         board[backup_pos_x][backup_pos_y] = '.'
         for row in range(len(board)):

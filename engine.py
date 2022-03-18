@@ -209,7 +209,7 @@ def event_handler_monsters(player, board, enemy):
         player["lives"] -= 1
 
 
-def event_handler(player: dict, board: list, level_number: list):
+def event_handler(player: dict, board: list, level_number: list, keys):
     if board[player["pos_x"]][player["pos_y"]] == "B":
         event_handler_monsters(player, board,
                                enemies_symbols["enemy_hero"])
@@ -226,6 +226,23 @@ def event_handler(player: dict, board: list, level_number: list):
         event_handler_monsters(player, board,
                                enemies_symbols["cavalry_of_Troy"])
 
+    bronze_key, silver_key, golden_key = keys
+
+    if board[player["pos_x"]][player["pos_y"]] == "K" and \
+       level_number[0] == 1:
+        bronze_key += 1
+        board[player["pos_x"]][player["pos_y"]] == "."
+
+    if board[player["pos_x"]][player["pos_y"]] == "K" and \
+       level_number[0] == 2:
+        silver_key += 1
+        board[player["pos_x"]][player["pos_y"]] == "."
+
+    if board[player["pos_x"]][player["pos_y"]] == "K" and \
+       level_number[0] == 3:
+        golden_key += 1
+        board[player["pos_x"]][player["pos_y"]] == "."
+
     if board[player["pos_x"]][player["pos_y"]] == "I":
         print("Wbiles na I")
         items = read_file("items.txt")
@@ -240,3 +257,6 @@ def event_handler(player: dict, board: list, level_number: list):
         level_number[0] -= 1
         player["pos_x"] = 10
         player["pos_y"] = 28
+
+    keys = bronze_key, silver_key, golden_key
+    return keys
