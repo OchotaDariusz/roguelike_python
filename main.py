@@ -89,10 +89,10 @@ def create_player(race: str):
 def main():
     cheats_active = 0
 
-    start_game = input("1) Start New Game\n2) Load Last Game: ")
+    start_game = input("1) Start New Game\n2) Load Last Game\n")
 
     if start_game == '1':
-        race = input("Choose your race(Human, Elf, Dwarf): ")
+        race = input("Choose your race(Human, Elf, Dwarf): ").upper()
         player = create_player(race)
 
     else:
@@ -101,58 +101,13 @@ def main():
         player["pos_y"] = PLAYER_START_Y
         player["icon"] = PLAYER_ICON
 
-    # SYLWEK# items = engine.read_file("items.txt")
-    # SYLWEK# print(player)
-    # SYLWEK# engine.add_item_to_player(player,items[2],items)
-    # SYLWEK# engine.add_item_to_player(player,items[3],items)
-    # SYLWEK# print(player)
-    # SYLWEK# engine.add_item_to_player(player,items[7],items)
-    # SYLWEK# print(player)
-    # SYLWEK# print(engine.show_inventory(player))
-    # SYLWEK# input()
     items = engine.read_file("items.txt")
-    # print(player)
-    #engine.add_item_to_player(player,items[1],items)
-    #engine.add_item_to_player(player,items[2],items)
-    #engine.add_item_to_player(player,items[8],items)
-    #engine.add_item_to_player(player,items[9],items)
-    # print(player)
-    # engine.show_inventory(player,items)
-    # input()
 
-    # board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
-    # player = create_player()
-    # SYLWEK# items = engine.read_file("items.txt")
-    # SYLWEK# print(player)
-    # SYLWEK# engine.add_item_to_player(player,items[2],items)
-    # SYLWEK# engine.add_item_to_player(player,items[3],items)
-    # SYLWEK# print(player)
-    # SYLWEK# engine.add_item_to_player(player,items[7],items)
-    # SYLWEK# print(player)
-    # SYLWEK# print(engine.show_inventory(player))
-    # SYLWEK# input()
     for level_number in range(1, 5):
         level_file = "level_"+str(level_number)+".txt"
         board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT, level_number)
         engine.export_board(board, level_file)
     level_number = [1]
-
-    #board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT)
-    board[5][5] = "M"  # to delete
-    board[7][7] = "I"  # to delete
-
-    board[9][9] = "#"  # to delete
-    board[10][9] = "#"  # to delete
-    board[11][9] = "#"  # to delete
-    board[12][9] = "#"  # to delete
-    board[13][19] = "#"  # to delete
-    board[14][9] = "#"  # to delete
-    board[9][13] = "#"  # to delete
-    board[9][12] = "#"  # to delete
-    board[9][10] = "#"  # to delete
-    board[9][11] = "#"  # to delete
-    board[9][14] = "#"  # to delete
-    board[9][15] = "#"  # to delete
 
     util.clear_screen()
 

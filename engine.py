@@ -230,16 +230,19 @@ def event_handler(player: dict, board: list, level_number: list, keys):
 
     if board[player["pos_x"]][player["pos_y"]] == "K" and \
        level_number[0] == 1:
+        print("You have found a bronze key!")
         bronze_key += 1
         board[player["pos_x"]][player["pos_y"]] == "."
 
     if board[player["pos_x"]][player["pos_y"]] == "K" and \
        level_number[0] == 2:
+        print("You have found a silver key!")
         silver_key += 1
         board[player["pos_x"]][player["pos_y"]] == "."
 
     if board[player["pos_x"]][player["pos_y"]] == "K" and \
        level_number[0] == 3:
+        print("You have found a golden key!")
         golden_key += 1
         board[player["pos_x"]][player["pos_y"]] == "."
 
@@ -250,9 +253,26 @@ def event_handler(player: dict, board: list, level_number: list, keys):
         add_item_to_player(player, items[random_item], items)
 
     if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["next"]:
-        level_number[0] += 1
-        player["pos_x"] = 10
-        player["pos_y"] = 1
+        if level_number[0] == 1 and bronze_key == 1:
+            level_number[0] += 1
+            player["pos_x"] = 10
+            player["pos_y"] = 1
+
+        elif level_number[0] == 2 and silver_key == 1:
+            level_number[0] += 1
+            player["pos_x"] = 10
+            player["pos_y"] = 1
+
+        elif level_number[0] == 3 and golden_key == 1:
+            level_number[0] += 1
+            player["pos_x"] = 10
+            player["pos_y"] = 1
+
+        else:
+            print("You need a key!")
+            player["pos_x"] = 10
+            player["pos_y"] = 28
+
     elif board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["previous"]:
         level_number[0] -= 1
         player["pos_x"] = 10
