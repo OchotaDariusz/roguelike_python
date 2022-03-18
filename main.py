@@ -185,7 +185,7 @@ def main():
 
         if player["lives"] <= 0:
             input("Game Over!")
-            sys.exit()
+            is_running = False
 
 
 if __name__ == '__main__':
