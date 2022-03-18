@@ -209,7 +209,7 @@ def event_handler_monsters(player, board, enemy):
         player["lives"] -= 1
 
 
-def event_handler(player: dict, board: list, level_number: list):
+def event_handler(player: dict, board: list, level_number: list, keys):
     if board[player["pos_x"]][player["pos_y"]] == "B":
         event_handler_monsters(player, board,
                                enemies_symbols["enemy_hero"])
@@ -226,6 +226,26 @@ def event_handler(player: dict, board: list, level_number: list):
         event_handler_monsters(player, board,
                                enemies_symbols["cavalry_of_Troy"])
 
+    bronze_key, silver_key, golden_key = keys
+
+    if board[player["pos_x"]][player["pos_y"]] == "K" and \
+       level_number[0] == 1:
+        print("You have found a bronze key!")
+        bronze_key += 1
+        board[player["pos_x"]][player["pos_y"]] == "."
+
+    if board[player["pos_x"]][player["pos_y"]] == "K" and \
+       level_number[0] == 2:
+        print("You have found a silver key!")
+        silver_key += 1
+        board[player["pos_x"]][player["pos_y"]] == "."
+
+    if board[player["pos_x"]][player["pos_y"]] == "K" and \
+       level_number[0] == 3:
+        print("You have found a golden key!")
+        golden_key += 1
+        board[player["pos_x"]][player["pos_y"]] == "."
+
     if board[player["pos_x"]][player["pos_y"]] == "I":
         print("Wbiles na I")
         items = read_file("items.txt")
@@ -233,10 +253,30 @@ def event_handler(player: dict, board: list, level_number: list):
         add_item_to_player(player, items[random_item], items)
 
     if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["next"]:
-        level_number[0] += 1
-        player["pos_x"] = 10
-        player["pos_y"] = 1
+        if level_number[0] == 1 and bronze_key == 1:
+            level_number[0] += 1
+            player["pos_x"] = 10
+            player["pos_y"] = 1
+
+        elif level_number[0] == 2 and silver_key == 1:
+            level_number[0] += 1
+            player["pos_x"] = 10
+            player["pos_y"] = 1
+
+        elif level_number[0] == 3 and golden_key == 1:
+            level_number[0] += 1
+            player["pos_x"] = 10
+            player["pos_y"] = 1
+
+        else:
+            print("You need a key!")
+            player["pos_x"] = 10
+            player["pos_y"] = 28
+
     elif board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["previous"]:
         level_number[0] -= 1
         player["pos_x"] = 10
         player["pos_y"] = 28
+
+    keys = bronze_key, silver_key, golden_key
+    return keys
