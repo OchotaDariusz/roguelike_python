@@ -1,10 +1,9 @@
-
 import util
 import engine
 import ui
-import player_movement
+import movement
 import sys
-from HeroAndMonsters import cavalry_of_Troy, enemy_hero, infantry_of_Troy, mercenary
+from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
 import random
 
 PLAYER_ICON = '@'
@@ -15,6 +14,30 @@ BOARD_WIDTH = 30
 BOARD_HEIGHT = 20
 
 
+def choose_race(race, player):
+    if race.startswith("H"):
+        player["race"] = "human"
+        player["strength"] = 100
+        player["health"] = 200
+        player["maxHP"] = player["health"]
+        player["armor"] = 60
+        player["damage"] = 50
+    elif race.startswith("E"):
+        player["race"] = "elf"
+        player["strength"] = 80
+        player["health"] = 160
+        player["maxHP"] = player["health"]
+        player["armor"] = 20
+        player["damage"] = 80
+    elif race.startswith("D"):
+        player["race"] = "dwarf"
+        player["strength"] = 120
+        player["health"] = 200
+        player["maxHP"] = player["health"]
+        player["armor"] = 80
+        player["damage"] = 30
+
+
 def create_player(race: str):
     '''
     Creates a 'player' dictionary for storing all player related informations - i.e. player icon, player position.
@@ -23,73 +46,34 @@ def create_player(race: str):
     Returns:
     dictionary
     '''
-    if race.startswith("H"):
-        player = {
-            "name": "Player",
-            "type": "player",
-            "race": "human",
-            "level": 1,
-            "xp": 0,
-            "next_level": 25,
-            "lives": 3,
-            "strength": 100,
-            "health": 200,
-            "maxHP": 200,
-            "armor": 60,
-            "damage": 50,
-            "reward": 0,
-            "pos_x": PLAYER_START_X,
-            "pos_y": PLAYER_START_Y,
-            "icon": PLAYER_ICON,
-            "inventory": {"potion": 5}
-        }
-    elif race.startswith("E"):
-        player = {
-            "name": "Player",
-            "type": "player",
-            "race": "elf",
-            "level": 1,
-            "xp": 0,
-            "next_level": 25,
-            "lives": 3,
-            "strength": 100,
-            "health": 160,
-            "maxHP": 160,
-            "armor": 20,
-            "damage": 80,
-            "reward": 0,
-            "pos_x": PLAYER_START_X,
-            "pos_y": PLAYER_START_Y,
-            "icon": PLAYER_ICON,
-            "inventory": {"potion": 5}
-        }
-    elif race.startswith("D"):
-        player = {
-            "name": "Player",
-            "type": "player",
-            "race": "dwarf",
-            "level": 1,
-            "xp": 0,
-            "next_level": 25,
-            "lives": 3,
-            "strength": 100,
-            "health": 250,
-            "maxHP": 250,
-            "armor": 80,
-            "damage": 30,
-            "reward": 0,
-            "pos_x": PLAYER_START_X,
-            "pos_y": PLAYER_START_Y,
-            "icon": PLAYER_ICON,
-            "inventory": {"potion": 5}
-        }
+    player = {
+        "name": "Player",
+        "type": "player",
+        "race": None,
+        "level": 1,
+        "xp": 0,
+        "next_level": 25,
+        "lives": 3,
+        "strength": 100,
+        "health": None,
+        "maxHP": None,
+        "armor": None,
+        "damage": None,
+        "reward": 0,
+        "pos_x": PLAYER_START_X,
+        "pos_y": PLAYER_START_Y,
+        "icon": PLAYER_ICON,
+        "inventory": {"potion": 5}
+    }
+
+    choose_race(race, player)
     return player
 
 
 def monster_step(board, turn, enemy):
     if enemy["is_alive"] and turn % 2 == 0:
         rand_key = random.choice(["W", "S", "D", "A"])
-        player_movement.step_direction(enemy, rand_key, board)
+        movement.step_direction(enemy, rand_key, board)
 
 
 def place_monster(level_number, level, board, enemy):
@@ -103,87 +87,93 @@ def place_key(board, level_number, level, enemy, key):
             board[1][1] = "K"
 
 
-def main():
-    cheats_active = 0
+def place_monsters(level_number, board):
+    monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
+    for level, monster in enumerate(monsters):
+        place_monster(level_number, level + 1, board, monster)
 
+
+def move_monsters(board, turn):
+    monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
+    for monster in monsters:
+        monster_step(board, turn, monster)
+
+
+def initialize_map(player, level_number, board, keys):
+    bronze_key, silver_key, golden_key = keys
+    engine.put_player_on_board(board, player)
+    place_monsters(level_number, board)
+    place_key(board, level_number, 1, mercenary, bronze_key)
+    place_key(board, level_number, 2, infantry_of_troy, silver_key)
+    place_key(board, level_number, 3, cavalry_of_troy, golden_key)
+
+
+def setup_game():
     start_game = input("1) Start New Game\n2) Load Last Game\n")
-
     if start_game == '1':
         race = input("Choose your race(Human, Elf, Dwarf): ").upper()
         player = create_player(race)
-
     else:
         player = util.load_game()
         player["pos_x"] = PLAYER_START_X
         player["pos_y"] = PLAYER_START_Y
         player["icon"] = PLAYER_ICON
-
     items = engine.read_file("items.txt")
-
     for level_number in range(1, 5):
         level_file = "level_"+str(level_number)+".txt"
         board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT, level_number)
         engine.export_board(board, level_file)
+    return player, items
+
+
+def key_handler(player, items, cheats_active, turn, keys, board, key):
+    if key == 'q':
+        return False
+    elif key == 'x':
+        cheats_active = engine.activate_cheat(player, cheats_active)
+        return True
+    elif key == 'i':
+        util.clear_screen()
+        engine.show_inventory(player, items)
+        bronze_key, silver_key, golden_key = keys
+        print("Bronze Key:", bronze_key)
+        print("Silver Key:", silver_key)
+        print("Golden Key:", golden_key)
+        util.key_pressed()
+        return True
+    elif key == '\\':
+        util.clear_screen()
+        util.save_game(player)
+        print("Game Saved")
+        util.key_pressed()
+        return True
+    else:
+        movement.step_direction(player, key, board)
+        move_monsters(board, turn)
+        return True
+
+
+def main():
+    player, items = setup_game()
     level_number = [1]
-
     util.clear_screen()
-
+    cheats_active = 0
     turn = 0
     bronze_key, silver_key, golden_key = 0, 0, 0
-
     is_running = True
     while is_running:
         turn += 1
         keys = bronze_key, silver_key, golden_key
         level_file = "level_"+str(level_number[0])+".txt"
         board = engine.import_bord(level_file)
-
-        engine.put_player_on_board(board, player)
-
-        place_monster(level_number, 1, board, mercenary)
-        place_monster(level_number, 2, board, infantry_of_Troy)
-        place_monster(level_number, 3, board, cavalry_of_Troy)
-        place_monster(level_number, 4, board, enemy_hero)
-
-        place_key(board, level_number, 1, mercenary, bronze_key)
-        place_key(board, level_number, 2, infantry_of_Troy, silver_key)
-        place_key(board, level_number, 3, cavalry_of_Troy, golden_key)
-
+        initialize_map(player, level_number, board, keys)
         ui.display_board(board)
         ui.display_stats(player)
-
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
-
         key = util.key_pressed()
-        if key == 'q':
-            is_running = False
-
-        elif key == 'x':
-            cheats_active = engine.activate_cheat(player, cheats_active)
-
-        elif key == 'i':
-            util.clear_screen()
-            engine.show_inventory(player, items)
-            bronze_key, silver_key, golden_key = keys
-            print("Bronze Key:", bronze_key)
-            print("Silver Key:", silver_key)
-            print("Golden Key:", golden_key)
-            util.key_pressed()
-
-        elif key == '\\':
-            util.clear_screen()
-            util.save_game(player)
-            print("Game Saved")
-            util.key_pressed()
-
-        else:
-            player_movement.step_direction(player, key, board)
-            monster_step(board, turn, enemy_hero)
-            monster_step(board, turn, mercenary)
-            monster_step(board, turn, infantry_of_Troy)
-            monster_step(board, turn, cavalry_of_Troy)
-
+        is_running = key_handler(
+            player, items, cheats_active, turn, keys, board, key)
         util.clear_screen()
         keys = engine.event_handler(player, board, level_number, keys)
         bronze_key, silver_key, golden_key = keys

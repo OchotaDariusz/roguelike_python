@@ -1,5 +1,5 @@
 import util
-import asciiArt
+import ascii_art
 import random
 
 
@@ -35,7 +35,7 @@ def deal_damage(attacker, defender):
         attacker["xp"] += defender["reward"]
         level_up(attacker)
         max_health(attacker)
-        print(asciiArt.winner)
+        print(ascii_art.winner)
         input("Press any key to leave the battle! ")
         if defender["name"] == "Player":
             return None
@@ -66,7 +66,7 @@ def combat(your_champ, foe):
 
     print("You have approached {}, if you try to leave now he will stab you in the back to death!".format(
         foe["name"]))
-    print(asciiArt.duel)
+    print(ascii_art.duel)
 
     is_combat = True
     while is_combat:

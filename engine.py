@@ -1,6 +1,6 @@
 import random
-import battlePhase
-from HeroAndMonsters import cavalry_of_Troy, enemy_hero, infantry_of_Troy, mercenary
+import battle
+from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
 import util
 
 GATE_SYMBOLS = {
@@ -184,7 +184,7 @@ def show_inventory(player, items):
 
 
 def event_handler_monsters(player, board, enemy):
-    has_won = battlePhase.combat(player, enemy)
+    has_won = battle.combat(player, enemy)
     util.clear_screen()
     if has_won is True:
         board[player["pos_x"]][player["pos_y"]] = "."
@@ -223,15 +223,13 @@ def check_for_keys(player, board, level_number, keys):
 
 
 def check_for_monsters(player, board):
-    check_if_monster(player, board, mercenary)
-    check_if_monster(player, board, infantry_of_Troy)
-    check_if_monster(player, board, cavalry_of_Troy)
-    check_if_monster(player, board, enemy_hero)
+    monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
+    for monster in monsters:
+        check_if_monster(player, board, monster)
 
 
 def check_for_items(player, board):
     if board[player["pos_x"]][player["pos_y"]] == "I":
-        print("Wbiles na I")
         items = read_file("items.txt")
         random_item = random.randint(0, 9)
         add_item_to_player(player, items[random_item], items)
