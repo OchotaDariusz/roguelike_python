@@ -36,7 +36,8 @@ def deal_damage(attacker, defender):
         level_up(attacker)
         max_health(attacker)
         print(ascii_art.winner)
-        input("Press any key to leave the battle! ")
+        print("Press any key to leave the battle!")
+        util.key_pressed()
         if defender["name"] == "Player":
             return None
         return False
@@ -100,7 +101,8 @@ def combat(your_champ, foe):
                 return None
         elif "h" in decision:
             use_potions(your_champ)
-            print("You have restored {} hp but you have been hit while drinking potion ".format(int(your_champ["maxHP"] * 0.3)))
+            print("You have restored {} hp but you have been hit while drinking potion ".format(
+                int(your_champ["maxHP"] * 0.3)))
             print("Hp of {} = {}".format(
                 your_champ["name"], your_champ["health"]))
             is_combat = deal_damage(foe, your_champ)

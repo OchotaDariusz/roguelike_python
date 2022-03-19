@@ -1,10 +1,9 @@
-import util
 import engine
-import ui
 import movement
-import sys
-from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
 import random
+import ui
+import util
+from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
@@ -77,12 +76,12 @@ def monster_step(board, turn, enemy):
 
 
 def place_monster(level_number, level, board, enemy):
-    if level_number[0] == level and enemy["is_alive"]:
+    if level_number == level and enemy["is_alive"]:
         engine.put_player_on_board(board, enemy)
 
 
 def place_key(board, level_number, level, enemy, key):
-    if level_number[0] == level and not enemy["is_alive"]:
+    if level_number == level and not enemy["is_alive"]:
         if key == 0:
             board[1][1] = "K"
 
@@ -155,7 +154,7 @@ def key_handler(player, items, cheats_active, turn, keys, board, key):
 
 def main():
     player, items = setup_game()
-    level_number = [1]
+    level_number = 1
     util.clear_screen()
     cheats_active = 0
     turn = 0
@@ -164,7 +163,7 @@ def main():
     while is_running:
         turn += 1
         keys = bronze_key, silver_key, golden_key
-        level_file = "level_"+str(level_number[0])+".txt"
+        level_file = "level_"+str(level_number)+".txt"
         board = engine.import_bord(level_file)
         initialize_map(player, level_number, board, keys)
         ui.display_board(board)
@@ -175,7 +174,8 @@ def main():
         is_running = key_handler(
             player, items, cheats_active, turn, keys, board, key)
         util.clear_screen()
-        keys = engine.event_handler(player, board, level_number, keys)
+        level_number, keys = engine.event_handler(
+            player, board, level_number, keys, items)
         bronze_key, silver_key, golden_key = keys
         board[backup_pos_x][backup_pos_y] = '.'
         for row in range(len(board)):

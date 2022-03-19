@@ -1,7 +1,7 @@
-import random
 import battle
-from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
+import random
 import util
+from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
 
 GATE_SYMBOLS = {
     "next": ">",
@@ -103,23 +103,51 @@ def read_file(file_name):
     return items_table
 
 
-def add_item_to_player(player, item, items):
+def remove_old_item_statistics(player, item, items):
+    for old_item in items:
+        if old_item[ITEM_NAME] == player["inventory"][item[ITEM_TYPE]]:
+            player["damage"] -= int(old_item[ITEM_DAMAGE])
+            player["armor"] -= int(old_item[ITEM_DEFENSIVE])
+            player["health"] -= int(old_item[ITEM_HEALTH])
+            player["maxHP"] -= int(old_item[ITEM_HEALTH])
 
-    item_type_list = list(player["inventory"].keys())
-    if item[ITEM_TYPE] in item_type_list:
-        change_item(player, item, items)
-    else:
-        add_item(player, item)
+
+def add_item(player, item):
+    player["damage"] += int(item[ITEM_DAMAGE])
+    player["armor"] += int(item[ITEM_DEFENSIVE])
+    player["health"] += int(item[ITEM_HEALTH])
+    player["maxHP"] += int(item[ITEM_HEALTH])
+    player["inventory"][item[ITEM_TYPE]] = item[ITEM_NAME]
+
+
+def compare_items(player, item, items):
+    print("You already have that kind of item\n")
+    details_label = ["name:", "type:", "damage:", "defense:", "health:"]
+    for old_item in items:
+        if old_item[ITEM_NAME] == player["inventory"][item[ITEM_TYPE]]:
+            print("old item details: ")
+            for i in range(len(old_item)):
+                print(details_label[i], old_item[i], end="  ")
+    print("\n\nnew item details:")
+    for i in range(len(item)):
+        print(details_label[i], item[i], end="  ")
 
 
 def change_item(player, item, items):
-
     compare_items(player, item, items)
     decide = input("\n\nDo You want to change current item? Y/N  ").upper()
     while decide not in ["Y", "N"]:
         decide = input("please type 'Y' or 'N'  ").upper()
     if decide == "Y":
         remove_old_item_statistics(player, item, items)
+        add_item(player, item)
+
+
+def add_item_to_player(player, item, items):
+    item_type_list = list(player["inventory"].keys())
+    if item[ITEM_TYPE] in item_type_list:
+        change_item(player, item, items)
+    else:
         add_item(player, item)
 
 
@@ -140,36 +168,6 @@ def activate_cheat(player, activated):
         return 0
 
 
-def add_item(player, item):
-
-    player["damage"] += int(item[ITEM_DAMAGE])
-    player["armor"] += int(item[ITEM_DEFENSIVE])
-    player["health"] += int(item[ITEM_HEALTH])
-    player["inventory"][item[ITEM_TYPE]] = item[ITEM_NAME]
-
-
-def remove_old_item_statistics(player, item, items):
-
-    for old_item in items:
-        if old_item[ITEM_NAME] == player["inventory"][item[ITEM_TYPE]]:
-            player["damage"] -= int(old_item[ITEM_DAMAGE])
-            player["armor"] -= int(old_item[ITEM_DEFENSIVE])
-            player["health"] -= int(old_item[ITEM_HEALTH])
-
-
-def compare_items(player, item, items):
-    print("You already have that kind of item\n")
-    details_label = ["name:", "type:", "damage:", "defense:", "health:"]
-    for old_item in items:
-        if old_item[ITEM_NAME] == player["inventory"][item[ITEM_TYPE]]:
-            print("old item details: ")
-            for i in range(len(old_item)):
-                print(details_label[i], old_item[i], end="  ")
-    print("\n\nnew item details:")
-    for i in range(len(item)):
-        print(details_label[i], item[i], end="  ")
-
-
 def show_inventory(player, items):
     details_label = ["name:", "type:", "damage:", "defense:", "health:"]
     player_items_name_list = list(player["inventory"].values())
@@ -183,13 +181,12 @@ def show_inventory(player, items):
     print("Health Potions:", player["inventory"]["potion"])
 
 
-def event_handler_monsters(player, board, enemy):
+def event_handler_monsters(player, board, enemy, items):
     has_won = battle.combat(player, enemy)
     util.clear_screen()
     if has_won is True:
         board[player["pos_x"]][player["pos_y"]] = "."
         enemy["is_alive"] = False
-        items = read_file("items.txt")
         random_item = random.randint(0, 9)
         print(items[random_item])
         add_item_to_player(player, items[random_item], items)
@@ -202,16 +199,16 @@ def event_handler_monsters(player, board, enemy):
 
 def pick_up_key(player, board, level_number, level, key):
     if board[player["pos_x"]][player["pos_y"]] == "K" and \
-       level_number[0] == level:
+       level_number == level:
         print("You have found a key!")
         key += 1
         board[player["pos_x"]][player["pos_y"]] == "."
     return key
 
 
-def check_if_monster(player, board, enemy):
+def check_if_monster(player, board, enemy, items):
     if board[player["pos_x"]][player["pos_y"]] == enemy["icon"]:
-        event_handler_monsters(player, board, enemy)
+        event_handler_monsters(player, board, enemy, items)
 
 
 def check_for_keys(player, board, level_number, keys):
@@ -222,58 +219,59 @@ def check_for_keys(player, board, level_number, keys):
     return bronze_key, silver_key, golden_key
 
 
-def check_for_monsters(player, board):
+def check_for_monsters(player, board, items):
     monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
     for monster in monsters:
-        check_if_monster(player, board, monster)
+        check_if_monster(player, board, monster, items)
 
 
-def check_for_items(player, board):
+def check_for_items(player, board, items):
     if board[player["pos_x"]][player["pos_y"]] == "I":
-        items = read_file("items.txt")
         random_item = random.randint(0, 9)
         add_item_to_player(player, items[random_item], items)
 
 
-def check_floor(player, board, level_number, keys):
-    check_for_monsters(player, board)
-    check_for_items(player, board)
+def check_floor(player, board, level_number, keys, items):
+    check_for_monsters(player, board, items)
+    check_for_items(player, board, items)
     return check_for_keys(player, board, level_number, keys)
 
 
 def previous_level(player, level_number):
-    level_number[0] -= 1
+    level_number -= 1
     player["pos_x"] = 10
     player["pos_y"] = 28
+    return level_number
 
 
 def next_level(player, level_number):
-    level_number[0] += 1
+    level_number += 1
     player["pos_x"] = 10
     player["pos_y"] = 1
+    return level_number
 
 
 def check_for_gate(player, board, level_number, keys):
     bronze_key, silver_key, golden_key = keys
     if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["next"]:
-        if level_number[0] == 1 and bronze_key == 1:
-            next_level(player, level_number)
-        elif level_number[0] == 2 and silver_key == 1:
-            next_level(player, level_number)
-        elif level_number[0] == 3 and golden_key == 1:
-            next_level(player, level_number)
+        if level_number == 1 and bronze_key == 1:
+            level_number = next_level(player, level_number)
+        elif level_number == 2 and silver_key == 1:
+            level_number = next_level(player, level_number)
+        elif level_number == 3 and golden_key == 1:
+            level_number = next_level(player, level_number)
         else:
             print("You need a key!")
             player["pos_x"] = 10
             player["pos_y"] = 28
-
     elif board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["previous"]:
-        previous_level(player, level_number)
+        level_number = previous_level(player, level_number)
+    return level_number
 
 
-def event_handler(player: dict, board: list, level_number: list, keys):
+def event_handler(player: dict, board: list, level_number: int, keys, items):
     bronze_key, silver_key, golden_key = check_floor(
-        player, board, level_number, keys)
+        player, board, level_number, keys, items)
     keys = bronze_key, silver_key, golden_key
-    check_for_gate(player, board, level_number, keys)
-    return keys
+    level_number = check_for_gate(player, board, level_number, keys)
+    return level_number, keys

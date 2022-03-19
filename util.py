@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 
 def key_pressed():
@@ -11,8 +11,9 @@ def key_pressed():
             # probably Windows
             import msvcrt
         except ImportError:
-            # FIXME what to do on other platforms?
-            raise ImportError('getch not available')
+            import getch
+            key = getch.getch().decode('utf-8')
+            return key
         else:
             key = msvcrt.getch().decode('utf-8')
             return key
@@ -34,33 +35,37 @@ def clear_screen():
         os.system('clear')
 
 
-def save_game(player):
-    backup_inv = dict()
+def save_player(player):
+    inventory = dict()
     player_save = ""
     for k, v in player.items():
-        player_save += k
-        player_save += ";"
+        player_save += k + ";"
         if isinstance(v, dict):
-            backup_inv = v
+            inventory = v
         else:
             player_save += str(v)
         player_save += "\n"
-    save_player = open("player_save.txt", "w")
-    save_player.write(player_save)
-    save_player.close()
-
-    items_save = ''
-    for k, v in backup_inv.items():
-        items_save += k
-        items_save += ";"
-        items_save += str(v)
-        items_save += "\n"
-    save_items = open("items_save.txt", "w")
-    save_items.write(items_save)
-    save_items.close()
+    save = open("player_save.txt", "w")
+    save.write(player_save)
+    save.close()
+    return inventory
 
 
-def read_file(file_name):
+def save_inventory(inventory):
+    items = ''
+    for k, v in inventory.items():
+        items += k + ";" + str(v) + "\n"
+    save = open("items_save.txt", "w")
+    save.write(items)
+    save.close()
+
+
+def save_game(player):
+    inventory = save_player(player)
+    save_inventory(inventory)
+
+
+def read_save_file(file_name):
     save_file = open(file_name, "r")
     read_save = save_file.readlines()
     key_value = [element.strip("\n").split(';')
@@ -69,24 +74,23 @@ def read_file(file_name):
     return key_value
 
 
-def build_dict(key_value, item_dict=None):
+def build_dict(key_value, inventory=None):
     new_dict = dict()
     for i in range(len(key_value)):
         if key_value[i][1].isdigit():
             new_dict[key_value[i][0]] = int(key_value[i][1])
-        elif key_value[i][1] == "" and item_dict is not None:
-            new_dict[key_value[i][0]] = item_dict
-        elif key_value[i][1] == "" and item_dict is None:
-            item_dict[key_value[i][0]] = key_value[i][1]
+        elif key_value[i][1] == "" and inventory is not None:
+            new_dict[key_value[i][0]] = inventory
+        elif key_value[i][1] == "" and inventory is None:
+            inventory[key_value[i][0]] = key_value[i][1]
         else:
             new_dict[key_value[i][0]] = key_value[i][1]
     return new_dict
 
 
 def load_game():
-    key_value = read_file("items_save.txt")
-    item_dict = build_dict(key_value)
-
-    key_value = read_file("player_save.txt")
-    player_dict = build_dict(key_value, item_dict)
+    key_value = read_save_file("items_save.txt")
+    inventory = build_dict(key_value)
+    key_value = read_save_file("player_save.txt")
+    player_dict = build_dict(key_value, inventory)
     return player_dict
