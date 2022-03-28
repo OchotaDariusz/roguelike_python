@@ -15,7 +15,30 @@ ITEM_DEFENSIVE = 3
 ITEM_HEALTH = 4
 
 
-def create_board(width, height, level_number):
+def add_extra_walls(width, height, board):
+    for i in range(int(width * 0.4)):
+        pos_y = i
+        if i == width * 0.4 // 2:
+            continue
+        board[(height // 2) - int(height * 0.2)][width // 2 - int(width * 0.2) + pos_y] = "#"
+    for j in range(int(height * 0.4)):
+        pos_x = j
+        if j == height * 0.4 // 2:
+            continue
+        board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "#"
+    for k in range(int(width * 0.4)):
+        pos_y = i - k
+        if k == width * 0.4 // 2 - 1:
+            continue
+        board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "#"
+    for h in range(int(height * 0.4)):
+        pos_x = j - h
+        if h == height * 0.4 // 2 - 1:
+            continue
+        board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "#"
+
+
+def create_board(width, height, level_number, extra_walls=True):
     board = []
     for row_number in range(height):
         row_line = []
@@ -39,6 +62,8 @@ def create_board(width, height, level_number):
         back_gate_coordinates_x, back_gate_coordinates_y = int(height/2), 0
         board[gate_coordinates_x][gate_coordinates_y] = GATE_SYMBOLS["next"]
         board[back_gate_coordinates_x][back_gate_coordinates_y] = GATE_SYMBOLS["previous"]
+    if extra_walls:
+        add_extra_walls(width, height, board)
     return board
 
 
