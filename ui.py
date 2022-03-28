@@ -23,6 +23,7 @@ SYMBOLS_DICTIONARY = {
     "T": "T",
     "C": "C",
     "#": "border",
+    GATE_SYMBOLS["hell"]: "gate",
     GATE_SYMBOLS["next"]: "gate",
     GATE_SYMBOLS["previous"]: "gate",
     "@": "player",

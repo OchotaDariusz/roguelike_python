@@ -7,6 +7,7 @@ from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
 GATE_SYMBOLS = {
     "next": ">",
     "previous": "<",
+    "hell": "|"
 }
 
 ITEM_NAME = 0
@@ -16,25 +17,28 @@ ITEM_DEFENSIVE = 3
 ITEM_HEALTH = 4
 
 
-def add_extra_walls(width, height, board):
+def add_extra_walls(width, height, board, level_number):
     for i in range(int(width * 0.4)):
         pos_y = i
-        if i == width * 0.4 // 2:
+        if i == width * 0.4 // 2 and level_number != 4:
             continue
         board[(height // 2) - int(height * 0.2)][width // 2 - int(width * 0.2) + pos_y] = "#"
     for j in range(int(height * 0.4)):
         pos_x = j
-        if j == height * 0.4 // 2:
+        if j == height * 0.4 // 2 and level_number != 4:
             continue
         board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "#"
     for k in range(int(width * 0.4)):
         pos_y = i - k
-        if k == width * 0.4 // 2 - 1:
+        if k == width * 0.4 // 2 - 1 and level_number != 4:
             continue
         board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "#"
     for h in range(int(height * 0.4)):
         pos_x = j - h
-        if h == height * 0.4 // 2 - 1:
+        if h == height * 0.4 // 2 - 1 and level_number != 4:
+            continue
+        elif h == height * 0.4 // 2 - 1 and level_number == 4:
+            board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "|"
             continue
         board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "#"
 
@@ -122,7 +126,7 @@ def create_board(width, height, level_number, extra_walls=True, rectangular_shap
         board[gate_coordinates_x][gate_coordinates_y] = GATE_SYMBOLS["next"]
         board[back_gate_coordinates_x][back_gate_coordinates_y] = GATE_SYMBOLS["previous"]
     if extra_walls:
-        add_extra_walls(width, height, board)
+        add_extra_walls(width, height, board, level_number)
     if rectangular_shape is False:
         modify_walls(width, height, board)
     return board
@@ -368,7 +372,7 @@ def next_level(player, level_number):
     return level_number
 
 
-def check_for_gate(player, board, level_number, keys):
+def check_for_gate(player, board, level_number, keys, power_ring):
     bronze_key, silver_key, golden_key = keys
     if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["next"]:
         if level_number == 1 and bronze_key == 1:
@@ -383,14 +387,19 @@ def check_for_gate(player, board, level_number, keys):
             player["pos_y"] = 28
     elif board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["previous"]:
         level_number = previous_level(player, level_number)
+
+    if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["hell"]:
+        if power_ring == 0:
+            print("You need a special ring!")
+            player["pos_y"] = player["pos_y"] - 1
     return level_number
 
 
-def event_handler(player: dict, board: list, level_number: int, keys, items):
+def event_handler(player: dict, board: list, level_number: int, keys, items, power_ring):
     bronze_key, silver_key, golden_key = check_floor(
         player, board, level_number, keys, items)
     keys = bronze_key, silver_key, golden_key
-    level_number = check_for_gate(player, board, level_number, keys)
+    level_number = check_for_gate(player, board, level_number, keys, power_ring)
     return level_number, keys
 
 
