@@ -83,7 +83,7 @@ def place_monster(level_number, level, board, enemy):
 def place_key(board, level_number, level, enemy, key):
     if level_number == level and not enemy["is_alive"]:
         if key == 0:
-            board[1][1] = "K"
+            board[BOARD_HEIGHT // 2][BOARD_WIDTH // 2] = "K"
 
 
 def place_monsters(level_number, board):
