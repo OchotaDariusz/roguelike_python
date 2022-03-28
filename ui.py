@@ -5,6 +5,7 @@ COLORS = {
     "player": (255, 255, 255),
     "item": (200, 200, 100),
     "empty space": (102, 255, 102),
+    "white space": (0, 0, 0),
     "gate": (255, 255, 100),
     "M": (255, 255, 100),
     "B": (255, 255, 100),
@@ -25,7 +26,8 @@ SYMBOLS_DICTIONARY = {
     GATE_SYMBOLS["next"]: "gate",
     GATE_SYMBOLS["previous"]: "gate",
     "@": "player",
-    ".": "empty space"
+    ".": "empty space",
+    " ": "white space"
 }
 
 
