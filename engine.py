@@ -1,4 +1,5 @@
 import battle
+import movement
 import random
 import util
 from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
@@ -159,7 +160,7 @@ def import_bord(filename="level_1.txt"):
     return board
 
 
-def put_player_on_board(board, player):
+def put_player_on_board(board, player, level_number):
     '''
     Modifies the game board by placing the player icon at its coordinates.
 
@@ -170,13 +171,44 @@ def put_player_on_board(board, player):
     Returns:
     Nothing
     '''
-    if player["type"] == 'boss':
+    if player["type"] == 'boss' and level_number == 4:
+        for row in range(len(board)):
+            for column in range(len(board[row])):
+                if board[row][column] == 'B':
+                    board[row][column] = '.'
         for i in range(5):
             board[player["pos_x"] + i][player["pos_y"]] = player["icon"]
             for j in range(5):
                 board[player["pos_x"] + i][player["pos_y"] + j] = player["icon"]
     else:
         board[player["pos_x"]][player["pos_y"]] = player["icon"]
+
+
+def place_monster(level_number, level, board, enemy):
+    if level_number == level and enemy["is_alive"]:
+        put_player_on_board(board, enemy, level_number)
+
+
+def place_monsters(level_number, board):
+    monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
+    for level, monster in enumerate(monsters):
+        place_monster(level_number, level + 1, board, monster)
+
+
+def place_key(board, size, level_number, level, enemy, key):
+    height, width = size
+    if level_number == level and not enemy["is_alive"]:
+        if key == 0:
+            board[height // 2][width // 2] = "K"
+
+
+def initialize_map(player, level_number, board, size, keys):
+    bronze_key, silver_key, golden_key = keys
+    put_player_on_board(board, player, level_number)
+    place_monsters(level_number, board)
+    place_key(board, size, level_number, 1, mercenary, bronze_key)
+    place_key(board, size, level_number, 2, infantry_of_troy, silver_key)
+    place_key(board, size, level_number, 3, cavalry_of_troy, golden_key)
 
 
 def read_file(file_name):
@@ -360,3 +392,27 @@ def event_handler(player: dict, board: list, level_number: int, keys, items):
     keys = bronze_key, silver_key, golden_key
     level_number = check_for_gate(player, board, level_number, keys)
     return level_number, keys
+
+
+def key_handler(player, items, cheats_active, turn, keys, board, key):
+    if key == 'q':
+        return False, cheats_active
+    elif key == 'x':
+        cheats_active = activate_cheat(player, cheats_active)
+    elif key == 'i':
+        util.clear_screen()
+        show_inventory(player, items)
+        bronze_key, silver_key, golden_key = keys
+        print("Bronze Key:", bronze_key)
+        print("Silver Key:", silver_key)
+        print("Golden Key:", golden_key)
+        util.key_pressed()
+    elif key == '\\':
+        util.clear_screen()
+        util.save_game(player)
+        print("Game Saved")
+        util.key_pressed()
+    else:
+        movement.step_direction(player, key, board)
+        movement.move_monsters(board, turn)
+    return True, cheats_active

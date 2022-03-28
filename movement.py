@@ -1,3 +1,7 @@
+import random
+from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
+
+
 def step_direction(player, input_char, board):
     illegal_objects = ["#", "M", "I", "C", "T", "B", ">", "<"]
     can_move = True
@@ -56,3 +60,15 @@ def step_direction(player, input_char, board):
             can_move = False
         if can_move:
             player["pos_y"] = player["pos_y"] + 1
+
+
+def monster_step(board, turn, enemy):
+    if enemy["is_alive"] and turn % 2 == 0:
+        rand_key = random.choice(["W", "S", "D", "A"])
+        step_direction(enemy, rand_key, board)
+
+
+def move_monsters(board, turn):
+    monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
+    for monster in monsters:
+        monster_step(board, turn, monster)

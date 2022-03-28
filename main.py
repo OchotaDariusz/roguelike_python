@@ -1,9 +1,7 @@
 import engine
-import movement
-import random
 import ui
 import util
-from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
+
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 3
@@ -69,44 +67,6 @@ def create_player(race: str):
     return player
 
 
-def monster_step(board, turn, enemy):
-    if enemy["is_alive"] and turn % 2 == 0:
-        rand_key = random.choice(["W", "S", "D", "A"])
-        movement.step_direction(enemy, rand_key, board)
-
-
-def place_monster(level_number, level, board, enemy):
-    if level_number == level and enemy["is_alive"]:
-        engine.put_player_on_board(board, enemy)
-
-
-def place_key(board, level_number, level, enemy, key):
-    if level_number == level and not enemy["is_alive"]:
-        if key == 0:
-            board[BOARD_HEIGHT // 2][BOARD_WIDTH // 2] = "K"
-
-
-def place_monsters(level_number, board):
-    monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
-    for level, monster in enumerate(monsters):
-        place_monster(level_number, level + 1, board, monster)
-
-
-def move_monsters(board, turn):
-    monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
-    for monster in monsters:
-        monster_step(board, turn, monster)
-
-
-def initialize_map(player, level_number, board, keys):
-    bronze_key, silver_key, golden_key = keys
-    engine.put_player_on_board(board, player)
-    place_monsters(level_number, board)
-    place_key(board, level_number, 1, mercenary, bronze_key)
-    place_key(board, level_number, 2, infantry_of_troy, silver_key)
-    place_key(board, level_number, 3, cavalry_of_troy, golden_key)
-
-
 def setup_game():
     start_game = input("1) Start New Game\n2) Load Last Game\n")
     if start_game == '1':
@@ -125,63 +85,34 @@ def setup_game():
     return player, items
 
 
-def key_handler(player, items, cheats_active, turn, keys, board, key):
-    if key == 'q':
-        return False
-    elif key == 'x':
-        cheats_active = engine.activate_cheat(player, cheats_active)
-        return True
-    elif key == 'i':
-        util.clear_screen()
-        engine.show_inventory(player, items)
-        bronze_key, silver_key, golden_key = keys
-        print("Bronze Key:", bronze_key)
-        print("Silver Key:", silver_key)
-        print("Golden Key:", golden_key)
-        util.key_pressed()
-        return True
-    elif key == '\\':
-        util.clear_screen()
-        util.save_game(player)
-        print("Game Saved")
-        util.key_pressed()
-        return True
-    else:
-        movement.step_direction(player, key, board)
-        move_monsters(board, turn)
-        return True
-
-
 def main():
+    util.clear_screen()
     player, items = setup_game()
     level_number = 1
-    util.clear_screen()
     cheats_active = 0
     turn = 0
     bronze_key, silver_key, golden_key = 0, 0, 0
+    size = BOARD_HEIGHT, BOARD_WIDTH
     is_running = True
+    util.clear_screen()
     while is_running:
         turn += 1
         keys = bronze_key, silver_key, golden_key
         level_file = "level_"+str(level_number)+".txt"
         board = engine.import_bord(level_file)
-        initialize_map(player, level_number, board, keys)
+        engine.initialize_map(player, level_number, board, size, keys)
         ui.display_board(board)
         ui.display_stats(player)
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
         key = util.key_pressed()
-        is_running = key_handler(
+        is_running, cheats_active = engine.key_handler(
             player, items, cheats_active, turn, keys, board, key)
         util.clear_screen()
         level_number, keys = engine.event_handler(
             player, board, level_number, keys, items)
         bronze_key, silver_key, golden_key = keys
         board[backup_pos_x][backup_pos_y] = '.'
-        for row in range(len(board)):
-            for column in range(len(board[row])):
-                if board[row][column] == 'B':
-                    board[row][column] = '.'
 
         if player["lives"] <= 0:
             input("Game Over!")
