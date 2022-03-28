@@ -318,7 +318,7 @@ def event_handler_monsters(player, board, enemy, items):
         board[player["pos_x"]][player["pos_y"]] = "."
         enemy["is_alive"] = False
         random_item = random.randint(0, 9)
-        print(items[random_item])
+        print(f"You have found {items[random_item][0]}")
         add_item_to_player(player, items[random_item], items)
     else:
         enemy_size = 1 if enemy["type"] == "monster" else 5
@@ -362,16 +362,22 @@ def check_for_items(player, board, items):
 
 
 def start_quiz(player, power_ring):
-    answers = [1, 2]
-    choose_question = random.randint(1, 2)
-    print(questions[choose_question])
-    user_answer = int(input("1. Yes\n2. No\n"))
-    if user_answer == answers[choose_question - 1]:
+    answers = [1, 2, 1, 2, 1, 2, 2, 2, 1]
+    choose_question = random.randint(1, len(answers))
+    while True:
+        util.clear_screen()
+        print(questions[choose_question])
+        user_answer = input("1. Yes\n2. No\n")
+        if user_answer == "1" or user_answer == "2":
+            break
+    if int(user_answer) == answers[choose_question - 1]:
         print("Correct")
         power_ring += 1
     else:
         print("Wrong!")
         player["lives"] -= 1
+    util.key_pressed()
+    util.clear_screen()
     return power_ring
 
 

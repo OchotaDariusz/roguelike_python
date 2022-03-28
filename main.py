@@ -91,7 +91,7 @@ def main():
     level_number = 1
     cheats_active = 0
     turn = 0
-    bronze_key, silver_key, golden_key = 1, 1, 1
+    bronze_key, silver_key, golden_key = 0, 0, 0
     power_ring = 0
     size = BOARD_HEIGHT, BOARD_WIDTH
     is_running = True
