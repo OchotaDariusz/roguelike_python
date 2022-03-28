@@ -91,7 +91,7 @@ def main():
     level_number = 1
     cheats_active = 0
     turn = 0
-    bronze_key, silver_key, golden_key = 0, 0, 0
+    bronze_key, silver_key, golden_key = 1, 1, 1
     power_ring = 0
     size = BOARD_HEIGHT, BOARD_WIDTH
     is_running = True
@@ -108,9 +108,9 @@ def main():
         backup_pos_y = player["pos_y"]
         key = util.key_pressed()
         is_running, cheats_active = engine.key_handler(
-            player, items, cheats_active, turn, keys, board, key)
+            player, items, cheats_active, turn, keys, board, key, level_number, power_ring)
         util.clear_screen()
-        level_number, keys = engine.event_handler(
+        level_number, keys, power_ring = engine.event_handler(
             player, board, level_number, keys, items, power_ring)
         bronze_key, silver_key, golden_key = keys
         board[backup_pos_x][backup_pos_y] = '.'

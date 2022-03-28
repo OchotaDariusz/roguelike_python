@@ -67,9 +67,18 @@ enemy_hero = {
     "armor": 50,
     "damage": 600,
     "reward": 1000,
-    "pos_x": 10,
+    "pos_x": 8,
     "pos_y": 10,
     "icon": 'B',
     "is_alive": True,
     "inventory": {}
+}
+
+sphinx = {
+    "name": "Sphinx",
+    "type": 'npc',
+    "pos_x": 14,
+    "pos_y": 17,
+    "icon": 'S',
+    "is_alive": True
 }

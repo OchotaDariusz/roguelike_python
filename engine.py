@@ -2,7 +2,9 @@ import battle
 import movement
 import random
 import util
-from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
+from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary, sphinx
+from questions import questions
+
 
 GATE_SYMBOLS = {
     "next": ">",
@@ -175,6 +177,11 @@ def put_player_on_board(board, player, level_number):
     Returns:
     Nothing
     '''
+    if player["type"] == 'npc' and level_number == 4:
+        for i in range(2):
+            board[player["pos_x"] + i][player["pos_y"]] = player["icon"]
+            for j in range(2):
+                board[player["pos_x"] + i][player["pos_y"] + j] = player["icon"]
     if player["type"] == 'boss' and level_number == 4:
         for row in range(len(board)):
             for column in range(len(board[row])):
@@ -194,9 +201,11 @@ def place_monster(level_number, level, board, enemy):
 
 
 def place_monsters(level_number, board):
-    monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
-    for level, monster in enumerate(monsters):
-        place_monster(level_number, level + 1, board, monster)
+    place_monster(level_number, 1, board, mercenary)
+    place_monster(level_number, 2, board, infantry_of_troy)
+    place_monster(level_number, 3, board, cavalry_of_troy)
+    place_monster(level_number, 4, board, enemy_hero)
+    place_monster(level_number, 4, board, sphinx)
 
 
 def place_key(board, size, level_number, level, enemy, key):
@@ -352,10 +361,32 @@ def check_for_items(player, board, items):
         add_item_to_player(player, items[random_item], items)
 
 
-def check_floor(player, board, level_number, keys, items):
+def start_quiz(player, power_ring):
+    answers = [1, 2]
+    choose_question = random.randint(1, 2)
+    print(questions[choose_question])
+    user_answer = int(input("1. Yes\n2. No\n"))
+    if user_answer == answers[choose_question - 1]:
+        print("Correct")
+        power_ring += 1
+    else:
+        print("Wrong!")
+        player["lives"] -= 1
+    return power_ring
+
+
+def check_for_npc(player, board, power_ring):
+    if board[player["pos_x"]][player["pos_y"]] == "S":
+        power_ring = start_quiz(player, power_ring)
+    return power_ring
+
+
+def check_floor(player, board, level_number, keys, items, power_ring):
     check_for_monsters(player, board, items)
     check_for_items(player, board, items)
-    return check_for_keys(player, board, level_number, keys)
+    bronze_key, silver_key, golden_key = check_for_keys(player, board, level_number, keys)
+    power_ring = check_for_npc(player, board, power_ring)
+    return bronze_key, silver_key, golden_key, power_ring
 
 
 def previous_level(player, level_number):
@@ -396,14 +427,14 @@ def check_for_gate(player, board, level_number, keys, power_ring):
 
 
 def event_handler(player: dict, board: list, level_number: int, keys, items, power_ring):
-    bronze_key, silver_key, golden_key = check_floor(
-        player, board, level_number, keys, items)
+    bronze_key, silver_key, golden_key, power_ring = check_floor(
+        player, board, level_number, keys, items, power_ring)
     keys = bronze_key, silver_key, golden_key
     level_number = check_for_gate(player, board, level_number, keys, power_ring)
-    return level_number, keys
+    return level_number, keys, power_ring
 
 
-def key_handler(player, items, cheats_active, turn, keys, board, key):
+def key_handler(player, items, cheats_active, turn, keys, board, key, level_number, power_ring):
     if key == 'q':
         return False, cheats_active
     elif key == 'x':
@@ -415,6 +446,7 @@ def key_handler(player, items, cheats_active, turn, keys, board, key):
         print("Bronze Key:", bronze_key)
         print("Silver Key:", silver_key)
         print("Golden Key:", golden_key)
+        print("Power Ring:", power_ring)
         util.key_pressed()
     elif key == '\\':
         util.clear_screen()
@@ -423,5 +455,5 @@ def key_handler(player, items, cheats_active, turn, keys, board, key):
         util.key_pressed()
     else:
         movement.step_direction(player, key, board)
-        movement.move_monsters(board, turn)
+        movement.move_monsters(board, turn, level_number)
     return True, cheats_active

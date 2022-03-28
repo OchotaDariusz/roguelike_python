@@ -68,7 +68,9 @@ def monster_step(board, turn, enemy):
         step_direction(enemy, rand_key, board)
 
 
-def move_monsters(board, turn):
-    monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
+def move_monsters(board, turn, level_number):
+    monsters = [mercenary, infantry_of_troy, cavalry_of_troy]
     for monster in monsters:
         monster_step(board, turn, monster)
+    if level_number == 4:
+        monster_step(board, turn, enemy_hero)
