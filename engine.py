@@ -2,7 +2,7 @@ import battle
 import movement
 import random
 import util
-from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary, sphinx
+from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary, wojciech, kasia
 from questions import questions
 
 
@@ -202,26 +202,28 @@ def place_monster(level_number, level, board, enemy):
 
 def place_monsters(level_number, board):
     place_monster(level_number, 1, board, mercenary)
+    place_monster(level_number, 1, board, kasia)
     place_monster(level_number, 2, board, infantry_of_troy)
     place_monster(level_number, 3, board, cavalry_of_troy)
     place_monster(level_number, 4, board, enemy_hero)
-    place_monster(level_number, 4, board, sphinx)
+    place_monster(level_number, 4, board, wojciech)
 
 
 def place_key(board, size, level_number, level, enemy, key):
     height, width = size
     if level_number == level and not enemy["is_alive"]:
         if key == 0:
-            board[height // 2][width // 2] = "K"
+            board[height // 2][width // 2] = "§"
 
 
-def initialize_map(player, level_number, board, size, keys):
+def initialize_map(player, level_number, board, size, keys, items):
     bronze_key, silver_key, golden_key = keys
     put_player_on_board(board, player, level_number)
     place_monsters(level_number, board)
     place_key(board, size, level_number, 1, mercenary, bronze_key)
     place_key(board, size, level_number, 2, infantry_of_troy, silver_key)
     place_key(board, size, level_number, 3, cavalry_of_troy, golden_key)
+    #place_items(board, level_number, items)
 
 
 def read_file(file_name):
@@ -271,6 +273,7 @@ def change_item(player, item, items):
     if decide == "Y":
         remove_old_item_statistics(player, item, items)
         add_item(player, item)
+    util.clear_screen()
 
 
 def add_item_to_player(player, item, items):
@@ -328,7 +331,7 @@ def event_handler_monsters(player, board, enemy, items):
 
 
 def pick_up_key(player, board, level_number, level, key):
-    if board[player["pos_x"]][player["pos_y"]] == "K" and \
+    if board[player["pos_x"]][player["pos_y"]] == "§" and \
        level_number == level:
         print("You have found a key!")
         key += 1
@@ -361,29 +364,46 @@ def check_for_items(player, board, items):
         add_item_to_player(player, items[random_item], items)
 
 
-def start_quiz(player, power_ring):
+def start_quiz(player, power_ring, npc, items=None):
     answers = [1, 2, 1, 2, 1, 2, 2, 2, 1]
     choose_question = random.randint(1, len(answers))
-    while True:
-        util.clear_screen()
-        print(questions[choose_question])
-        user_answer = input("1. Yes\n2. No\n")
-        if user_answer == "1" or user_answer == "2":
-            break
-    if int(user_answer) == answers[choose_question - 1]:
-        print("Correct")
-        power_ring += 1
-    else:
-        print("Wrong!")
-        player["lives"] -= 1
+    if npc["name"] == "Wojciech":
+        while True:
+            util.clear_screen()
+            print(questions[choose_question])
+            user_answer = input("1. Yes\n2. No\n")
+            if user_answer == "1" or user_answer == "2":
+                break
+        if int(user_answer) == answers[choose_question - 1]:
+            print("Correct")
+            power_ring += 1
+        else:
+            print("Wrong!")
+            player["lives"] -= 1
+    elif npc["name"] == "Kasia":
+        while True:
+            util.clear_screen()
+            print(questions[choose_question])
+            user_answer = input("1. Yes\n2. No\n")
+            if user_answer == "1" or user_answer == "2":
+                break
+        if int(user_answer) == answers[choose_question - 1]:
+            print("Correct")
+            random_item = random.randint(0, 9)
+            add_item_to_player(player, items[random_item], items)
+        else:
+            print("Wrong!")
+            player["lives"] -= 1
     util.key_pressed()
     util.clear_screen()
     return power_ring
 
 
-def check_for_npc(player, board, power_ring):
-    if board[player["pos_x"]][player["pos_y"]] == "S":
-        power_ring = start_quiz(player, power_ring)
+def check_for_npc(player, board, power_ring, items):
+    if board[player["pos_x"]][player["pos_y"]] == "W":
+        power_ring = start_quiz(player, power_ring, wojciech)
+    elif board[player["pos_x"]][player["pos_y"]] == "K":
+        power_ring = start_quiz(player, power_ring, kasia, items)
     return power_ring
 
 
@@ -391,7 +411,7 @@ def check_floor(player, board, level_number, keys, items, power_ring):
     check_for_monsters(player, board, items)
     check_for_items(player, board, items)
     bronze_key, silver_key, golden_key = check_for_keys(player, board, level_number, keys)
-    power_ring = check_for_npc(player, board, power_ring)
+    power_ring = check_for_npc(player, board, power_ring, items)
     return bronze_key, silver_key, golden_key, power_ring
 
 

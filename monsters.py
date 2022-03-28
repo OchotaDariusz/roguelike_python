@@ -74,11 +74,20 @@ enemy_hero = {
     "inventory": {}
 }
 
-sphinx = {
-    "name": "Sphinx",
+wojciech = {
+    "name": "Wojciech",
     "type": 'npc',
     "pos_x": 14,
     "pos_y": 17,
-    "icon": 'S',
+    "icon": 'W',
+    "is_alive": True
+}
+
+kasia = {
+    "name": "Kasia",
+    "type": 'npc',
+    "pos_x": 1,
+    "pos_y": 3,
+    "icon": 'K',
     "is_alive": True
 }
