@@ -13,8 +13,7 @@ mercenary = {
     "pos_x": 15,
     "pos_y": 15,
     "icon": 'M',
-    "is_alive": True,
-    "inventory": {}
+    "is_alive": True
 }
 
 infantry_of_troy = {
@@ -27,13 +26,12 @@ infantry_of_troy = {
     "health": 500,
     "maxHP": 500,
     "armor": 50,
-    "damage": 120,
+    "damage": 200,
     "reward": 500,
     "pos_x": 15,
     "pos_y": 15,
     "icon": 'T',
-    "is_alive": True,
-    "inventory": {}
+    "is_alive": True
 }
 
 cavalry_of_troy = {
@@ -46,13 +44,12 @@ cavalry_of_troy = {
     "health": 700,
     "maxHP": 700,
     "armor": 50,
-    "damage": 150,
+    "damage": 350,
     "reward": 700,
     "pos_x": 15,
     "pos_y": 15,
     "icon": 'C',
-    "is_alive": True,
-    "inventory": {}
+    "is_alive": True
 }
 
 enemy_hero = {
@@ -70,8 +67,7 @@ enemy_hero = {
     "pos_x": 18,
     "pos_y": 21,
     "icon": 'B',
-    "is_alive": True,
-    "inventory": {}
+    "is_alive": True
 }
 
 wojciech = {

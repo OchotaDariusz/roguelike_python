@@ -222,14 +222,13 @@ def place_key(board, size, level_number, level, enemy, key):
             board[(height + 10) // 2][(width + 10) // 2] = "§"
 
 
-def initialize_map(player, level_number, board, size, keys, items):
+def initialize_map(player, level_number, board, size, keys):
     bronze_key, silver_key, golden_key = keys
     put_player_on_board(board, player, level_number)
     place_monsters(level_number, board)
     place_key(board, size, level_number, 1, mercenary, bronze_key)
     place_key(board, size, level_number, 2, infantry_of_troy, silver_key)
     place_key(board, size, level_number, 3, cavalry_of_troy, golden_key)
-    #place_items(board, level_number, items)
 
 
 def read_file(file_name):
@@ -251,6 +250,7 @@ def remove_old_item_statistics(player, item, items):
 
 
 def add_item(player, item):
+    print(f"You've got {item[0]}!")
     player["damage"] += int(item[ITEM_DAMAGE])
     player["armor"] += int(item[ITEM_DEFENSIVE])
     player["health"] += int(item[ITEM_HEALTH])
@@ -327,7 +327,6 @@ def event_handler_monsters(player, board, enemy, items):
         board[player["pos_x"]][player["pos_y"]] = "."
         enemy["is_alive"] = False
         random_item = random.randint(0, 29)
-        print(f"You have found {items[random_item][0]}")
         add_item_to_player(player, items[random_item], items)
     else:
         enemy_size = 1 if enemy["type"] == "monster" else 5
@@ -364,12 +363,6 @@ def check_for_monsters(player, board, items):
         check_if_monster(player, board, monster, items)
 
 
-def check_for_items(player, board, items):
-    if board[player["pos_x"]][player["pos_y"]] == "I":
-        random_item = random.randint(0, 29)
-        add_item_to_player(player, items[random_item], items)
-
-
 def start_quiz(player, power_ring, npc, items=None):
     answers = [1, 2, 1, 2, 1, 2, 2, 2, 1]
     choose_question = random.randint(1, len(answers))
@@ -383,6 +376,7 @@ def start_quiz(player, power_ring, npc, items=None):
         if int(user_answer) == answers[choose_question - 1]:
             print("Correct")
             power_ring += 1
+            print("You've received a special ring!")
         else:
             print("Wrong!")
             player["lives"] -= 1
@@ -415,7 +409,6 @@ def check_for_npc(player, board, power_ring, items):
 
 def check_floor(player, board, level_number, keys, items, power_ring):
     check_for_monsters(player, board, items)
-    check_for_items(player, board, items)
     bronze_key, silver_key, golden_key = check_for_keys(player, board, level_number, keys)
     power_ring = check_for_npc(player, board, power_ring, items)
     return bronze_key, silver_key, golden_key, power_ring

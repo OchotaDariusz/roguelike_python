@@ -102,7 +102,7 @@ def main():
         keys = bronze_key, silver_key, golden_key
         level_file = "level_"+str(level_number)+".txt"
         board = engine.import_bord(level_file)
-        engine.initialize_map(player, level_number, board, size, keys, items)
+        engine.initialize_map(player, level_number, board, size, keys)
         ui.display(board, player["pos_y"], player["pos_x"], screen_size, level_number)
         ui.display_stats(player)
         backup_pos_x = player["pos_x"]
