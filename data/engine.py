@@ -1,4 +1,5 @@
 import random
+import time
 from data import battle
 from data import movement
 from data import util
@@ -363,16 +364,17 @@ def check_for_monsters(player, board, items):
         check_if_monster(player, board, monster, items)
 
 
-def print_question(question):
-    for char in question:
-        print(char, end="")
+def slow_print(text):
+    for char in text:
+        time.sleep(0.05)
+        print(char, end="", flush=True)
 
 
 def ask_question(player, items, answers, npc, exam_permission):
     choose_question = random.randint(1, len(answers))
     while True:
         util.clear_screen()
-        print(questions[choose_question])
+        slow_print(questions[choose_question])
         user_answer = input("\n1. Yes\n2. No\n")
         if user_answer == "1" or user_answer == "2":
             break
