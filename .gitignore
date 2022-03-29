@@ -2,5 +2,4 @@ __pycache__/
 .idea/
 .vscode/
 *.py[cod]
-items_save.txt
-player_save.txt
+*.txt

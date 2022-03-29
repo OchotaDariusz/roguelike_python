@@ -29,7 +29,7 @@ infantry_of_troy = {
     "armor": 50,
     "damage": 120,
     "reward": 500,
-    "pos_x": 5,
+    "pos_x": 15,
     "pos_y": 10,
     "icon": 'T',
     "is_alive": True,
