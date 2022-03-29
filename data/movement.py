@@ -1,5 +1,5 @@
 import random
-from data.monsters_and_npc import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
+from data.monsters_and_npc import journey_project_3, progbasic_exam, journey_project_2, journey_project_1
 
 
 def step_direction(player, input_char, board):
@@ -70,10 +70,10 @@ def monster_step(board, turn, enemy):
 
 def move_monsters(board, turn, level_number):
     if level_number == 1:
-        monster_step(board, turn, mercenary)
+        monster_step(board, turn, journey_project_1)
     if level_number == 2:
-        monster_step(board, turn, infantry_of_troy)
+        monster_step(board, turn, journey_project_2)
     if level_number == 3:
-        monster_step(board, turn, cavalry_of_troy)
+        monster_step(board, turn, journey_project_3)
     if level_number == 4:
-        monster_step(board, turn, enemy_hero)
+        monster_step(board, turn, progbasic_exam)

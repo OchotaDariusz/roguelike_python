@@ -1,5 +1,5 @@
-mercenary = {
-    "name": "Mercenary",
+journey_project_1 = {
+    "name": "First Project",
     "type": 'monster',
     "level": 1,
     "xp": 0,
@@ -12,12 +12,12 @@ mercenary = {
     "reward": 300,
     "pos_x": 15,
     "pos_y": 15,
-    "icon": 'M',
+    "icon": 'P',
     "is_alive": True
 }
 
-infantry_of_troy = {
-    "name": "Soldier of Troy",
+journey_project_2 = {
+    "name": "Second Project",
     "type": 'monster',
     "level": 1,
     "xp": 0,
@@ -30,12 +30,12 @@ infantry_of_troy = {
     "reward": 500,
     "pos_x": 15,
     "pos_y": 15,
-    "icon": 'T',
+    "icon": 'S',
     "is_alive": True
 }
 
-cavalry_of_troy = {
-    "name": "Raider of Troy",
+journey_project_3 = {
+    "name": "Third Project",
     "type": 'monster',
     "level": 1,
     "xp": 0,
@@ -48,12 +48,12 @@ cavalry_of_troy = {
     "reward": 700,
     "pos_x": 15,
     "pos_y": 15,
-    "icon": 'C',
+    "icon": 'T',
     "is_alive": True
 }
 
-enemy_hero = {
-    "name": "Hector",
+progbasic_exam = {
+    "name": "ProgBasic Exam",
     "type": 'boss',
     "level": 1,
     "xp": 0,
@@ -66,7 +66,7 @@ enemy_hero = {
     "reward": 1000,
     "pos_x": 18,
     "pos_y": 21,
-    "icon": 'B',
+    "icon": 'E',
     "is_alive": True
 }
 

@@ -2,7 +2,7 @@ import data.battle as battle
 import data.movement as movement
 import random
 import data.util as util
-from data.monsters_and_npc import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary, wojciech, kasia
+from data.monsters_and_npc import journey_project_3, progbasic_exam, journey_project_2, journey_project_1, wojciech, kasia
 from data.questions.questions import questions
 
 
@@ -207,11 +207,11 @@ def place_monster(level_number, level, board, enemy):
 
 
 def place_monsters(level_number, board):
-    place_monster(level_number, 1, board, mercenary)
+    place_monster(level_number, 1, board, journey_project_1)
     place_monster(level_number, 1, board, kasia)
-    place_monster(level_number, 2, board, infantry_of_troy)
-    place_monster(level_number, 3, board, cavalry_of_troy)
-    place_monster(level_number, 4, board, enemy_hero)
+    place_monster(level_number, 2, board, journey_project_2)
+    place_monster(level_number, 3, board, journey_project_3)
+    place_monster(level_number, 4, board, progbasic_exam)
     place_monster(level_number, 4, board, wojciech)
 
 
@@ -226,9 +226,9 @@ def initialize_map(player, level_number, board, size, milestones):
     bronze_milestone, silver_milestone, golden_milestone = milestones
     put_player_on_board(board, player, level_number)
     place_monsters(level_number, board)
-    place_milestone(board, size, level_number, 1, mercenary, bronze_milestone)
-    place_milestone(board, size, level_number, 2, infantry_of_troy, silver_milestone)
-    place_milestone(board, size, level_number, 3, cavalry_of_troy, golden_milestone)
+    place_milestone(board, size, level_number, 1, journey_project_1, bronze_milestone)
+    place_milestone(board, size, level_number, 2, journey_project_2, silver_milestone)
+    place_milestone(board, size, level_number, 3, journey_project_3, golden_milestone)
 
 
 def read_file(file_name):
@@ -358,29 +358,37 @@ def check_for_milestones(player, board, level_number, milestones):
 
 
 def check_for_monsters(player, board, items):
-    monsters = [mercenary, infantry_of_troy, cavalry_of_troy, enemy_hero]
+    monsters = [journey_project_1, journey_project_2, journey_project_3, progbasic_exam]
     for monster in monsters:
         check_if_monster(player, board, monster, items)
 
 
 def start_quiz(player, exam_permission, npc, items=None):
     answers = [1, 2, 1, 2, 1, 2, 2, 2, 1]
-    choose_question = random.randint(1, len(answers))
     if npc["name"] == "Wojciech":
-        while True:
-            util.clear_screen()
-            print(questions[choose_question])
-            user_answer = input("1. Yes\n2. No\n")
-            if user_answer == "1" or user_answer == "2":
-                break
-        if int(user_answer) == answers[choose_question - 1]:
-            print("Correct")
-            exam_permission += 1
-            print("You've been granted a permission to participate in exam! Good Luck!")
-        else:
-            print("Wrong!")
-            player["lives"] -= 1
+        correct_answers = 0
+        while exam_permission == 0:
+            choose_question = random.randint(1, len(answers))
+            while True:
+                util.clear_screen()
+                print(questions[choose_question])
+                user_answer = input("1. Yes\n2. No\n")
+                if user_answer == "1" or user_answer == "2":
+                    break
+            if int(user_answer) == answers[choose_question - 1]:
+                print("Correct")
+                correct_answers += 1
+                if correct_answers == 3:
+                    exam_permission += 1
+                    print("You've been granted a permission to participate in exam! Good Luck!")
+                else:
+                    input("Press any key to continue...")
+            else:
+                print("Wrong!")
+                player["lives"] -= 1
+                print(f"Lives left:", player["lives"])
     elif npc["name"] == "Kasia":
+        choose_question = random.randint(1, len(answers))
         while True:
             util.clear_screen()
             print(questions[choose_question])
