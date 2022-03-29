@@ -1,5 +1,5 @@
-import util
-import ascii_art
+import data.util as util
+import data.ascii_art as ascii_art
 import random
 
 

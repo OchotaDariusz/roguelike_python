@@ -1,4 +1,4 @@
-from engine import GATE_SYMBOLS
+from data.engine import GATE_SYMBOLS
 
 COLORS_1 = {
     "border": (0, 255, 0),

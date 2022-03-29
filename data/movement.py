@@ -1,5 +1,5 @@
 import random
-from monsters import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
+from data.monsters_and_npc import cavalry_of_troy, enemy_hero, infantry_of_troy, mercenary
 
 
 def step_direction(player, input_char, board):

@@ -45,7 +45,7 @@ def save_player(player):
         else:
             player_save += str(v)
         player_save += "\n"
-    save = open("player_save.txt", "w")
+    save = open("data/save/player_save.txt", "w")
     save.write(player_save)
     save.close()
     return inventory
@@ -55,7 +55,7 @@ def save_inventory(inventory):
     items = ''
     for k, v in inventory.items():
         items += k + ";" + str(v) + "\n"
-    save = open("items_save.txt", "w")
+    save = open("data/save/items_save.txt", "w")
     save.write(items)
     save.close()
 
@@ -89,8 +89,8 @@ def build_dict(key_value, inventory=None):
 
 
 def load_game():
-    key_value = read_save_file("items_save.txt")
+    key_value = read_save_file("data/save/items_save.txt")
     inventory = build_dict(key_value)
-    key_value = read_save_file("player_save.txt")
+    key_value = read_save_file("data/save/player_save.txt")
     player_dict = build_dict(key_value, inventory)
     return player_dict

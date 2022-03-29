@@ -1,6 +1,6 @@
-import engine
-import ui
-import util
+from data import engine
+import data.ui as ui
+import data.util as util
 
 
 PLAYER_ICON = '@'
@@ -77,9 +77,9 @@ def setup_game():
         player["pos_x"] = PLAYER_START_X
         player["pos_y"] = PLAYER_START_Y
         player["icon"] = PLAYER_ICON
-    items = engine.read_file("items.txt")
+    items = engine.read_file("data/items/items.txt")
     for level_number in range(1, 5):
-        level_file = "level_"+str(level_number)+".txt"
+        level_file = "data/levels/level_"+str(level_number)+".txt"
         board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT, level_number)
         engine.export_board(board, level_file)
     return player, items
@@ -92,28 +92,28 @@ def main():
     level_number = 1
     cheats_active = 0
     turn = 0
-    bronze_key, silver_key, golden_key = 0, 0, 0
-    power_ring = 0
+    bronze_milestone, silver_milestone, golden_milestone = 0, 0, 0
+    exam_permission = 0
     size = BOARD_HEIGHT, BOARD_WIDTH
     is_running = True
     util.clear_screen()
     while is_running:
         turn += 1
-        keys = bronze_key, silver_key, golden_key
-        level_file = "level_"+str(level_number)+".txt"
+        milestones = bronze_milestone, silver_milestone, golden_milestone
+        level_file = "data/levels/level_"+str(level_number)+".txt"
         board = engine.import_bord(level_file)
-        engine.initialize_map(player, level_number, board, size, keys)
+        engine.initialize_map(player, level_number, board, size, milestones)
         ui.display(board, player["pos_y"], player["pos_x"], screen_size, level_number)
         ui.display_stats(player)
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
         key = util.key_pressed()
         is_running, cheats_active = engine.key_handler(
-            player, items, cheats_active, turn, keys, board, key, level_number, power_ring)
+            player, items, cheats_active, turn, milestones, board, key, level_number, exam_permission)
         util.clear_screen()
-        level_number, keys, power_ring = engine.event_handler(
-            player, board, level_number, keys, items, power_ring)
-        bronze_key, silver_key, golden_key = keys
+        level_number, milestones, exam_permission = engine.event_handler(
+            player, board, level_number, milestones, items, exam_permission)
+        bronze_milestone, silver_milestone, golden_milestone = milestones
         board[backup_pos_x][backup_pos_y] = '.'
 
         if player["lives"] <= 0:
