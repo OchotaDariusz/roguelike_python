@@ -29,8 +29,8 @@ infantry_of_troy = {
     "armor": 50,
     "damage": 120,
     "reward": 500,
-    "pos_x": 25,
-    "pos_y": 20,
+    "pos_x": 15,
+    "pos_y": 15,
     "icon": 'T',
     "is_alive": True,
     "inventory": {}
@@ -48,8 +48,8 @@ cavalry_of_troy = {
     "armor": 50,
     "damage": 150,
     "reward": 700,
-    "pos_x": 14,
-    "pos_y": 26,
+    "pos_x": 15,
+    "pos_y": 15,
     "icon": 'C',
     "is_alive": True,
     "inventory": {}
@@ -68,7 +68,7 @@ enemy_hero = {
     "damage": 600,
     "reward": 1000,
     "pos_x": 18,
-    "pos_y": 20,
+    "pos_y": 21,
     "icon": 'B',
     "is_alive": True,
     "inventory": {}
@@ -77,7 +77,7 @@ enemy_hero = {
 wojciech = {
     "name": "Wojciech",
     "type": 'npc',
-    "pos_x": 23,
+    "pos_x": 24,
     "pos_y": 27,
     "icon": 'W',
     "is_alive": True
