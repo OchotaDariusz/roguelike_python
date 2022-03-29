@@ -1,7 +1,6 @@
 import engine
 import ui
 import util
-import map
 
 
 PLAYER_ICON = '@'
