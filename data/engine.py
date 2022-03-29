@@ -1,7 +1,7 @@
-import data.battle as battle
-import data.movement as movement
 import random
-import data.util as util
+from data import battle
+from data import movement
+from data import util
 from data.monsters_and_npc import journey_project_3, progbasic_exam, journey_project_2, journey_project_1, wojciech, kasia
 from data.questions.questions import questions
 

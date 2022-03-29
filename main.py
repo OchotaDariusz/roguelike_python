@@ -1,7 +1,6 @@
 from data import engine
-import data.ui as ui
-import data.util as util
-
+from data import ui
+from data import util
 
 PLAYER_ICON = '@'
 PLAYER_START_X = 13
