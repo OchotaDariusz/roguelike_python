@@ -20,47 +20,47 @@ ITEM_HEALTH = 4
 
 
 def add_extra_walls(width, height, board, level_number):
-    for i in range(int(width * 0.4)):
+    for i in range(int(width * 0.2)):
         pos_y = i
-        if i == width * 0.4 // 2 and level_number != 4:
+        if i == width * 0.2 // 2 and level_number != 4:
             continue
-        board[(height // 2) - int(height * 0.2)][width // 2 - int(width * 0.2) + pos_y] = "#"
-    for j in range(int(height * 0.4)):
+        board[(height // 2) - int(height * 0.1)][width // 2 - int(width * 0.1) + pos_y] = "#"
+    for j in range(int(height * 0.2)):
         pos_x = j
-        if j == height * 0.4 // 2 and level_number != 4:
+        if j == height * 0.2 // 2 and level_number != 4:
             continue
-        board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "#"
-    for k in range(int(width * 0.4)):
+        board[(height // 2) - int(height * 0.1) + pos_x][width // 2 - int(width * 0.1) + pos_y] = "#"
+    for k in range(int(width * 0.2)):
         pos_y = i - k
-        if k == width * 0.4 // 2 - 1 and level_number != 4:
+        if k == width * 0.2 // 2 - 1 and level_number != 4:
             continue
-        board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "#"
-    for h in range(int(height * 0.4)):
+        board[(height // 2) - int(height * 0.1) + pos_x][width // 2 - int(width * 0.1) + pos_y] = "#"
+    for h in range(int(height * 0.2)):
         pos_x = j - h
-        if h == height * 0.4 // 2 - 1 and level_number != 4:
+        if h == height * 0.2 // 2 - 1 and level_number != 4:
             continue
-        elif h == height * 0.4 // 2 - 1 and level_number == 4:
-            board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "|"
+        elif h == height * 0.2 // 2 - 1 and level_number == 4:
+            board[(height // 2) - int(height * 0.1) + pos_x][width // 2 - int(width * 0.1) + pos_y] = "|"
             continue
-        board[(height // 2) - int(height * 0.2) + pos_x][width // 2 - int(width * 0.2) + pos_y] = "#"
+        board[(height // 2) - int(height * 0.1) + pos_x][width // 2 - int(width * 0.1) + pos_y] = "#"
 
 
 def modify_top_left_corner(width, board, level_number):
-    size = 0.2 if level_number == 2 else 0.1
+    size = 0.15 if level_number == 2 else 0.1
     for i in range(int(width * size)):
         for j in range(int(width * size)):
             if i == int(width * size) - 1:
-                board[i][j] = "#"
+                board[i + 9][j + 9] = "#"
                 continue
             if j == int(width * size) - 1:
-                board[i][j] = "#"
+                board[i + 9][j + 9] = "#"
                 continue
-            board[i][j] = " "
+            board[i + 9][j + 9] = " "
 
 
 def modify_top_right_corner(width, board, level_number):
-    size = 0.2 if level_number % 2 == 0 else 0.1
-    pos_x, pos_y = 0, width - int(width * size)
+    size = 0.1 if level_number % 2 == 0 else 0.1
+    pos_x, pos_y = 9, width - int(width * size)
     for i in range(int(width * size)):
         for j in range(int(width * size)):
             if i == int(width * size) - 1:
@@ -73,8 +73,8 @@ def modify_top_right_corner(width, board, level_number):
 
 
 def modify_bottom_left_corner(width, height, board, level_number):
-    size = 0.2 if level_number % 2 == 0 else 0.1
-    pos_x, pos_y = height - int(width * size), 0
+    size = 0.15 if level_number % 2 == 0 else 0.1
+    pos_x, pos_y = height - int(width * size), 9
     for i in range(int(width * size)):
         for j in range(int(width * size)):
             if i == 0:
@@ -87,7 +87,7 @@ def modify_bottom_left_corner(width, height, board, level_number):
 
 
 def modify_bottom_right_corner(width, height, board, level_number):
-    size = 0.2 if level_number == 1 else 0.1
+    size = 0.15 if level_number == 1 else 0.1
     pos_x, pos_y = height - int(width * size), width - int(width * size)
     for i in range(int(width * size)):
         for j in range(int(width * size)):
@@ -112,27 +112,29 @@ def create_board(width, height, level_number, extra_walls=True, rectangular_shap
     for row_number in range(height):
         row_line = []
         for col_number in range(width):
-            if row_number == 0 or row_number == (height - 1):
+            if (row_number == 9 and col_number > 8) or row_number == (height - 1) and col_number > 9:
                 row_line.append("#")
             else:
-                if col_number == 0 or col_number == width - 1:
+                if (col_number == 9 and row_number > 9) or col_number == width - 1 and row_number > 9:
                     row_line.append("#")
-                else:
+                elif col_number > 9 and col_number <= width and row_number > 9 and row_number <= height:
                     row_line.append(".")
+                else:
+                    row_line.append(" ")
         board.append(row_line)
     if level_number == 1:
-        gate_coordinates_x, gate_coordinates_y = int(height/2), width - 1
+        gate_coordinates_x, gate_coordinates_y = int(height/2) + 5, width - 1
         board[gate_coordinates_x][gate_coordinates_y] = GATE_SYMBOLS["next"]
     elif level_number == 4:
-        back_gate_coordinates_x, back_gate_coordinates_y = int(height/2), 0
+        back_gate_coordinates_x, back_gate_coordinates_y = int(height/2) + 5, 9
         board[back_gate_coordinates_x][back_gate_coordinates_y] = GATE_SYMBOLS["previous"]
     else:
-        gate_coordinates_x, gate_coordinates_y = int(height/2), width - 1
-        back_gate_coordinates_x, back_gate_coordinates_y = int(height/2), 0
+        gate_coordinates_x, gate_coordinates_y = int(height/2) + 5, width - 1
+        back_gate_coordinates_x, back_gate_coordinates_y = int(height/2) + 5, 9
         board[gate_coordinates_x][gate_coordinates_y] = GATE_SYMBOLS["next"]
         board[back_gate_coordinates_x][back_gate_coordinates_y] = GATE_SYMBOLS["previous"]
     if extra_walls:
-        add_extra_walls(width, height, board, level_number)
+        add_extra_walls(width + 10, height + 10, board, level_number)
     if rectangular_shape is False:
         modify_walls(width, height, board, level_number)
     return board
@@ -217,7 +219,7 @@ def place_key(board, size, level_number, level, enemy, key):
     height, width = size
     if level_number == level and not enemy["is_alive"]:
         if key == 0:
-            board[height // 2][width // 2] = "§"
+            board[(height + 10) // 2][(width + 10) // 2] = "§"
 
 
 def initialize_map(player, level_number, board, size, keys, items):
@@ -421,15 +423,15 @@ def check_floor(player, board, level_number, keys, items, power_ring):
 
 def previous_level(player, level_number):
     level_number -= 1
-    player["pos_x"] = 10
-    player["pos_y"] = 28
+    player["pos_x"] = 20
+    player["pos_y"] = 38
     return level_number
 
 
 def next_level(player, level_number):
     level_number += 1
-    player["pos_x"] = 10
-    player["pos_y"] = 1
+    player["pos_x"] = 20
+    player["pos_y"] = 11
     return level_number
 
 
@@ -444,8 +446,8 @@ def check_for_gate(player, board, level_number, keys, power_ring):
             level_number = next_level(player, level_number)
         else:
             print("You need a key!")
-            player["pos_x"] = 10
-            player["pos_y"] = 28
+            player["pos_x"] = 20
+            player["pos_y"] = 38
     elif board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["previous"]:
         level_number = previous_level(player, level_number)
 

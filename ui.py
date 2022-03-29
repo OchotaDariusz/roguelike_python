@@ -123,11 +123,57 @@ def display_board(board: list, level_number):
         print(row)
 
 
+def center(string, max_length):
+    if len(string) >= max_length:
+        print(string)
+    else:
+        needed_chars = max_length-len(string)
+        if needed_chars % 2 == 0:
+            size = " "*int(needed_chars / 2)
+            print(size+string+size)
+        else:
+            size = " "*int(needed_chars / 2)
+            print(size+" "+string+size)
+
+
 def display_stats(player):
 
-    print("XP: {}/{:<8} {:>9} {:>9}{} {:>18}{}".format(player["xp"], player["next_level"], player["race"],"Level: ", player["level"], "Lives: ",player["lives"], ))
-    print("\n{:<23}Strength: {}".format(" ", player["strength"]))
-    print("\n{:<23}Damage: {}".format(" ", player["damage"]))
-    print("\n{:<23}Armor: {}".format(" ", player["armor"]))
-    print("\n{:<23}HP: {}/{}".format(" ", player["health"], player["maxHP"]))
-    print("\n{:<23}HP potions: {}".format(" ", player["inventory"]["potion"]))
+    print("XP: {}/{:<12} {:>10} {:>10}{} {:>22}{}".format(player["xp"], player["next_level"], player["race"],"Level: ", player["level"], "Lives: ",player["lives"], ))
+    print("\n{:<25}Strength: {}".format(" ", player["strength"]))
+    print("\n{:<25}Damage: {}".format(" ", player["damage"]))
+    print("\n{:<25}Armor: {}".format(" ", player["armor"]))
+    print("\n{:<25}HP: {}/{}".format(" ", player["health"], player["maxHP"]))
+    print("\n{:<25}HP potions: {}".format(" ", player["inventory"]["potion"]))
+
+
+def build_display_map(board, x, y, screen_size):
+    """Cuts the full map into a size based on the users location"""
+    display_map = []
+    for i in range(-screen_size, screen_size):
+        try:
+            display_map.append(board[y + i])
+        except IndexError:
+            display_map.append([" "]*screen_size)
+    final = []
+    for row in display_map:
+        new_row = []
+        for i in range(-screen_size+x, screen_size+1+x):
+            try:
+                new_row.append(row[i])
+            except IndexError:
+                new_row.append(" ")
+
+        final.append(new_row)
+    return final
+
+
+def display(board, x, y, screen_size, level_number):
+    _map = build_display_map(board, x, y, screen_size)
+
+    print("---"*21+"--")
+    for row in _map:
+        r = "|"
+        for cell in row:
+            r += " "+get_colored(cell, level_number)
+        print(r+"|")
+    print("---"*21+"--")

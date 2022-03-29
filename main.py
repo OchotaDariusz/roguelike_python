@@ -1,14 +1,15 @@
 import engine
 import ui
 import util
+import map
 
 
 PLAYER_ICON = '@'
-PLAYER_START_X = 3
-PLAYER_START_Y = 3
+PLAYER_START_X = 13
+PLAYER_START_Y = 13
 
-BOARD_WIDTH = 30
-BOARD_HEIGHT = 20
+BOARD_WIDTH = 40
+BOARD_HEIGHT = 30
 
 
 def choose_race(race, player):
@@ -86,6 +87,7 @@ def setup_game():
 
 
 def main():
+    screen_size = 10
     util.clear_screen()
     player, items = setup_game()
     level_number = 1
@@ -102,8 +104,11 @@ def main():
         level_file = "level_"+str(level_number)+".txt"
         board = engine.import_bord(level_file)
         engine.initialize_map(player, level_number, board, size, keys, items)
-        ui.display_board(board, level_number)
+        #ui.display_board(board, level_number)
+        ui.display(board, player["pos_y"], player["pos_x"], screen_size, level_number)
+        #print(board)
         ui.display_stats(player)
+        
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
         key = util.key_pressed()
