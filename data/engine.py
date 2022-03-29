@@ -336,13 +336,13 @@ def event_handler_monsters(player, board, enemy, items):
         player["lives"] -= 1
 
 
-def pick_up_milestone(player, board, level_number, level, key):
+def pass_milestone(player, board, level_number, level, milestone):
     if board[player["pos_x"]][player["pos_y"]] == "§" and \
        level_number == level:
         print("You have passed a milestone!")
-        key += 1
+        milestone += 1
         board[player["pos_x"]][player["pos_y"]] == "."
-    return key
+    return milestone
 
 
 def check_if_monster(player, board, enemy, items):
@@ -352,14 +352,18 @@ def check_if_monster(player, board, enemy, items):
 
 def check_for_milestones(player, board, level_number, milestones):
     bronze_milestone, silver_milestone, golden_milestone = milestones
-    bronze_milestone = pick_up_milestone(player, board, level_number, 1, bronze_milestone)
-    silver_milestone = pick_up_milestone(player, board, level_number, 2, silver_milestone)
-    golden_milestone = pick_up_milestone(player, board, level_number, 3, golden_milestone)
+    bronze_milestone = pass_milestone(player, board, level_number,
+                                      1, bronze_milestone)
+    silver_milestone = pass_milestone(player, board, level_number,
+                                      2, silver_milestone)
+    golden_milestone = pass_milestone(player, board, level_number,
+                                      3, golden_milestone)
     return bronze_milestone, silver_milestone, golden_milestone
 
 
 def check_for_monsters(player, board, items):
-    monsters = [journey_project_1, journey_project_2, journey_project_3, progbasic_exam]
+    monsters = [journey_project_1, journey_project_2,
+                journey_project_3, progbasic_exam]
     for monster in monsters:
         check_if_monster(player, board, monster, items)
 
@@ -395,9 +399,11 @@ def ask_question(player, items, answers, npc, exam_permission):
 def start_quiz(player, exam_permission, npc, items=None):
     answers = [1, 2, 1, 2, 1, 2, 2, 2, 1]
     if npc["name"] == "Wojciech":
-        exam_permission = ask_question(player, items, answers, npc, exam_permission)
+        exam_permission = ask_question(player, items, answers,
+                                       npc, exam_permission)
     elif npc["name"] == "Kasia":
-        exam_permission = ask_question(player, items, answers, npc, exam_permission)
+        exam_permission = ask_question(player, items, answers,
+                                       npc, exam_permission)
     print("Press any key to continue...")
     util.key_pressed()
     util.clear_screen()
@@ -412,11 +418,11 @@ def check_for_npc(player, board, exam_permission, items):
     return exam_permission
 
 
-def check_floor(player, board, level_number, milestones, items, exam_permission):
+def check_floor(player, board, level_number, milestones, items, exam_pass):
     check_for_monsters(player, board, items)
-    bronze_milestone, silver_milestone, golden_milestone = check_for_milestones(player, board, level_number, milestones)
-    exam_permission = check_for_npc(player, board, exam_permission, items)
-    return bronze_milestone, silver_milestone, golden_milestone, exam_permission
+    milestones = check_for_milestones(player, board, level_number, milestones)
+    exam_pass = check_for_npc(player, board, exam_pass, items)
+    return milestones, exam_pass
 
 
 def previous_level(player, level_number):
@@ -433,7 +439,7 @@ def next_level(player, level_number):
     return level_number
 
 
-def check_for_gate(player, board, level_number, milestones, exam_permission):
+def check_for_gate(player, board, level_number, milestones, exam_pass):
     bronze_milestone, silver_milestone, golden_milestone = milestones
     if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["next"]:
         if level_number == 1 and bronze_milestone == 1:
@@ -450,26 +456,26 @@ def check_for_gate(player, board, level_number, milestones, exam_permission):
         level_number = previous_level(player, level_number)
 
     if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["hell"]:
-        if exam_permission == 0:
+        if exam_pass == 0:
             print("You need a pass from Wojciech to participate in exam!")
             player["pos_y"] = player["pos_y"] - 1
     return level_number
 
 
-def event_handler(player: dict, board: list, level_number: int, milestones, items, exam_permission):
-    bronze_milestone, silver_milestone, golden_milestone, exam_permission = check_floor(
-        player, board, level_number, milestones, items, exam_permission)
-    milestones = bronze_milestone, silver_milestone, golden_milestone
-    level_number = check_for_gate(player, board, level_number, milestones, exam_permission)
-    return level_number, milestones, exam_permission
+def event_handler(player, board, level_number, milestones, items, exam_pass):
+    milestones, exam_pass = check_floor(player, board, level_number,
+                                        milestones, items, exam_pass)
+    level_number = check_for_gate(player, board, level_number,
+                                  milestones, exam_pass)
+    return level_number, milestones, exam_pass
 
 
-def show_special_items(milestones, exam_permission):
+def show_special_items(milestones, exam_pass):
     bronze_milestone, silver_milestone, golden_milestone = milestones
     bronze_pass = "Passed!" if bronze_milestone > 0 else "Not yet passed!"
     silver_pass = "Passed!" if silver_milestone > 0 else "Not yet passed!"
     golden_pass = "Passed!" if golden_milestone > 0 else "Not yet passed!"
-    exam_pass = "Granted!" if exam_permission > 0 else "Not granted!"
+    exam_pass = "Granted!" if exam_pass > 0 else "Not granted!"
     print("Bronze Milestone:", bronze_pass)
     print("Silver Milestone:", silver_pass)
     print("Golden Milestone:", golden_pass)
@@ -482,7 +488,9 @@ def display_player_stats(player):
     print("Armor: {}".format(player["armor"]))
 
 
-def key_handler(player, items, cheats_active, turn, milestones, board, key, level_number, exam_permission):
+def key_handler(player, items, cheats_active,
+                turn, milestones, board,
+                key, level_number, exam_pass):
     if key.lower() == 'q':
         return False, cheats_active
     elif key.lower() == 'x':
@@ -490,7 +498,7 @@ def key_handler(player, items, cheats_active, turn, milestones, board, key, leve
     elif key.lower() == 'i':
         util.clear_screen()
         show_inventory(player, items)
-        show_special_items(milestones, exam_permission)
+        show_special_items(milestones, exam_pass)
         util.key_pressed()
     elif key == '\\':
         util.clear_screen()

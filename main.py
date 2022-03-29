@@ -1,3 +1,4 @@
+import os
 from data import engine
 from data import ui
 from data import util
@@ -66,55 +67,93 @@ def create_player(race: str):
     return player
 
 
-def setup_game():
+def new_player():
+    race = input("Choose your race(Human, Elf, Dwarf): ").upper()
+    player = create_player(race)
+    return player
+
+
+def load_player():
+    player = util.load_game()
+    player["pos_x"] = PLAYER_START_X
+    player["pos_y"] = PLAYER_START_Y
+    player["icon"] = PLAYER_ICON
+    return player
+
+
+def setup_player():
     start_game = input("1) Start New Game\n2) Load Last Game\n")
     if start_game == '1':
-        race = input("Choose your race(Human, Elf, Dwarf): ").upper()
-        player = create_player(race)
+        player = new_player()
     else:
-        player = util.load_game()
-        player["pos_x"] = PLAYER_START_X
-        player["pos_y"] = PLAYER_START_Y
-        player["icon"] = PLAYER_ICON
-    items = engine.read_file("data/items/items.txt")
+        player = load_player()
+    return player
+
+
+def setup_items():
+    items = engine.read_file(os.path.dirname(
+        os.path.abspath(__file__)) + "/data/items/items.txt")
+    return items
+
+
+def generate_levels():
     for level_number in range(1, 5):
-        level_file = "data/levels/level_"+str(level_number)+".txt"
+        level_file = os.path.dirname(os.path.abspath(
+            __file__)) + "/data/levels/level_"+str(level_number)+".txt"
         board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT, level_number)
         engine.export_board(board, level_file)
-    return player, items
+
+
+def setup_game():
+    screen_size = 10
+    player, items = setup_player(), setup_items()
+    level_number, cheats_active, turn = 1, 0, 0
+    size = BOARD_HEIGHT, BOARD_WIDTH
+    milestones = 0, 0, 0
+    exam_permission = 0
+    generate_levels()
+    return turn, player, items, \
+        level_number, screen_size, cheats_active, \
+        size, exam_permission, milestones
+
+
+def setup_map(player, level_number, size, milestones):
+    level_file = os.path.dirname(os.path.abspath(
+        __file__)) + "/data/levels/level_"+str(level_number)+".txt"
+    board = engine.import_bord(level_file)
+    engine.initialize_map(player, level_number, board, size, milestones)
+    return board
+
+
+def display_ui(screen_size, player, level_number, board):
+    ui.display(board, player["pos_y"], player["pos_x"],
+               screen_size, level_number)
+    ui.display_stats(player)
 
 
 def main():
-    screen_size = 10
     util.clear_screen()
-    player, items = setup_game()
-    level_number = 1
-    cheats_active = 0
-    turn = 0
-    bronze_milestone, silver_milestone, golden_milestone = 0, 0, 0
-    exam_permission = 0
-    size = BOARD_HEIGHT, BOARD_WIDTH
+    turn, player, items, \
+        level_number, screen_size, cheats_active, \
+        size, exam_permission, milestones = setup_game()
     is_running = True
     util.clear_screen()
     while is_running:
         turn += 1
-        milestones = bronze_milestone, silver_milestone, golden_milestone
-        level_file = "data/levels/level_"+str(level_number)+".txt"
-        board = engine.import_bord(level_file)
-        engine.initialize_map(player, level_number, board, size, milestones)
-        ui.display(board, player["pos_y"], player["pos_x"], screen_size, level_number)
-        ui.display_stats(player)
+        board = setup_map(player, level_number, size, milestones)
+        display_ui(screen_size, player, level_number, board)
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
         key = util.key_pressed()
         is_running, cheats_active = engine.key_handler(
-            player, items, cheats_active, turn, milestones, board, key, level_number, exam_permission)
+            player, items, cheats_active,
+            turn, milestones, board,
+            key, level_number, exam_permission)
         util.clear_screen()
         level_number, milestones, exam_permission = engine.event_handler(
-            player, board, level_number, milestones, items, exam_permission)
-        bronze_milestone, silver_milestone, golden_milestone = milestones
+            player, board, level_number,
+            milestones, items, exam_permission)
         board[backup_pos_x][backup_pos_y] = '.'
-
         if player["lives"] <= 0:
             input("Game Over!")
             is_running = False
