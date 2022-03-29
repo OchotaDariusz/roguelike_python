@@ -103,39 +103,6 @@ def get_colored(sign, level_number):
     return "\033[38;2;{};{};{}m{} \033[38;2;255;255;255m".format(r, g, b, sign)
 
 
-def display_board(board: list, level_number):
-    '''
-    Displays complete game board on the screen
-
-    Returns:
-    Nothing
-    '''
-
-    print("\n")
-
-    for i in range(len(board)):
-        row = ""
-        for j in range(len(board[i])):
-            if j != len(board[i]) - 1:
-                row += get_colored(board[i][j], level_number)
-            else:
-                row += get_colored(board[i][j], level_number)
-        print(row)
-
-
-def center(string, max_length):
-    if len(string) >= max_length:
-        print(string)
-    else:
-        needed_chars = max_length-len(string)
-        if needed_chars % 2 == 0:
-            size = " "*int(needed_chars / 2)
-            print(size+string+size)
-        else:
-            size = " "*int(needed_chars / 2)
-            print(size+" "+string+size)
-
-
 def display_stats(player):
 
     print("XP: {}/{:<12} {:>10} {:>10}{} {:>22}{}".format(player["xp"], player["next_level"], player["race"],"Level: ", player["level"], "Lives: ",player["lives"], ))

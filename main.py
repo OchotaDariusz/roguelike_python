@@ -103,11 +103,8 @@ def main():
         level_file = "level_"+str(level_number)+".txt"
         board = engine.import_bord(level_file)
         engine.initialize_map(player, level_number, board, size, keys, items)
-        #ui.display_board(board, level_number)
         ui.display(board, player["pos_y"], player["pos_x"], screen_size, level_number)
-        #print(board)
         ui.display_stats(player)
-        
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
         key = util.key_pressed()
