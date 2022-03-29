@@ -363,45 +363,40 @@ def check_for_monsters(player, board, items):
         check_if_monster(player, board, monster, items)
 
 
+def print_question(question):
+    for char in question:
+        print(char, end="")
+
+
+def ask_question(player, items, answers, npc, exam_permission):
+    choose_question = random.randint(1, len(answers))
+    while True:
+        util.clear_screen()
+        print(questions[choose_question])
+        user_answer = input("\n1. Yes\n2. No\n")
+        if user_answer == "1" or user_answer == "2":
+            break
+    if int(user_answer) == answers[choose_question - 1]:
+        print("Correct")
+        if npc["name"] == "Kasia":
+            random_item = random.randint(0, 29)
+            add_item_to_player(player, items[random_item], items)
+        elif npc["name"] == "Wojciech":
+            exam_permission += 1
+            print("You've been granted a permission to participate in exam! Good Luck!")
+    else:
+        print("Wrong!")
+        player["lives"] -= 1
+    return exam_permission
+
+
 def start_quiz(player, exam_permission, npc, items=None):
     answers = [1, 2, 1, 2, 1, 2, 2, 2, 1]
     if npc["name"] == "Wojciech":
-        correct_answers = 0
-        while exam_permission == 0:
-            choose_question = random.randint(1, len(answers))
-            while True:
-                util.clear_screen()
-                print(questions[choose_question])
-                user_answer = input("1. Yes\n2. No\n")
-                if user_answer == "1" or user_answer == "2":
-                    break
-            if int(user_answer) == answers[choose_question - 1]:
-                print("Correct")
-                correct_answers += 1
-                if correct_answers == 3:
-                    exam_permission += 1
-                    print("You've been granted a permission to participate in exam! Good Luck!")
-                else:
-                    input("Press any key to continue...")
-            else:
-                print("Wrong!")
-                player["lives"] -= 1
-                print(f"Lives left:", player["lives"])
+        exam_permission = ask_question(player, items, answers, npc, exam_permission)
     elif npc["name"] == "Kasia":
-        choose_question = random.randint(1, len(answers))
-        while True:
-            util.clear_screen()
-            print(questions[choose_question])
-            user_answer = input("1. Yes\n2. No\n")
-            if user_answer == "1" or user_answer == "2":
-                break
-        if int(user_answer) == answers[choose_question - 1]:
-            print("Correct")
-            random_item = random.randint(0, 29)
-            add_item_to_player(player, items[random_item], items)
-        else:
-            print("Wrong!")
-            player["lives"] -= 1
+        exam_permission = ask_question(player, items, answers, npc, exam_permission)
+    print("Press any key to continue...")
     util.key_pressed()
     util.clear_screen()
     return exam_permission
