@@ -466,24 +466,38 @@ def event_handler(player: dict, board: list, level_number: int, keys, items, pow
     return level_number, keys, power_ring
 
 
+def show_special_items(keys, power_ring):
+    bronze_key, silver_key, golden_key = keys
+    print("Bronze Key:", bronze_key)
+    print("Silver Key:", silver_key)
+    print("Golden Key:", golden_key)
+    print("Power Ring:", power_ring)
+
+
+def display_player_stats(player):
+    print("Strength: {}".format(player["strength"]))
+    print("Damage: {}".format(player["damage"]))
+    print("Armor: {}".format(player["armor"]))
+
+
 def key_handler(player, items, cheats_active, turn, keys, board, key, level_number, power_ring):
-    if key == 'q':
+    if key.lower() == 'q':
         return False, cheats_active
-    elif key == 'x':
+    elif key.lower() == 'x':
         cheats_active = activate_cheat(player, cheats_active)
-    elif key == 'i':
+    elif key.lower() == 'i':
         util.clear_screen()
         show_inventory(player, items)
-        bronze_key, silver_key, golden_key = keys
-        print("Bronze Key:", bronze_key)
-        print("Silver Key:", silver_key)
-        print("Golden Key:", golden_key)
-        print("Power Ring:", power_ring)
+        show_special_items(keys, power_ring)
         util.key_pressed()
     elif key == '\\':
         util.clear_screen()
         util.save_game(player)
         print("Game Saved")
+        util.key_pressed()
+    elif key.lower() == 'p':
+        util.clear_screen()
+        display_player_stats(player)
         util.key_pressed()
     else:
         movement.step_direction(player, key, board)
