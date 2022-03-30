@@ -1,3 +1,4 @@
+import winsound
 import random
 import time
 from data import battle
@@ -223,6 +224,12 @@ def place_milestone(board, size, level_number, level, enemy, key):
             board[(height + 10) // 2][(width + 10) // 2] = "§"
 
 
+def place_cert(board, size, level_number, level, enemy):
+    height, width = size
+    if level_number == level and not enemy["is_alive"]:
+        board[(height + 10) // 2][(width + 10) // 2] = "C"
+
+
 def initialize_map(player, level_number, board, size, milestones):
     bronze_milestone, silver_milestone, golden_milestone = milestones
     put_player_on_board(board, player, level_number)
@@ -230,6 +237,7 @@ def initialize_map(player, level_number, board, size, milestones):
     place_milestone(board, size, level_number, 1, journey_project_1, bronze_milestone)
     place_milestone(board, size, level_number, 2, journey_project_2, silver_milestone)
     place_milestone(board, size, level_number, 3, journey_project_3, golden_milestone)
+    place_cert(board, size, level_number, 4, progbasic_exam)
 
 
 def read_file(file_name):
@@ -418,11 +426,30 @@ def check_for_npc(player, board, exam_permission, items):
     return exam_permission
 
 
+def end_game():
+    util.clear_screen()
+    print("THE END")
+    print("You have passed an exam")
+    winsound.PlaySound('GameEndingSound.wav', winsound.SND_ASYNC)
+    press_key_to_quit = input("Press p to exit game ! ").lower()
+    if press_key_to_quit == "p":
+        return False
+    else:
+        return True
+
+    
+def check_certificate(player, board):
+    if board[player["pos_x"]][player["pos_y"]] == "C":
+        return end_game()
+    return True
+
+
 def check_floor(player, board, level_number, milestones, items, exam_pass):
     check_for_monsters(player, board, items)
     milestones = check_for_milestones(player, board, level_number, milestones)
     exam_pass = check_for_npc(player, board, exam_pass, items)
-    return milestones, exam_pass
+    is_running = check_certificate(player, board)
+    return milestones, exam_pass, is_running
 
 
 def previous_level(player, level_number):
@@ -463,11 +490,11 @@ def check_for_gate(player, board, level_number, milestones, exam_pass):
 
 
 def event_handler(player, board, level_number, milestones, items, exam_pass):
-    milestones, exam_pass = check_floor(player, board, level_number,
+    milestones, exam_pass, is_running = check_floor(player, board, level_number,
                                         milestones, items, exam_pass)
     level_number = check_for_gate(player, board, level_number,
                                   milestones, exam_pass)
-    return level_number, milestones, exam_pass
+    return level_number, milestones, exam_pass, is_running
 
 
 def show_special_items(milestones, exam_pass):

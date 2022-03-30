@@ -150,7 +150,7 @@ def main():
             turn, milestones, board,
             key, level_number, exam_permission)
         util.clear_screen()
-        level_number, milestones, exam_permission = engine.event_handler(
+        level_number, milestones, exam_permission, is_running = engine.event_handler(
             player, board, level_number,
             milestones, items, exam_permission)
         board[backup_pos_x][backup_pos_y] = '.'

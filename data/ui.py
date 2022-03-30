@@ -44,7 +44,8 @@ COLORS_4 = {
     "gate": (255, 255, 100),
     "E": (255, 255, 100),
     "§": (255, 255, 255),
-    "W": (255, 155, 100)
+    "W": (255, 155, 100),
+    "C": (255, 255, 255)
 }
 
 SYMBOLS_DICTIONARY = {
@@ -61,7 +62,8 @@ SYMBOLS_DICTIONARY = {
     GATE_SYMBOLS["previous"]: "gate",
     "@": "player",
     ".": "empty space",
-    " ": "white space"
+    " ": "white space",
+    "C": "C"
 }
 
 
