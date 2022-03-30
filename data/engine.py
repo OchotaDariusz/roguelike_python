@@ -525,7 +525,6 @@ def key_handler(player, items, cheats_active,
     elif key.lower() == 'i':
         util.clear_screen()
         show_inventory(player, items)
-        show_special_items(milestones, exam_pass)
         util.key_pressed()
     elif key == '\\':
         util.clear_screen()
@@ -535,6 +534,8 @@ def key_handler(player, items, cheats_active,
     elif key.lower() == 'p':
         util.clear_screen()
         display_player_stats(player)
+        print()
+        show_special_items(milestones, exam_pass)
         util.key_pressed()
     else:
         movement.step_direction(player, key, board)

@@ -149,6 +149,8 @@ def main():
             player, items, cheats_active,
             turn, milestones, board,
             key, level_number, exam_permission)
+        if is_running is False:
+            break
         util.clear_screen()
         level_number, milestones, exam_permission, is_running = engine.event_handler(
             player, board, level_number,
