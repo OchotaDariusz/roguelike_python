@@ -430,7 +430,7 @@ def end_game():
     util.clear_screen()
     print("THE END")
     print("You have passed an exam")
-    winsound.PlaySound('GameEndingSound.wav', winsound.SND_ASYNC)
+    winsound.PlaySound('data/GameEndingSound.wav', winsound.SND_ALIAS)
     press_key_to_quit = input("Press p to exit game ! ").lower()
     if press_key_to_quit == "p":
         return False
