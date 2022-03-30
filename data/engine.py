@@ -26,25 +26,30 @@ def add_extra_walls(width, height, board, level_number):
         pos_y = i
         if i == width * 0.2 // 2 and level_number != 4:
             continue
-        board[(height // 2) - int(height * 0.1)][width // 2 - int(width * 0.1) + pos_y] = "#"
+        board[(height // 2) - int(height * 0.1)][width //
+                                                 2 - int(width * 0.1) + pos_y] = "#"
     for j in range(int(height * 0.2)):
         pos_x = j
         if j == height * 0.2 // 2 and level_number != 4:
             continue
-        board[(height // 2) - int(height * 0.1) + pos_x][width // 2 - int(width * 0.1) + pos_y] = "#"
+        board[(height // 2) - int(height * 0.1) + pos_x][width //
+                                                         2 - int(width * 0.1) + pos_y] = "#"
     for k in range(int(width * 0.2)):
         pos_y = i - k
         if k == width * 0.2 // 2 - 1 and level_number != 4:
             continue
-        board[(height // 2) - int(height * 0.1) + pos_x][width // 2 - int(width * 0.1) + pos_y] = "#"
+        board[(height // 2) - int(height * 0.1) + pos_x][width //
+                                                         2 - int(width * 0.1) + pos_y] = "#"
     for h in range(int(height * 0.2)):
         pos_x = j - h
         if h == height * 0.2 // 2 - 1 and level_number != 4:
             continue
         elif h == height * 0.2 // 2 - 1 and level_number == 4:
-            board[(height // 2) - int(height * 0.1) + pos_x][width // 2 - int(width * 0.1) + pos_y] = "|"
+            board[(height // 2) - int(height * 0.1) + pos_x][width //
+                                                             2 - int(width * 0.1) + pos_y] = "|"
             continue
-        board[(height // 2) - int(height * 0.1) + pos_x][width // 2 - int(width * 0.1) + pos_y] = "#"
+        board[(height // 2) - int(height * 0.1) + pos_x][width //
+                                                         2 - int(width * 0.1) + pos_y] = "#"
 
 
 def modify_top_left_corner(width, board, level_number):
@@ -234,9 +239,12 @@ def initialize_map(player, level_number, board, size, milestones):
     bronze_milestone, silver_milestone, golden_milestone = milestones
     put_player_on_board(board, player, level_number)
     place_monsters(level_number, board)
-    place_milestone(board, size, level_number, 1, journey_project_1, bronze_milestone)
-    place_milestone(board, size, level_number, 2, journey_project_2, silver_milestone)
-    place_milestone(board, size, level_number, 3, journey_project_3, golden_milestone)
+    place_milestone(board, size, level_number, 1,
+                    journey_project_1, bronze_milestone)
+    place_milestone(board, size, level_number, 2,
+                    journey_project_2, silver_milestone)
+    place_milestone(board, size, level_number, 3,
+                    journey_project_3, golden_milestone)
     place_cert(board, size, level_number, 4, progbasic_exam)
 
 
@@ -430,14 +438,14 @@ def end_game():
     util.clear_screen()
     print("THE END")
     print("You have passed an exam")
-    winsound.PlaySound('data/GameEndingSound.wav', winsound.SND_ALIAS)
+    winsound.PlaySound('data/GameEndingSound.wav', winsound.SND_ASYNC)
     press_key_to_quit = input("Press p to exit game ! ").lower()
     if press_key_to_quit == "p":
         return False
     else:
         return True
 
-    
+
 def check_certificate(player, board):
     if board[player["pos_x"]][player["pos_y"]] == "C":
         return end_game()
@@ -491,7 +499,7 @@ def check_for_gate(player, board, level_number, milestones, exam_pass):
 
 def event_handler(player, board, level_number, milestones, items, exam_pass):
     milestones, exam_pass, is_running = check_floor(player, board, level_number,
-                                        milestones, items, exam_pass)
+                                                    milestones, items, exam_pass)
     level_number = check_for_gate(player, board, level_number,
                                   milestones, exam_pass)
     return level_number, milestones, exam_pass, is_running
