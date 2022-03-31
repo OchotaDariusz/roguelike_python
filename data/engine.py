@@ -354,7 +354,10 @@ def event_handler_monsters(player, board, enemy, items):
         add_item_to_player(player, items[random_item], items)
     else:
         enemy_size = 1 if enemy["type"] == "monster" else 5
-        player["pos_y"] = player["pos_y"] - enemy_size
+        if board[player["pos_x"]][player["pos_y"] - enemy_size] != "#":
+            player["pos_y"] = player["pos_y"] - enemy_size
+        elif board[player["pos_x"] - enemy_size][player["pos_y"]] != "#":
+            player["pos_x"] = player["pos_x"] - enemy_size
         player["health"] = int(player["maxHP"] / 2)
         player["lives"] -= 1
 
