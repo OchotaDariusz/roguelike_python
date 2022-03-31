@@ -327,6 +327,8 @@ def activate_cheat(player, activated):
         player["damage"] -= 2000
         player["mana"] -= 2000
         player["max_mana"] -= 2000
+        if player["mana"] < 0:
+            player["mana"] = 0
         return 0
 
 

@@ -69,8 +69,8 @@ def choose_race(race, player):
         player["max_hp"] = player["health"]
         player["armor"] = 60
         player["damage"] = 50
-        player["mana"] = 86
-        player["max_mana"] = 86
+        player["mana"] = 87
+        player["max_mana"] = 87
     elif race.startswith("E"):
         player["race"] = "elf"
         player["strength"] = 80

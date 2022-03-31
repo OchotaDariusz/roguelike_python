@@ -27,30 +27,18 @@ def level_up(character):
     character["max_mana"] += add_mana
 
 
-def super_ability(your_champ, foe):
-    if your_champ["level"] >= 10 and your_champ["mana"] == your_champ["max_mana"]:
-        your_champ["mana"] -= your_champ["max_mana"]
-        spell_damage = your_champ["max_mana"] * 5 - foe["health"]
-
-        if foe["health"] <= 0:
-            print("{} has been finished".format(foe["name"]))
-            your_champ["xp"] += foe["reward"]
+def deal_damage(attacker, defender, skill=False):
+    if skill:
+        if attacker["level"] >= 10 and attacker["mana"] == attacker["max_mana"]:
+            attacker["mana"] -= attacker["max_mana"]
+            dealdamage = (attacker["max_mana"] * 5)
         else:
-            print("{} has progressed by {} points and has {} TODO tasks left".format(
-                foe["name"], spell_damage, foe["health"]))
-            return True
-    elif your_champ["level"] < 10:
-        print("Level of your experience is too low to use this skill. Your level {}, required level 10.".format(
-            your_champ["level"]))
-    elif your_champ["mana"] != your_champ["max_mana"]:
-        print("This skill is very draining so it requires engagning every single brain cell, as you are tired drink inteligence boost potion to cast a spell. ")
-
-
-def deal_damage(attacker, defender):
-
-    multiplier = random.randint(60, 100) / 100
-    dealdamage = int(
-        ((attacker["damage"] + int((attacker["strength"] * 0.2))) - defender["armor"]) * multiplier)
+            print("You need level 10 to cast a spell")
+            dealdamage = 0
+    else:
+        multiplier = random.randint(60, 100) / 100
+        dealdamage = int(
+            ((attacker["damage"] + int((attacker["strength"] * 0.2))) - defender["armor"]) * multiplier)
     if dealdamage <= 0:
         dealdamage = 0
     defender["health"] = defender["health"] - dealdamage
@@ -112,7 +100,14 @@ def combat(your_champ, foe):
     while is_combat:
 
         print("\n------------------------------------------------------------------------")
-        decision = input("\nHere are your choices: \n\nY: You try to write it slowly\n\nN: You try to run away\n\nH: Willpower potion (HP)\n\nM: Restores Mana\n\nS: Super Skill\n\nB: Display your current stats such as HP or MANA\n\nYour Choice: ").lower()
+        print("\nHere are your choices: \n")
+        print("\nY: Try to write it slowly (ATTACK)\n")
+        print("\nS: Use Super Skill (SPELL)\n")
+        print("\nH: Willpower potion (HP+)\n")
+        print("\nM: Restores Mana (MP+)\n")
+        print("\nN: Try to run away\n")
+        print("\nB: Display your current stats\n")
+        decision = input("\nYour Choice: ").lower()
         util.clear_screen()
         if "y" in decision:
             print(
@@ -166,8 +161,8 @@ def combat(your_champ, foe):
             if is_combat is None:
                 return None
         elif "s" in decision:
-            super_ability(your_champ, foe)
-            is_combat = deal_damage(foe, your_champ)
+
+            is_combat = deal_damage(your_champ, foe, True)
             if is_combat is False:
                 return True
             if is_combat is None:
