@@ -19,10 +19,11 @@ def level_up(character):
 
     print("level", character["level"])
     print("\nKnowledge(STRENGTH): {} +{} Willpower(HP): {} +{}".format(character["strength"], add_str,
-                                                       character["max_hp"], add_hp))
+                                                                       character["max_hp"], add_hp))
     character["strength"] += add_str
     character["health"] += add_hp
     character["max_hp"] += add_hp
+    character["mana"] += add_mana
     character["max_mana"] += add_mana
 
 
@@ -77,7 +78,7 @@ def deal_damage(attacker, defender):
 def max_health_or_mana(your_champ):
     if your_champ["health"] >= your_champ["max_hp"]:
         your_champ["health"] = your_champ["max_hp"]
-    elif your_champ["mana"] >= your_champ["max_mana"]:
+    if your_champ["mana"] >= your_champ["max_mana"]:
         your_champ["mana"] = your_champ["max_mana"]
 
 
