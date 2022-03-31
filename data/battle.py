@@ -1,4 +1,3 @@
-from pytest import PytestAssertRewriteWarning
 import data.util as util
 import data.ascii_art as ascii_art
 import random
@@ -9,13 +8,14 @@ import winsound
 def level_up(character):
     add_str = 0
     add_hp = 0
+    #add_mana = 0
     while character["xp"] >= character["next_level"]:
         character["level"] += 1
         character["xp"] = character["xp"] - character["next_level"]
         character["next_level"] = round(character["next_level"] * 1.4)
         add_str += 5
         add_hp += 100
-        add_mana += 10
+        #add_mana += 10
 
     print("level", character["level"])
     print("Strength: {} +{} Health Points: {} +{}".format(character["strength"], add_str,
@@ -27,7 +27,7 @@ def level_up(character):
 
 
 def super_ability(your_champ, foe):
-    if your_champ["level"] >= 10 and your_champ["mana"] == your_champ["maxMana"]:
+    if your_champ["level"] >= 1 and your_champ["mana"] == your_champ["maxMana"]:
         your_champ["mana"] -= your_champ["maxMana"]
         spell_damage = foe["health"] - your_champ["maxMana"] * 5
         if foe["health"] <= 0:
@@ -37,8 +37,8 @@ def super_ability(your_champ, foe):
             print("{} has progressed by {} points and has {} TODO tasks left".format(
                 foe["name"], spell_damage, foe["health"]))
             return True  
-    elif your_champ["level"] < 10:
-        print("Level of your experience is too low to use this skill. Your level {}, required level 12.".format(your_champ["level"]))
+    elif your_champ["level"] < 1:
+        print("Level of your experience is too low to use this skill. Your level {}, required level 10.".format(your_champ["level"]))
     elif your_champ["mana"] != your_champ["maxMana"]:
         print("This skill is very draining so it requires every single mana point, as you dont have full mana bar you cannot cast the spell. ")
 
@@ -80,7 +80,7 @@ def max_health(your_champ):
         your_champ["health"] = your_champ["maxHP"]
 
 def use_mana_potions():
-    PytestAssertRewriteWarning
+    pass
 
 def use_healing_potions(your_champ):
     if your_champ["inventory"]["potion"] > 0:
