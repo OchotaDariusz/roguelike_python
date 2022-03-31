@@ -458,11 +458,20 @@ def check_for_npc(player, board, exam_permission, items):
 
 def end_game():
     util.clear_screen()
-    print("THE END")
     print("You have passed an exam\n")
     winsound.PlaySound(os.path.dirname(os.path.abspath(
         __file__)) + '/sounds/game_ending.wav', winsound.SND_ASYNC)
     time.sleep(3)
+    slow_print("After finally beating the mighty evil exam, everything went back to normal in our beautiful land.")
+    print("\n\n")
+    slow_print("Our hero returned to practicing programming")
+    print("\n\n")
+    slow_print("However a new threat has appeared on the horizon - Web Module...")
+    print("\n\n")
+    time.sleep(4)
+    util.clear_screen()
+    slow_print("THE END")
+    print()
     slow_print("Thanks for playing!")
     time.sleep(3)
     print()

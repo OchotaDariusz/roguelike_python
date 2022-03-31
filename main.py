@@ -1,5 +1,6 @@
 import os
 import winsound
+from data import ascii_art
 from data import engine
 from data import ui
 from data import util
@@ -7,7 +8,7 @@ from data import util
 PLAYER_ICON = '@'
 PLAYER_START_X = 13
 PLAYER_START_Y = 13
-
+LOGO_COLOR = '\033[93m'
 BOARD_WIDTH = 40
 BOARD_HEIGHT = 30
 
@@ -52,6 +53,10 @@ def display_instruction():
 
 
 def intro():
+    print(LOGO_COLOR + ascii_art.logo)
+    print("Press any key to Play")
+    util.key_pressed()
+    util.clear_screen()
     display_opening()
     display_instruction()
 
