@@ -1,6 +1,7 @@
 import os
 import random
 import time
+import msvcrt
 import winsound
 from data import battle
 from data import movement
@@ -398,9 +399,14 @@ def check_for_monsters(player, board, items):
 
 
 def slow_print(text):
-    for char in text:
+    for char in range(len(text)):
         time.sleep(0.05)
-        print(char, end="", flush=True)
+        print(text[char], end="", flush=True)
+        key_pressed = msvcrt.kbhit()
+        if key_pressed:
+            print(text[char + 1:])
+            key_pressed = False
+            break
 
 
 def ask_question(player, items, answers, npc, exam_permission):
