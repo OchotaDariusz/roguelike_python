@@ -86,8 +86,8 @@ def get_colored(sign, level_number):
 def display_stats(player):
     print("XP: {}/{:<12} {:>10} {:>10}{} {:>22}{}".format(
         player["xp"], player["next_level"], player["race"].capitalize(), "Level: ", player["level"], "Lives: ", player["lives"]))
-    print("HP: {}/{:<44}HP potions: {}".format(
-        player["health"], player["maxHP"], player["inventory"]["potion"]))
+    print("HP: {}/{:<44}Mana: {}/{}".format(
+        player["health"], player["max_hp"], player["mana"], player["max_mana"]))
 
 
 def build_display_map(board, x, y, screen_size):

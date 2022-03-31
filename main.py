@@ -36,29 +36,29 @@ def choose_race(race, player):
         player["race"] = "human"
         player["strength"] = 100
         player["health"] = 200
-        player["maxHP"] = player["health"]
+        player["max_hp"] = player["health"]
         player["armor"] = 60
         player["damage"] = 50
-        player["mana"] = 100
-        player["maxMana"] = 100
+        player["mana"] = 86
+        player["max_mana"] = 86
     elif race.startswith("E"):
         player["race"] = "elf"
         player["strength"] = 80
         player["health"] = 160
-        player["maxHP"] = player["health"]
+        player["max_hp"] = player["health"]
         player["armor"] = 20
         player["damage"] = 80
-        player["mana"] = 100
-        player["maxMana"] = 100
+        player["mana"] = 86
+        player["max_mana"] = 86
     elif race.startswith("D"):
         player["race"] = "dwarf"
         player["strength"] = 120
         player["health"] = 200
-        player["maxHP"] = player["health"]
+        player["max_hp"] = player["health"]
         player["armor"] = 80
         player["damage"] = 30
-        player["mana"] = 100
-        player["maxMana"] = 100
+        player["mana"] = 86
+        player["max_mana"] = 86
 
 
 def create_player(race: str):
@@ -79,16 +79,17 @@ def create_player(race: str):
         "lives": 3,
         "strength": 100,
         "health": None,
-        "maxHP": None,
+        "max_hp": None,
         "mana": None,
-        "maxMana": None,
+        "max_mana": None,
         "armor": None,
         "damage": None,
         "reward": 0,
         "pos_x": PLAYER_START_X,
         "pos_y": PLAYER_START_Y,
         "icon": PLAYER_ICON,
-        "inventory": {"potion": 5}
+        "inventory": {"health_potion": 5,
+                      "mana_potion": 2}
     }
 
     choose_race(race, player)

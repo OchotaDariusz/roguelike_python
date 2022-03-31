@@ -264,7 +264,7 @@ def remove_old_item_statistics(player, item, items):
             player["damage"] -= int(old_item[ITEM_DAMAGE])
             player["armor"] -= int(old_item[ITEM_DEFENSIVE])
             player["health"] -= int(old_item[ITEM_HEALTH])
-            player["maxHP"] -= int(old_item[ITEM_HEALTH])
+            player["max_hp"] -= int(old_item[ITEM_HEALTH])
 
 
 def add_item(player, item):
@@ -272,7 +272,7 @@ def add_item(player, item):
     player["damage"] += int(item[ITEM_DAMAGE])
     player["armor"] += int(item[ITEM_DEFENSIVE])
     player["health"] += int(item[ITEM_HEALTH])
-    player["maxHP"] += int(item[ITEM_HEALTH])
+    player["max_hp"] += int(item[ITEM_HEALTH])
     player["inventory"][item[ITEM_TYPE]] = item[ITEM_NAME]
 
 
@@ -310,22 +310,22 @@ def add_item_to_player(player, item, items):
 
 def activate_cheat(player, activated):
     if not activated:
-        player["maxHP"] += 2000
+        player["max_hp"] += 2000
         player["health"] += 2000
         player["strength"] += 2000
         player["armor"] += 2000
         player["damage"] += 2000
         player["mana"] += 2000
-        player["maxMana"] += 2000
+        player["max_mana"] += 2000
         return 1
     else:
-        player["maxHP"] -= 2000
+        player["max_hp"] -= 2000
         player["health"] -= 2000
         player["strength"] -= 2000
         player["armor"] -= 2000
         player["damage"] -= 2000
         player["mana"] -= 2000
-        player["maxMana"] -= 2000
+        player["max_mana"] -= 2000
         return 0
 
 
@@ -339,7 +339,8 @@ def show_inventory(player, items):
                 for j in range(len(items[i])):
                     print(details_label[j], items[i][j])
                 print()
-    print("Health Potions:", player["inventory"]["potion"])
+    print("Health Potions:", player["inventory"]["health_potion"])
+    print("Mana Potions:", player["inventory"]["mana_potion"])
 
 
 def event_handler_monsters(player, board, enemy, items):
@@ -358,7 +359,7 @@ def event_handler_monsters(player, board, enemy, items):
             player["pos_y"] = player["pos_y"] - enemy_size
         elif board[player["pos_x"] - enemy_size][player["pos_y"]] != "#":
             player["pos_x"] = player["pos_x"] - enemy_size
-        player["health"] = int(player["maxHP"] / 2)
+        player["health"] = int(player["max_hp"] / 2)
         player["lives"] -= 1
 
 
