@@ -467,7 +467,8 @@ def end_game():
     winsound.PlaySound(os.path.dirname(os.path.abspath(
         __file__)) + '/sounds/game_ending.wav', winsound.SND_ASYNC)
     time.sleep(3)
-    slow_print("After finally beating the mighty evil exam, everything went back to normal in our beautiful land.")
+    slow_print(
+        "After finally beating the mighty evil exam, everything went back to normal in our beautiful land.")
     print("\n\n")
     slow_print("Our hero returned to practicing programming")
     print("\n\n")
@@ -551,6 +552,8 @@ def check_for_gate(player, board, level_number, milestones, exam_pass):
 
     if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["hell"]:
         if exam_pass == 0:
+            winsound.PlaySound(os.path.dirname(os.path.abspath(
+                __file__)) + '/sounds/you_shall_not_pass.wav', winsound.SND_ASYNC)
             print("You need a pass from Wojciech to participate in exam!")
             player["pos_y"] = player["pos_y"] - 1
     return level_number

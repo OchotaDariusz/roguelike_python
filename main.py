@@ -168,7 +168,7 @@ def setup_game():
     player, items = setup_player(), setup_items()
     level_number, cheats_active, turn = 1, 0, 0
     size = BOARD_HEIGHT, BOARD_WIDTH
-    milestones = 1, 1, 1
+    milestones = 0, 0, 0
     exam_permission = 0
     generate_levels()
     return turn, player, items, \
