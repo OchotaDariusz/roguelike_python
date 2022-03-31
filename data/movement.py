@@ -3,7 +3,7 @@ from data.monsters_and_npc import journey_project_3, progbasic_exam, journey_pro
 
 
 def step_direction(player, input_char, board):
-    illegal_objects = ["#", "M", "I", "C", "T", "B", ">", "<"]
+    illegal_objects = ["#", "K", "W", ">", "<"]
     can_move = True
     if input_char.upper() == 'W':
         if player["type"] == 'boss':
