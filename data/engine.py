@@ -437,12 +437,31 @@ def check_for_npc(player, board, exam_permission, items):
 def end_game():
     util.clear_screen()
     print("THE END")
-    print("You have passed an exam")
+    print("You have passed an exam\n")
     winsound.PlaySound('data/GameEndingSound.wav', winsound.SND_ASYNC)
-    press_key_to_quit = input("Press p to exit game ! ").lower()
-    if press_key_to_quit == "p":
+    time.sleep(3)
+    slow_print("Thanks for playing!")
+    time.sleep(3)
+    print()
+    slow_print("Authors:")
+    print("\n\n")
+    slow_print("Mateusz Kossowski")
+    print()
+    slow_print("Mateusz Miszczak")
+    print()
+    slow_print("Dariusz Ochota")
+    print()
+    slow_print("Maciej Strękowski")
+    print()
+    slow_print("Sylwester Tomczyk")
+    print()
+    print()
+    print("Press Q to exit game or any other key to keep playing!")
+    press_key_to_quit = util.key_pressed()
+    if press_key_to_quit.lower() == "q":
         return False
     else:
+        util.clear_screen()
         return True
 
 

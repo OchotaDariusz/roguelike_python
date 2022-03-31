@@ -114,10 +114,10 @@ def build_display_map(board, x, y, screen_size):
 def display(board, x, y, screen_size, level_number):
     _map = build_display_map(board, x, y, screen_size)
 
-    print("---"*21+"--")
+    print("/-•" + "--•" * 20 + "-\\")
     for row in _map:
         r = "|"
         for cell in row:
             r += " "+get_colored(cell, level_number)
         print(r+"|")
-    print("---"*21+"--")
+    print("\\-•" + "--•" * 20 + "-/")

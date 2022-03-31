@@ -11,6 +11,25 @@ BOARD_WIDTH = 40
 BOARD_HEIGHT = 30
 
 
+def display_opening():
+    engine.slow_print("OPENING TEXT")
+    print("\n\nPress any key to continue...")
+    util.key_pressed()
+    util.clear_screen()
+
+
+def display_instruction():
+    engine.slow_print("INSTRUCTION")
+    print("\n\nPress any key to continue...")
+    util.key_pressed()
+    util.clear_screen()
+
+
+def intro():
+    display_opening()
+    display_instruction()
+
+
 def choose_race(race, player):
     if race.startswith("H"):
         player["race"] = "human"
@@ -133,6 +152,7 @@ def display_ui(screen_size, player, level_number, board):
 
 def main():
     util.clear_screen()
+    intro()
     turn, player, items, \
         level_number, screen_size, cheats_active, \
         size, exam_permission, milestones = setup_game()
