@@ -315,6 +315,8 @@ def activate_cheat(player, activated):
         player["strength"] += 2000
         player["armor"] += 2000
         player["damage"] += 2000
+        player["mana"] += 2000
+        player["maxMana"] += 2000
         return 1
     else:
         player["maxHP"] -= 2000
@@ -322,6 +324,8 @@ def activate_cheat(player, activated):
         player["strength"] -= 2000
         player["armor"] -= 2000
         player["damage"] -= 2000
+        player["mana"] -= 2000
+        player["maxMana"] -= 2000
         return 0
 
 

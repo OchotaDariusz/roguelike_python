@@ -23,6 +23,20 @@ def level_up(character):
     character["maxHP"] += add_hp
 
 
+def super_ability(your_champ, foe):
+    if your_champ["level"] >= 10 and your_champ["mana"] == your_champ["maxMana"]:
+        
+        your_champ["mana"] -= your_champ["maxMana"]
+
+        foe["health"] -= your_champ["maxMana"] * 5
+    elif your_champ["level"] < 10:
+        print("Level of your experience is too low to use this skill. Your level {}, required level 12.".format(your_champ["level"]))
+    elif your_champ["mana"] != your_champ["maxMana"]:
+        print("This skill is very draining so it requires every single mana point, as you dont have full mana bar you cannot cast the spell. ")
+
+
+
+
 def deal_damage(attacker, defender):
 
     multiplier = random.randint(60, 100) / 100
@@ -113,5 +127,9 @@ def combat(your_champ, foe):
                 return True
             if is_combat is None:
                 return None
+        elif "s" in decision:
+            super_ability(your_champ, foe)
+            is_combat = deal_damage(foe, your_champ)
+
         else:
             pass

@@ -39,6 +39,8 @@ def choose_race(race, player):
         player["maxHP"] = player["health"]
         player["armor"] = 60
         player["damage"] = 50
+        player["mana"] = 100
+        player["maxMana"] = 100
     elif race.startswith("E"):
         player["race"] = "elf"
         player["strength"] = 80
@@ -46,6 +48,8 @@ def choose_race(race, player):
         player["maxHP"] = player["health"]
         player["armor"] = 20
         player["damage"] = 80
+        player["mana"] = 100
+        player["maxMana"] = 100
     elif race.startswith("D"):
         player["race"] = "dwarf"
         player["strength"] = 120
@@ -53,6 +57,8 @@ def choose_race(race, player):
         player["maxHP"] = player["health"]
         player["armor"] = 80
         player["damage"] = 30
+        player["mana"] = 100
+        player["maxMana"] = 100
 
 
 def create_player(race: str):
@@ -74,6 +80,8 @@ def create_player(race: str):
         "strength": 100,
         "health": None,
         "maxHP": None,
+        "mana": None,
+        "maxMana": None,
         "armor": None,
         "damage": None,
         "reward": 0,
