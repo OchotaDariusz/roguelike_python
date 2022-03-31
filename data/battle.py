@@ -18,7 +18,7 @@ def level_up(character):
         add_mana += 10
 
     print("level", character["level"])
-    print("Knowledge: {} +{} Willpower: {} +{}".format(character["strength"], add_str,
+    print("\nKnowledge(STRENGTH): {} +{} Willpower(HP): {} +{}".format(character["strength"], add_str,
                                                        character["max_hp"], add_hp))
     character["strength"] += add_str
     character["health"] += add_hp
@@ -55,6 +55,7 @@ def deal_damage(attacker, defender):
     defender["health"] = defender["health"] - dealdamage
 
     if defender["health"] <= 0:
+        print("------------------------------------------------------------------------")
         print("{} has been crushed".format(defender["name"]))
         attacker["xp"] += defender["reward"]
         level_up(attacker)
@@ -110,7 +111,7 @@ def combat(your_champ, foe):
     while is_combat:
 
         print("\n------------------------------------------------------------------------")
-        decision = input("\nHere are your choices: \n\nY: You try to write it slowly\n\n\nN: You try to run away because it's too hard but you can't escape your destiny so it decreases your willpower and forces you to proceed to it anyway\n\n\nH: You use potion that is going to increase your willpower(HP) so if you are lucky enough you will handle an exam\n\n\nM: Dring mighty intelligence booster to use all of your brain cells on a given task\n\n\nS: If you are sufficiently commited in the task you can use your super power to crush any module or exam\n\n\nB: Display your current stats such as HP or MANA(brain cells engaged)\n\nYour Choice: ").lower()
+        decision = input("\nHere are your choices: \n\nY: You try to write it slowly\n\nN: You try to run away\n\nH: Willpower potion (HP)\n\nM: Restores Mana\n\nS: Super Skill\n\nB: Display your current stats such as HP or MANA\n\nYour Choice: ").lower()
         util.clear_screen()
         if "y" in decision:
             print(
@@ -139,11 +140,11 @@ def combat(your_champ, foe):
 
         elif "h" in decision:
             use_healing_potions(your_champ)
-            print("You have restored {} HP but you also lost some coz of elevated stress level ".format(
+            print("You have restored {} HP ".format(
                 int(your_champ["max_hp"] * 0.3)))
             print(
                 "---------------------------------------------------------------------------")
-            print("\nHP of {} after using willpower potion = {}".format(
+            print("\nWillpower(HP) of {} = {}".format(
                 your_champ["name"], your_champ["health"]))
             is_combat = deal_damage(foe, your_champ)
             if is_combat is False:
@@ -152,11 +153,11 @@ def combat(your_champ, foe):
                 return None
         elif "m" in decision:
             use_mana_potions(your_champ)
-            print("Inteligence booster fires up to {} billion neurons of {}".format(
+            print("Mana restored {} of {}".format(
                 your_champ["max_mana"] * 0.5, your_champ["name"]))
             print(
-                "------------------------------------------------------------------------")
-            print("\nYour brain has engaged {} out of {} billion neurons into task. ".format(
+                "---------------------------------------------------------------------------")
+            print("\nYour current mana level = {} out of {} ".format(
                 your_champ["mana"], your_champ["max_mana"]))
             is_combat = deal_damage(foe, your_champ)
             if is_combat is False:
@@ -171,7 +172,7 @@ def combat(your_champ, foe):
             if is_combat is None:
                 return None
         elif "b" in decision:
-            print("Your current stats: \nWillpower(HP): {} out of {}\nBrain cells engaged: {} out of {}".format(
+            print("Your current stats: \nWillpower (HP): {} out of {}\nBrain cells engaged (MANA): {} out of {}".format(
                 your_champ["health"], your_champ["max_hp"], your_champ["mana"], your_champ["max_mana"]))
 
         else:
