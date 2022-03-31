@@ -1,6 +1,8 @@
 import data.util as util
 import data.ascii_art as ascii_art
 import random
+import os
+import winsound
 
 
 def level_up(character):
@@ -64,7 +66,8 @@ def use_potions(your_champ):
 
 
 def combat(your_champ, foe):
-
+    winsound.PlaySound(os.path.dirname(os.path.abspath(
+        __file__)) + '/sounds/fight.wav', winsound.SND_ASYNC)
     print("You have approached {}, if you try to leave now he will stab you in the back to death!".format(
         foe["name"]))
     print(ascii_art.duel)

@@ -1,4 +1,5 @@
 import os
+import winsound
 from data import engine
 from data import ui
 from data import util
@@ -156,6 +157,8 @@ def main():
     turn, player, items, \
         level_number, screen_size, cheats_active, \
         size, exam_permission, milestones = setup_game()
+    winsound.PlaySound(os.path.dirname(os.path.abspath(
+        __file__)) + '/data/sounds/openning.wav', winsound.SND_ASYNC)
     is_running = True
     util.clear_screen()
     while is_running:

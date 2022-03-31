@@ -1,6 +1,7 @@
-import winsound
+import os
 import random
 import time
+import winsound
 from data import battle
 from data import movement
 from data import util
@@ -343,6 +344,8 @@ def event_handler_monsters(player, board, enemy, items):
     if has_won is True:
         board[player["pos_x"]][player["pos_y"]] = "."
         enemy["is_alive"] = False
+        winsound.PlaySound(os.path.dirname(os.path.abspath(
+            __file__)) + '/sounds/item.wav', winsound.SND_ASYNC)
         random_item = random.randint(0, 29)
         add_item_to_player(player, items[random_item], items)
     else:
@@ -355,6 +358,8 @@ def event_handler_monsters(player, board, enemy, items):
 def pass_milestone(player, board, level_number, level, milestone):
     if board[player["pos_x"]][player["pos_y"]] == "§" and \
        level_number == level:
+        winsound.PlaySound(os.path.dirname(os.path.abspath(
+            __file__)) + '/sounds/milestone.wav', winsound.SND_ASYNC)
         print("You have passed a milestone!")
         milestone += 1
         board[player["pos_x"]][player["pos_y"]] == "."
@@ -401,9 +406,13 @@ def ask_question(player, items, answers, npc, exam_permission):
     if int(user_answer) == answers[choose_question - 1]:
         print("Correct")
         if npc["name"] == "Kasia":
+            winsound.PlaySound(os.path.dirname(os.path.abspath(
+                __file__)) + '/sounds/item.wav', winsound.SND_ASYNC)
             random_item = random.randint(0, 29)
             add_item_to_player(player, items[random_item], items)
         elif npc["name"] == "Wojciech":
+            winsound.PlaySound(os.path.dirname(os.path.abspath(
+                __file__)) + '/sounds/exam_pass.wav', winsound.SND_ASYNC)
             exam_permission += 1
             print("You've been granted a permission to participate in exam! Good Luck!")
     else:
@@ -438,7 +447,8 @@ def end_game():
     util.clear_screen()
     print("THE END")
     print("You have passed an exam\n")
-    winsound.PlaySound('data/GameEndingSound.wav', winsound.SND_ASYNC)
+    winsound.PlaySound(os.path.dirname(os.path.abspath(
+        __file__)) + '/sounds/game_ending.wav', winsound.SND_ASYNC)
     time.sleep(3)
     slow_print("Thanks for playing!")
     time.sleep(3)
