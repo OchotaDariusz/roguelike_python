@@ -419,12 +419,16 @@ def ask_question(player, items, answers, npc, exam_permission):
             exam_permission += 1
             print("You've been granted a permission to participate in exam! Good Luck!")
     else:
+        winsound.PlaySound(os.path.dirname(os.path.abspath(
+            __file__)) + '/sounds/laugh.wav', winsound.SND_ASYNC)
         print("Wrong!")
         player["lives"] -= 1
     return exam_permission
 
 
 def start_quiz(player, exam_permission, npc, items=None):
+    winsound.PlaySound(os.path.dirname(os.path.abspath(
+        __file__)) + '/sounds/stress.wav', winsound.SND_ASYNC)
     answers = [1, 2, 1, 2, 1, 2, 2, 2, 1]
     if npc["name"] == "Wojciech":
         exam_permission = ask_question(player, items, answers,
@@ -500,6 +504,9 @@ def previous_level(player, level_number):
 
 
 def next_level(player, level_number):
+    if level_number == 2:
+        winsound.PlaySound(os.path.dirname(os.path.abspath(
+            __file__)) + '/sounds/lvl_3.wav', winsound.SND_ASYNC)
     level_number += 1
     player["pos_x"] = 20
     player["pos_y"] = 11
