@@ -501,6 +501,7 @@ def end_game():
     if press_key_to_quit.lower() == "q":
         return False
     else:
+        winsound.PlaySound('SystemHand', winsound.SND_ASYNC)
         util.clear_screen()
         return True
 
