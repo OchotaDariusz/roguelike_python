@@ -14,22 +14,28 @@ BOARD_HEIGHT = 30
 
 
 def display_opening():
-    engine.slow_print("Once upon a time, there was a fortunate land called Codecool. ")
+    engine.slow_print(
+        "Once upon a time, there was a fortunate land called Codecool. ")
     engine.slow_print("In this land lived happily a man named Student.")
     print("\n\n")
-    engine.slow_print("He lived in peace and prosperity, learning the Programming Basics - Python module, ")
+    engine.slow_print(
+        "He lived in peace and prosperity, learning the Programming Basics - Python module, ")
     print()
-    engine.slow_print("until one day the wraith of the final exam came to the land.")
+    engine.slow_print(
+        "until one day the wraith of the final exam came to the land.")
     print()
     engine.slow_print("Suddenly everyone became unhappy and stressed out.")
     print("\n\n")
     engine.slow_print("The atmosphere of terror grew at an alarming rate.")
     print()
     engine.slow_print("The amount of energy drinks drunk, ")
-    engine.slow_print("cigarettes smoked and alcohol consumed went over scale!")
+    engine.slow_print(
+        "cigarettes smoked and alcohol consumed went over scale!")
     print("\n\n")
-    engine.slow_print("Our Student was chosen to face this pure evil and restore peace to the land, ")
-    engine.slow_print("he must abandon his current life and set off on a dangerous journey to finally deal with the final exam...")
+    engine.slow_print(
+        "Our Student was chosen to face this pure evil and restore peace to the land, ")
+    engine.slow_print(
+        "he must abandon his current life and set off on a dangerous journey to finally deal with the final exam...")
     input("\n\nPress ENTER to continue...")
     util.clear_screen()
 
