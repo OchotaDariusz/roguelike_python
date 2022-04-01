@@ -101,12 +101,12 @@ def combat(your_champ, foe):
 
         print("\n------------------------------------------------------------------------")
         print("\nHere are your choices: \n")
-        print("\nY: Try to write it slowly (ATTACK)\n")
-        print("\nS: Use Super Skill (SPELL)\n")
-        print("\nH: Willpower potion (HP+)\n")
-        print("\nM: Restores Mana (MP+)\n")
-        print("\nN: Try to run away\n")
-        print("\nB: Display your current stats\n")
+        print("Y: Try to write it slowly (ATTACK)")
+        print("S: Use Super Skill (SPELL)")
+        print("H: Willpower potion (HP+)")
+        print("M: Restores Mana (MP+)")
+        print("N: Try to run away")
+        print("B: Display your current stats")
         decision = input("\nYour Choice: ").lower()
         util.clear_screen()
         if "y" in decision:
