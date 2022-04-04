@@ -1,5 +1,6 @@
 import os
 import sys
+import winsound
 
 
 def key_pressed():
@@ -94,3 +95,8 @@ def load_game():
     key_value = read_save_file("data/save/player_save.txt")
     player_dict = build_dict(key_value, inventory)
     return player_dict
+
+
+def play_sound(sound):
+    winsound.PlaySound(os.path.dirname(os.path.abspath(
+        __file__)) + f'/sounds/{sound}.wav', winsound.SND_ASYNC)

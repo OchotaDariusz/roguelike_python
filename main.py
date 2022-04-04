@@ -1,5 +1,4 @@
 import os
-import winsound
 from data import ascii_art
 from data import engine
 from data import ui
@@ -164,7 +163,7 @@ def setup_items():
 def generate_levels():
     for level_number in range(1, 5):
         level_file = os.path.dirname(os.path.abspath(
-            __file__)) + "/data/levels/level_"+str(level_number)+".txt"
+            __file__)) + "/data/levels/level_" + str(level_number) + ".txt"
         board = engine.create_board(BOARD_WIDTH, BOARD_HEIGHT, level_number)
         engine.export_board(board, level_file)
 
@@ -177,14 +176,12 @@ def setup_game():
     milestones = 0, 0, 0
     exam_permission = 0
     generate_levels()
-    return turn, player, items, \
-        level_number, screen_size, cheats_active, \
-        size, exam_permission, milestones
+    return turn, player, items, level_number, screen_size, cheats_active, size, exam_permission, milestones
 
 
 def setup_map(player, level_number, size, milestones):
     level_file = os.path.dirname(os.path.abspath(
-        __file__)) + "/data/levels/level_"+str(level_number)+".txt"
+        __file__)) + "/data/levels/level_" + str(level_number) + ".txt"
     board = engine.import_bord(level_file)
     engine.initialize_map(player, level_number, board, size, milestones)
     return board
@@ -199,11 +196,8 @@ def display_ui(screen_size, player, level_number, board):
 def main():
     util.clear_screen()
     intro()
-    turn, player, items, \
-        level_number, screen_size, cheats_active, \
-        size, exam_permission, milestones = setup_game()
-    winsound.PlaySound(os.path.dirname(os.path.abspath(
-        __file__)) + '/data/sounds/openning.wav', winsound.SND_ASYNC)
+    turn, player, items, level_number, screen_size, cheats_active, size, exam_permission, milestones = setup_game()
+    util.play_sound("opening")
     is_running = True
     util.clear_screen()
     while is_running:

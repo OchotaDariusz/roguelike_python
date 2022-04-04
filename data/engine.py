@@ -2,13 +2,12 @@ import os
 import random
 import time
 import msvcrt
-import winsound
 from data import battle
 from data import movement
 from data import util
-from data.monsters_and_npc import journey_project_3, progbasic_exam, journey_project_2, journey_project_1, wojciech, kasia
+from data.monsters_and_npc import journey_project_3, progbasic_exam, journey_project_2, journey_project_1, wojciech, \
+    kasia
 from data.questions.questions import questions
-
 
 GATE_SYMBOLS = {
     "next": ">",
@@ -126,20 +125,20 @@ def create_board(width, height, level_number, extra_walls=True, rectangular_shap
             else:
                 if (col_number == 9 and row_number > 9) or col_number == width - 1 and row_number > 9:
                     row_line.append("#")
-                elif col_number > 9 and col_number <= width and row_number > 9 and row_number <= height:
+                elif 9 < col_number <= width and 9 < row_number <= height:
                     row_line.append(".")
                 else:
                     row_line.append(" ")
         board.append(row_line)
     if level_number == 1:
-        gate_coordinates_x, gate_coordinates_y = int(height/2) + 5, width - 1
+        gate_coordinates_x, gate_coordinates_y = int(height / 2) + 5, width - 1
         board[gate_coordinates_x][gate_coordinates_y] = GATE_SYMBOLS["next"]
     elif level_number == 4:
-        back_gate_coordinates_x, back_gate_coordinates_y = int(height/2) + 5, 9
+        back_gate_coordinates_x, back_gate_coordinates_y = int(height / 2) + 5, 9
         board[back_gate_coordinates_x][back_gate_coordinates_y] = GATE_SYMBOLS["previous"]
     else:
-        gate_coordinates_x, gate_coordinates_y = int(height/2) + 5, width - 1
-        back_gate_coordinates_x, back_gate_coordinates_y = int(height/2) + 5, 9
+        gate_coordinates_x, gate_coordinates_y = int(height / 2) + 5, width - 1
+        back_gate_coordinates_x, back_gate_coordinates_y = int(height / 2) + 5, 9
         board[gate_coordinates_x][gate_coordinates_y] = GATE_SYMBOLS["next"]
         board[back_gate_coordinates_x][back_gate_coordinates_y] = GATE_SYMBOLS["previous"]
     if extra_walls:
@@ -147,19 +146,6 @@ def create_board(width, height, level_number, extra_walls=True, rectangular_shap
     if rectangular_shape is False:
         modify_walls(width, height, board, level_number)
     return board
-
-
-"""def get_gates_coordinates(col_number, row_number):
-
-    gates_x = random.randint(0, row_number - 1)
-
-    if gates_x == 0 or gates_x == row_number - 1:
-        gates_y = random.randint(1, col_number - 2)
-    else:
-        gates_y = random.choice([0, col_number - 1])
-
-    return (gates_x, gates_y)
-"""
 
 
 def export_board(board, filename="level_1.txt"):
@@ -182,16 +168,6 @@ def import_bord(filename="level_1.txt"):
 
 
 def put_player_on_board(board, player, level_number):
-    '''
-    Modifies the game board by placing the player icon at its coordinates.
-
-    Args:
-    list: The game board
-    dictionary: The player information containing the icon and coordinates
-
-    Returns:
-    Nothing
-    '''
     if player["type"] == 'npc' and level_number == 4:
         for i in range(2):
             board[player["pos_x"] + i][player["pos_y"]] = player["icon"]
@@ -352,8 +328,7 @@ def event_handler_monsters(player, board, enemy, items):
     if has_won is True:
         board[player["pos_x"]][player["pos_y"]] = "."
         enemy["is_alive"] = False
-        winsound.PlaySound(os.path.dirname(os.path.abspath(
-            __file__)) + '/sounds/item.wav', winsound.SND_ASYNC)
+        util.play_sound("item")
         random_item = random.randint(0, 29)
         add_item_to_player(player, items[random_item], items)
     else:
@@ -368,9 +343,8 @@ def event_handler_monsters(player, board, enemy, items):
 
 def pass_milestone(player, board, level_number, level, milestone):
     if board[player["pos_x"]][player["pos_y"]] == "§" and \
-       level_number == level:
-        winsound.PlaySound(os.path.dirname(os.path.abspath(
-            __file__)) + '/sounds/milestone.wav', winsound.SND_ASYNC)
+            level_number == level:
+        util.play_sound("milestone")
         print("You have passed a milestone!")
         milestone += 1
         board[player["pos_x"]][player["pos_y"]] == "."
@@ -422,26 +396,22 @@ def ask_question(player, items, answers, npc, exam_permission):
     if int(user_answer) == answers[choose_question - 1]:
         print("Correct")
         if npc["name"] == "Kasia":
-            winsound.PlaySound(os.path.dirname(os.path.abspath(
-                __file__)) + '/sounds/item.wav', winsound.SND_ASYNC)
+            util.play_sound("item")
             random_item = random.randint(0, 29)
             add_item_to_player(player, items[random_item], items)
         elif npc["name"] == "Wojciech":
-            winsound.PlaySound(os.path.dirname(os.path.abspath(
-                __file__)) + '/sounds/exam_pass.wav', winsound.SND_ASYNC)
+            util.play_sound("exam_pass")
             exam_permission += 1
             print("You've been granted a permission to participate in exam! Good Luck!")
     else:
-        winsound.PlaySound(os.path.dirname(os.path.abspath(
-            __file__)) + '/sounds/laugh.wav', winsound.SND_ASYNC)
+        util.play_sound("laugh")
         print("Wrong!")
         player["lives"] -= 1
     return exam_permission
 
 
 def start_quiz(player, exam_permission, npc, items=None):
-    winsound.PlaySound(os.path.dirname(os.path.abspath(
-        __file__)) + '/sounds/stress.wav', winsound.SND_ASYNC)
+    util.play_sound("stress")
     answers = [1, 2, 1, 2, 1, 2, 2, 2, 1]
     if npc["name"] == "Wojciech":
         exam_permission = ask_question(player, items, answers,
@@ -466,8 +436,7 @@ def check_for_npc(player, board, exam_permission, items):
 def end_game():
     util.clear_screen()
     print("You have passed an exam\n")
-    winsound.PlaySound(os.path.dirname(os.path.abspath(
-        __file__)) + '/sounds/game_ending.wav', winsound.SND_ASYNC)
+    util.play_sound("game_ending")
     time.sleep(3)
     slow_print(
         "After finally beating the mighty evil exam, everything went back to normal in our beautiful land.")
