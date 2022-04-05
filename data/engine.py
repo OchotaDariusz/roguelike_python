@@ -1,4 +1,3 @@
-import os
 import random
 import time
 import msvcrt
@@ -347,7 +346,6 @@ def pass_milestone(player, board, level_number, level, milestone):
         util.play_sound("milestone")
         print("You have passed a milestone!")
         milestone += 1
-        board[player["pos_x"]][player["pos_y"]] == "."
     return milestone
 
 
@@ -381,7 +379,6 @@ def slow_print(text):
         key_pressed = msvcrt.kbhit()
         if key_pressed:
             print(text[char + 1:])
-            key_pressed = False
             break
 
 
@@ -433,11 +430,7 @@ def check_for_npc(player, board, exam_permission, items):
     return exam_permission
 
 
-def end_game():
-    util.clear_screen()
-    print("You have passed an exam\n")
-    util.play_sound("game_ending")
-    time.sleep(3)
+def display_ending_story():
     slow_print(
         "After finally beating the mighty evil exam, everything went back to normal in our beautiful land.")
     print("\n\n")
@@ -445,12 +438,9 @@ def end_game():
     print("\n\n")
     slow_print("However a new threat has appeared on the horizon - Web Module...")
     print("\n\n")
-    time.sleep(4)
-    util.clear_screen()
-    slow_print("THE END")
-    print()
-    slow_print("Thanks for playing!")
-    time.sleep(3)
+
+
+def display_authors():
     print()
     slow_print("Authors:")
     print("\n\n")
@@ -463,19 +453,33 @@ def end_game():
     slow_print("Maciej Strękowski")
     print()
     slow_print("Sylwester Tomczyk")
+    print("\n\n")
+
+
+def end_game():
+    util.clear_screen()
+    print("You have passed an exam\n")
+    util.play_sound("game_ending")
+    time.sleep(3)
+    display_ending_story()
+    time.sleep(4)
+    util.clear_screen()
+    slow_print("THE END")
     print()
-    print()
+    slow_print("Thanks for playing!")
+    time.sleep(3)
+    display_authors()
     print("Press Q to exit game or any other key to keep playing!")
     press_key_to_quit = util.key_pressed()
     if press_key_to_quit.lower() == "q":
         return False
     else:
-        winsound.PlaySound('SystemHand', winsound.SND_ASYNC)
+        util.stop_sound()
         util.clear_screen()
         return True
 
 
-def check_certificate(player, board):
+def check_for_certificate(player, board):
     if board[player["pos_x"]][player["pos_y"]] == "C":
         return end_game()
     return True
@@ -485,8 +489,8 @@ def check_floor(player, board, level_number, milestones, items, exam_pass):
     check_for_monsters(player, board, items)
     milestones = check_for_milestones(player, board, level_number, milestones)
     exam_pass = check_for_npc(player, board, exam_pass, items)
-    is_running = check_certificate(player, board)
-    return milestones, exam_pass, is_running
+    is_game_running = check_for_certificate(player, board)
+    return milestones, exam_pass, is_game_running
 
 
 def previous_level(player, level_number):
@@ -498,8 +502,7 @@ def previous_level(player, level_number):
 
 def next_level(player, level_number):
     if level_number == 2:
-        winsound.PlaySound(os.path.dirname(os.path.abspath(
-            __file__)) + '/sounds/lvl_3.wav', winsound.SND_ASYNC)
+        util.play_sound("lvl_3")
     level_number += 1
     player["pos_x"] = 20
     player["pos_y"] = 11
@@ -524,19 +527,18 @@ def check_for_gate(player, board, level_number, milestones, exam_pass):
 
     if board[player["pos_x"]][player["pos_y"]] in GATE_SYMBOLS["hell"]:
         if exam_pass == 0:
-            winsound.PlaySound(os.path.dirname(os.path.abspath(
-                __file__)) + '/sounds/you_shall_not_pass.wav', winsound.SND_ASYNC)
+            util.play_sound("you_shall_not_pass")
             print("You need a pass from Wojciech to participate in exam!")
             player["pos_y"] = player["pos_y"] - 1
     return level_number
 
 
 def event_handler(player, board, level_number, milestones, items, exam_pass):
-    milestones, exam_pass, is_running = check_floor(player, board, level_number,
+    milestones, exam_pass, is_game_running = check_floor(player, board, level_number,
                                                     milestones, items, exam_pass)
     level_number = check_for_gate(player, board, level_number,
                                   milestones, exam_pass)
-    return level_number, milestones, exam_pass, is_running
+    return level_number, milestones, exam_pass, is_game_running
 
 
 def show_special_items(milestones, exam_pass):

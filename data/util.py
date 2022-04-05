@@ -100,3 +100,7 @@ def load_game():
 def play_sound(sound):
     winsound.PlaySound(os.path.dirname(os.path.abspath(
         __file__)) + f'/sounds/{sound}.wav', winsound.SND_ASYNC)
+
+
+def stop_sound():
+    winsound.PlaySound('SystemHand', winsound.SND_ASYNC)

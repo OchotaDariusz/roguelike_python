@@ -8,6 +8,7 @@ PLAYER_ICON = '@'
 PLAYER_START_X = 13
 PLAYER_START_Y = 13
 LOGO_COLOR = '\033[93m'
+COLOR_RESET = '\033[0m'
 BOARD_WIDTH = 40
 BOARD_HEIGHT = 30
 
@@ -58,7 +59,7 @@ def display_instruction():
 
 
 def intro():
-    print(LOGO_COLOR + ascii_art.logo)
+    print(LOGO_COLOR + ascii_art.logo + COLOR_RESET)
     print("Press any key to Play")
     util.key_pressed()
     util.clear_screen()
@@ -67,16 +68,7 @@ def intro():
 
 
 def choose_race(race, player):
-    if race.startswith("H"):
-        player["race"] = "human"
-        player["strength"] = 100
-        player["health"] = 200
-        player["max_hp"] = player["health"]
-        player["armor"] = 60
-        player["damage"] = 50
-        player["mana"] = 87
-        player["max_mana"] = 87
-    elif race.startswith("E"):
+    if race.startswith("E"):
         player["race"] = "elf"
         player["strength"] = 80
         player["health"] = 160
@@ -94,6 +86,15 @@ def choose_race(race, player):
         player["damage"] = 30
         player["mana"] = 86
         player["max_mana"] = 86
+    else:
+        player["race"] = "human"
+        player["strength"] = 100
+        player["health"] = 200
+        player["max_hp"] = player["health"]
+        player["armor"] = 60
+        player["damage"] = 50
+        player["mana"] = 87
+        player["max_mana"] = 87
 
 
 def create_player(race: str):
@@ -147,10 +148,10 @@ def load_player():
 
 def setup_player():
     start_game = input("1) Start New Game\n2) Load Last Game\n")
-    if start_game == '1':
-        player = new_player()
-    else:
+    if start_game == '2':
         player = load_player()
+    else:
+        player = new_player()
     return player
 
 
@@ -196,31 +197,31 @@ def display_ui(screen_size, player, level_number, board):
 def main():
     util.clear_screen()
     intro()
-    turn, player, items, level_number, screen_size, cheats_active, size, exam_permission, milestones = setup_game()
+    turn, player, items, level_number, screen_size, cheats_active, size, exam_pass, milestones = setup_game()
     util.play_sound("opening")
-    is_running = True
+    is_game_running = True
     util.clear_screen()
-    while is_running:
+    while is_game_running:
         turn += 1
         board = setup_map(player, level_number, size, milestones)
         display_ui(screen_size, player, level_number, board)
         backup_pos_x = player["pos_x"]
         backup_pos_y = player["pos_y"]
         key = util.key_pressed()
-        is_running, cheats_active = engine.key_handler(
+        is_game_running, cheats_active = engine.key_handler(
             player, items, cheats_active,
             turn, milestones, board,
-            key, level_number, exam_permission)
-        if is_running is False:
+            key, level_number, exam_pass)
+        if is_game_running is False:
             break
         util.clear_screen()
-        level_number, milestones, exam_permission, is_running = engine.event_handler(
+        level_number, milestones, exam_pass, is_game_running = engine.event_handler(
             player, board, level_number,
-            milestones, items, exam_permission)
+            milestones, items, exam_pass)
         board[backup_pos_x][backup_pos_y] = '.'
         if player["lives"] <= 0:
             input("Game Over!")
-            is_running = False
+            is_game_running = False
 
 
 if __name__ == '__main__':
